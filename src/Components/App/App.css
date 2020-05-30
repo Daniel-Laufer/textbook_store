@@ -1,0 +1,15 @@
+#cartIcon{
+    margin:10px;
+    font-size: 2rem;
+    color: #dadbeb;
+}
+
+#mainNav{
+    list-style-type: none;
+}
+
+
+
+/* #mainNav > #mainTitle{
+    cursor: p;
+} */

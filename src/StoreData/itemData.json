@@ -1,0 +1,42 @@
+{
+    "items": [
+        {
+            "id": "346897",
+            "image": "https://cdn11.bigcommerce.com/s-zzukzwlrsj/images/stencil/1280x1280/products/1878/23837/9780176510374__95237.1516397317.jpg?c=2&imbypass=on",
+            "title": "Introduction to Physics",
+            "price": "$99",
+            "description": "a cool book!",
+            "seller": {
+                "id": "2351235",
+                "fname": "Daniel",
+                "lname": "Laufer"
+            }
+        },
+        {
+            "id": "65323",
+            "image": "https://images.ezvid.com/image/upload/fl_immutable_cache/e_trim/c_pad,f_auto,h_270,q_auto:eco/jrauvhcq17q66t8nwhcx",
+            "title": "Introduction to Calculus",
+            "price": "$199",
+            "description": "a cool book!",
+            "seller": {
+                "id": "1256",
+                "fname": "Lucas",
+                "lname": "Girardi"
+            }
+            
+
+        },
+        {
+            "id": "346897",
+            "image": "https://www.canadaeschool.ca/wp-content/uploads/2013/08/12UChemistry-covercropped.jpg",
+            "title": "Introduction to Chemistry",
+            "price": "$99",
+            "description": "a cool book!",
+            "seller": {
+                "id": "2351235",
+                "fname": "Daniel",
+                "lname": "Laufer"
+            }
+        }
+    ]
+}

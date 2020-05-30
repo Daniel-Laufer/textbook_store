@@ -1,0 +1,36 @@
+.card{
+    width: 300px;
+    margin: 10px;
+    height:52vh;
+}
+
+#imageContainer{
+    overflow: hidden;
+    height:250px;
+}
+
+#textbookImage{
+    height: 375px;
+}
+
+#cartButtonHolder{
+    display: flex;
+    justify-content: space-evenly;
+    height:80px;
+}
+#cartButtonHolder > button{
+    width: 30%;
+    border: 1px solid;
+    box-shadow: 1px 2px #888888;
+    display: flex;
+    justify-content: center;
+}
+/* #cartButtonHolder > button:first-child{
+    color: white;
+}
+#cartButtonHolder > button:first-child{
+    color: blue;
+}
+#cartButtonHolder > button:first-child{
+    color: blue;
+} */

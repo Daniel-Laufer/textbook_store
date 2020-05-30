@@ -1,0 +1,17 @@
+#cartIcon{
+    margin:10px;
+    font-size: 2rem;
+    color: #dadbeb;
+}
+
+#main-title{
+    text-decoration: none;
+    color:white;
+}
+#mainNav{
+    list-style-type: none;
+}
+
+/* #mainNav > #mainTitle{
+    cursor: p;
+} */
