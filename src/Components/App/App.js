@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react';
+import axios from "axios";
 // import Navbar from "../Navbar/Navbar";
 import ItemShowcase from "../ItemShowcase/ItemShowcase";
 import CartShowcase from "../Cart/CartShowcase";
@@ -10,6 +11,11 @@ function App() {
   const [items, setItems] = useState([]);
   const [searchValue, setSearchValue] = useState("");
   const [cartItems, setCartItems] = useState([]);
+
+
+  useEffect(() => {
+    axios.get("/textbooks").then(res => {console.log(res.data)}).catch(err => console.log(err))
+  },[])
 
   useEffect(() => {
     
