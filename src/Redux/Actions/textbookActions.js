@@ -1,4 +1,4 @@
-import { GET_TEXTBOOKS } from "../actionNames.js";
+import { GET_TEXTBOOKS,SEARCH_AND_UPDATE_TEXTBOOKS } from "../actionNames.js";
 import axios from "axios";
 
 export const getTextbooks = () => {
@@ -7,6 +7,15 @@ export const getTextbooks = () => {
     payload: axios.get("/textbooks").then(res => res.data)
   };
 };
+
+
+export const searchAndUpdateTextbooks = (searchTerm) => {
+  return{
+    type: SEARCH_AND_UPDATE_TEXTBOOKS,
+    payload: searchTerm
+
+  }
+}
 
 // import {FETCH_TEXTBOOKS_PENDING,
 // FETCH_TEXTBOOKS_SUCCESS,

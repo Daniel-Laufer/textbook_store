@@ -1,42 +1,84 @@
-import React from 'react';
+import React from "react";
+import { Navbar, FormControl, Form, Nav } from "react-bootstrap";
+import { connect } from "react-redux";
+import { increment } from "../../Redux/Actions/countActions";
+import { handleSearch } from "../../Redux/Actions/searchActions";
+import { searchAndUpdateTextbooks } from "../../Redux/Actions/textbookActions";
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import CartShowcase from "../Cart/CartShowcase"
+import ItemShowcase from "../ItemShowcase/ItemShowcase"
+import "./Navbar.css";
 
-import {BrowserRouter as Router, Switch, Route, Link} from "react-router-dom";
+let AppNav = (props) => {
+  return (
+    <Router>
+      <Navbar bg="primary" variant="dark">
+        <Navbar.Brand href="#home">
+          <Link id="main-title" to="/">
+            The Textbook Store!
+          </Link>
+        </Navbar.Brand>
+        <Nav className="mr-auto">
+          <Nav.Link href="#home">Home</Nav.Link>
+          <Nav.Link href="#features">Features</Nav.Link>
+          <Nav.Link href="#pricing">Pricing</Nav.Link>
+        </Nav>
+        <Form inline>
+          <FormControl
+            type="text"
+            onChange={(e) => {
+              props.handleSearch(e.target.value);
+              props.searchAndUpdateTextbooks(e.target.value);
+            }}
+            placeholder="Search"
+            className="mr-sm-2"
+          />
+          <Nav className="mr-auto">
+            <Nav.Link href="#home">
+            <Link to="/cart">
+              <i id="cartIcon" className="fas fa-shopping-cart"></i>
+            </Link>
+            </Nav.Link>
+          </Nav>
+        </Form>
+      </Navbar>
+
+      <Switch>
+        <Route path="/cart">
+          <CartShowcase/>
+        </Route>
+        <Route path="/about">The about page!</Route>
+        <Route path="/">
+          <div className="App">
+            <ItemShowcase/>
+          </div>
+        </Route>
+      </Switch>
 
 
 
-function Navbar({onInputChange, searchValue, inCart}){
-    return(
-        <Router>
-        <nav id="mainNav" className="navbar navbar-expand-lg navbar-dark bg-primary">
-            <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
-                <span className="navbar-toggler-icon"></span>
-            </button>
-            <div className="collapse navbar-collapse" id="navbarTogglerDemo01">
-                <Link to="/">Hello</Link>
-                {/* <a href="/" vid="mainTitle" className="navbar-brand">Dan's Textbooks</a> */}
-                <ul className="navbar-nav mr-auto mt-2 mt-lg-0">
-                <li className="nav-item active">
-                    <a href="/" className="nav-link">Home<span className="sr-only">(current)</span></a>
-                </li>
-                <li className="nav-item">
-                    <a className="nav-link" href="/about">About</a>
-                </li>
-                </ul>
-                <form style={inCart ? {"display": "none"}: {"display": "flex"}} className="form-inline my-2 my-lg-0">
-                    <input onChange={onInputChange} value={searchValue} className="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search"/>
-                    <button type="button" type="submit" className="btn btn-light">Light</button>
-                </form>
-                <li>
-                    <a href="/cart"><i id="cartIcon" className="fas fa-shopping-cart"></i></a>
-                </li>
-            </div>
-        </nav>
-        </Router>
-    );
-}
 
 
 
 
+    </Router>
+  );
+};
 
-export default Navbar;
+const mapStateToProps = (state) => {
+  return {
+    textbooks: state.textbooksReducer,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    handleSearch: (searchTerm) => dispatch(handleSearch(searchTerm)),
+    increment: (amount) => dispatch(increment(amount)),
+    searchAndUpdateTextbooks: (searchTerm) =>
+      dispatch(searchAndUpdateTextbooks(searchTerm)),
+  };
+};
+
+// connects react with redux!
+export default connect(mapStateToProps, mapDispatchToProps)(AppNav);

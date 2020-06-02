@@ -1,45 +1,37 @@
-import { GET_TEXTBOOKS } from "../actionNames.js";
+import { GET_TEXTBOOKS, SEARCH_AND_UPDATE_TEXTBOOKS } from "../actionNames.js";
 
-export default (state={textbooks: []}, action) => {
-    switch(action.type){
-        case GET_TEXTBOOKS + "_FULFILLED":
-            return {...state, textbooks:[...action.payload]}
-        default:
-            return state
-    }
-}
-
-
-
-
-
-// import {FETCH_TEXTBOOKS_PENDING,
-//     FETCH_TEXTBOOKS_SUCCESS,
-//     FETCH_TEXTBOOKS_ERROR} from "../actionNames";
-
-
-
-// export const getTextbooksReducer = (state={textbooks:[], pending: false, error: null}, action) => {
-//     switch(action.type) {
-//         case FETCH_TEXTBOOKS_PENDING: 
-//             return {
-//                 ...state,
-//                 pending: true
-//             }
-//         case FETCH_TEXTBOOKS_SUCCESS:
-//             return {
-//                 ...state,
-//                 pending: false,
-//                 textbooks: action.payload
-//             }
-//         case FETCH_TEXTBOOKS_ERROR:
-//             return {
-//                 ...state,
-//                 pending: false,
-//                 error: action.error
-//             }
-//         default: 
-//             return state;
-//     }
-// }
-
+export default (
+  state = {
+    allTextbooks: [],
+    textbooksToDisplay: [],
+    pending: true,
+    error: null,
+  },
+  action
+) => {
+  switch (action.type) {
+    case GET_TEXTBOOKS + "_FULFILLED":
+      return {
+        ...state,
+        allTextbooks: [...action.payload],
+        textbooksToDisplay: [...action.payload],
+      };
+    case GET_TEXTBOOKS + "_PENDING":
+      return { ...state, pending: true };
+    case GET_TEXTBOOKS + "_REJECTED":
+      return { ...state, error: action.payload };
+    case SEARCH_AND_UPDATE_TEXTBOOKS:
+      const newItems = [];
+      for (let key in state.allTextbooks) {
+        if (
+          state.allTextbooks[key].title
+            .toLowerCase()
+            .includes(action.payload.toLowerCase())
+        )
+          newItems.push(state.allTextbooks[key]);
+      }
+      return { ...state, textbooksToDisplay: [...newItems] };
+    default:
+      return state;
+  }
+};

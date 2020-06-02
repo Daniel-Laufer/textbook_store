@@ -1,7 +1,7 @@
 import React from 'react';
 import "./ItemCard.css";
 
-function ItemCard({item, handleCartAction}) {
+function ItemCard({item}) {
   return (
     <div className="card">
       <div id="imageContainer">
@@ -16,8 +16,9 @@ function ItemCard({item, handleCartAction}) {
         <li className="list-group-item">Dapibus ac facilisis in</li>
         <li className="list-group-item">Vestibulum at eros</li>
       </ul> */}
+      {/* onClick={() => handleCartAction(item.id, "add")} */}
       <div id="cartButtonHolder" className="card-body">
-        <button type="button" onClick={() => handleCartAction(item.id, "add")} className="btn btn-primary"><i className="fas fa-shopping-cart"></i></button>
+        <button type="button"  className="btn btn-primary"><i className="fas fa-shopping-cart"></i></button>
         <button type="button" className="btn btn-danger"><i className="fas fa-times"></i></button>
         <button type="button" className="btn btn-info"><i className="fas fa-info"></i></button>
       </div>
