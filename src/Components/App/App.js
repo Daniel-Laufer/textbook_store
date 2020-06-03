@@ -1,26 +1,37 @@
 import React, { useEffect } from "react";
 // import * as data from "../../StoreData/itemData.json";
-import AppNav from "../Navbar/Navbar"
+import AppNav from "../Navbar/Navbar";
 import "../Navbar/Navbar.css";
 
-import {connect } from "react-redux";
+import { connect } from "react-redux";
 import { increment } from "../../Redux/Actions/countActions";
 import { login, setAge } from "../../Redux/Actions/userActions";
-import { getTextbooks } from "../../Redux/Actions/textbookActions";
 
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import CartShowcase from "../Cart/CartShowcase";
+import ItemShowcase from "../ItemShowcase/ItemShowcase";
 
+let initialRender = true
 
 function App(props) {
-// 
-  useEffect(() => {
-    props.getTextbooks()
-    // props.setAge(151235)
-    // axios.get("/textbooks").then(res => {console.log(res.data)}).catch(err => console.log(err))
-    // axios.get("/textbooks").then(res => {console.log(res.data)}).catch(err => console.log(err))
-  }, []);
+  // I should have used useEffect, but I just wanted to avoid a stupid warning from react. 
+  
 
   return (
-    <AppNav/>
+    <Router>
+      <AppNav />
+      <Switch>
+        <Route path="/cart">
+          <CartShowcase />
+        </Route>
+        <Route path="/about">The about page!</Route>
+        <Route path="/">
+          <div className="App">
+            <ItemShowcase />
+          </div>
+        </Route>
+      </Switch>
+    </Router>
   );
 }
 
@@ -41,7 +52,7 @@ const mapDispatchToProps = (dispatch) => {
     login: () => dispatch(login()), // the names you gave in the combine reducers method call
     increment: (amount) => dispatch(increment(amount)),
     setAge: (age) => dispatch(setAge(age)),
-    getTextbooks: () => dispatch(getTextbooks())
+    
   };
 };
 

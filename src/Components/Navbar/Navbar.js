@@ -1,18 +1,17 @@
 import React from "react";
-import { Navbar, FormControl, Form, Nav } from "react-bootstrap";
+import { Navbar, FormControl, Form, Nav, Button } from "react-bootstrap";
 import { connect } from "react-redux";
 import { increment } from "../../Redux/Actions/countActions";
 import { handleSearch } from "../../Redux/Actions/searchActions";
 import { searchAndUpdateTextbooks } from "../../Redux/Actions/textbookActions";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
-import CartShowcase from "../Cart/CartShowcase"
-import ItemShowcase from "../ItemShowcase/ItemShowcase"
+import { Link } from "react-router-dom";
 import "./Navbar.css";
 
 let AppNav = (props) => {
   return (
-    <Router>
-      <Navbar bg="primary" variant="dark">
+    <Navbar collapseOnSelect expand="lg" bg="primary" variant="dark">
+      <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+      <Navbar.Collapse id="responsive-navbar-nav">
         <Navbar.Brand href="#home">
           <Link id="main-title" to="/">
             The Textbook Store!
@@ -33,35 +32,27 @@ let AppNav = (props) => {
             placeholder="Search"
             className="mr-sm-2"
           />
-          <Nav className="mr-auto">
-            <Nav.Link href="#home">
-            <Link to="/cart">
-              <i id="cartIcon" className="fas fa-shopping-cart"></i>
-            </Link>
-            </Nav.Link>
-          </Nav>
         </Form>
-      </Navbar>
+        <Form id="cart-form" inline>
+          <Link to="/cart">
+            <Button id="cart-button" type="submit">
+              <i id="cartIcon" className="fas fa-shopping-cart"></i>
+            </Button>
+          </Link>
+          <p id="cart-item-counter">19</p>
+        </Form>
 
-      <Switch>
-        <Route path="/cart">
-          <CartShowcase/>
-        </Route>
-        <Route path="/about">The about page!</Route>
-        <Route path="/">
-          <div className="App">
-            <ItemShowcase/>
-          </div>
-        </Route>
-      </Switch>
-
-
-
-
-
-
-
-    </Router>
+        {/* <Nav className="mr-auto">
+          <Nav.Link id="cart-icon-container">
+            
+              <div>
+                <i id="cartIcon" className="fas fa-shopping-cart"></i>
+              </div>
+            
+          </Nav.Link>
+        </Nav> */}
+      </Navbar.Collapse>
+    </Navbar>
   );
 };
 

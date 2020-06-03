@@ -6,3 +6,25 @@
     justify-content: space-evenly;
     margin: auto;
 }
+
+
+/* SPINNER CSS */
+
+  .loaderIcon{
+    width:130px;
+    height:130px;
+    margin:50px auto;
+    border:7px solid 	#007bff;
+    border-radius:50%; 
+    border-top-color:#d6d6d6;
+  /*   border-bottom-color:red; */
+    animation:spin 0.8s linear infinite;
+  }
+  
+  @keyframes spin{
+    to{
+      transform:rotate(360deg);
+    }
+  }
+
+  /* END SPINNER CSS */

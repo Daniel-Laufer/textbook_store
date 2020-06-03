@@ -13,6 +13,7 @@ export default (
     case GET_TEXTBOOKS + "_FULFILLED":
       return {
         ...state,
+        pending: false,
         allTextbooks: [...action.payload],
         textbooksToDisplay: [...action.payload],
       };

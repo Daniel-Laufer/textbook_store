@@ -1,7 +1,9 @@
 #cartIcon{
-    margin:10px;
     font-size: 2rem;
-    color: #dadbeb;
+    color: white;
+}
+#cart-button{
+    pointer-events: none;
 }
 
 #main-title{
@@ -12,6 +14,42 @@
     list-style-type: none;
 }
 
-/* #mainNav > #mainTitle{
-    cursor: p;
-} */
+#cart-form{
+    position: relative;
+    right:10px;
+    top:2px;
+}
+
+
+#cart-item-counter{
+    color: white;
+    position: relative;
+    background-color: red;
+    text-align: center;
+    width:20px;
+    right:22px;
+    bottom:5px;
+    line-height: 21px;
+    font-size: 15px;
+    border-radius: 40%;
+}
+/* // 1240 888 */
+@media only screen and (max-width: 1551px) {
+    #cart-form{
+        position: relative;
+        right:10px;
+        bottom:10px;
+    }
+  }
+
+
+@media only screen and (max-width: 1240px) {
+    #cart-form{
+        position: relative;
+        right:10px;
+        top:5px;
+    }
+  }
+
+
+
