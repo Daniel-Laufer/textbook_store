@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, { useEffect } from "react";
 import ItemCard from "./ItemCard";
 import { connect } from "react-redux";
 import { handleSearch } from "../../Redux/Actions/searchActions";
@@ -7,12 +7,14 @@ import { getTextbooks } from "../../Redux/Actions/textbookActions";
 import store from "../../Redux/store";
 
 function ItemShowcase(props) {
+
   
-  useEffect(() => {
-    store.dispatch(getTextbooks())
-  }, [props.textbooks.textbooks]);
-
-
+    
+  // useEffect(() => {
+  //   store.dispatch(getTextbooks());
+  // }, []);
+  
+  
 
   const spinnerStyles = { display: props.textbooks.pending ? "block" : "none" };
   return (
@@ -28,6 +30,7 @@ function ItemShowcase(props) {
 }
 
 const mapStateToProps = (state) => {
+  console.log(state)
   return {
     textbooks: state.textbooksReducer,
   };

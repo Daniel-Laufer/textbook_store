@@ -6,6 +6,7 @@ export default (
     textbooksToDisplay: [],
     pending: true,
     error: null,
+    loadRequested: true
   },
   action
 ) => {
@@ -14,8 +15,9 @@ export default (
       return {
         ...state,
         pending: false,
-        allTextbooks: [...action.payload],
-        textbooksToDisplay: [...action.payload],
+        allTextbooks: action.payload,
+        textbooksToDisplay: action.payload,
+        loadRequested: false
       };
     case GET_TEXTBOOKS + "_PENDING":
       return { ...state, pending: true };

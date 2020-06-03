@@ -1,13 +1,33 @@
-import {LOGIN, SET_AGE} from "../actionNames";
+import { LOGIN, LOGOUT } from "../actionNames";
 
 
-export default (state={loggedIn: false, age: 18, name: "Daniel"}, action) => {
-    switch(action.type){
-        case LOGIN:
-            return {...state, loggedIn:!state.loggedIn}
-        case SET_AGE:
-            return {...state, age: action.payload}
-        default:
-            return state
-    }
-}
+const initialState = {
+  authToken: null,
+  //   username: "ERROR",
+  loggedIn: false,
+  pending: false,
+  error: null,
+  //   fname: "ERROR",
+  //   lname: "ERROR",
+};
+
+export default (state = initialState, action) => {
+  switch (action.type) {
+    case LOGIN + "_FULFILLED":
+      return {
+        ...state,
+        authToken: action.payload,
+        loggedIn: true,
+        pending: false,
+        error:null
+      };
+    case LOGIN + "_PENDING":
+      return { ...state, pending: true };
+    case LOGIN + "_REJECTED":
+      return { ...state, error: action.payload };
+    case LOGOUT:
+      return {...initialState}
+    default:
+      return state;
+  }
+};

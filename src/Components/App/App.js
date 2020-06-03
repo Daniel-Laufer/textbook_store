@@ -5,17 +5,21 @@ import "../Navbar/Navbar.css";
 
 import { connect } from "react-redux";
 import { increment } from "../../Redux/Actions/countActions";
-import { login, setAge } from "../../Redux/Actions/userActions";
+import { login } from "../../Redux/Actions/userActions";
 
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import CartShowcase from "../Cart/CartShowcase";
 import ItemShowcase from "../ItemShowcase/ItemShowcase";
+import LoginPage from "../LoginPage/LoginPage";
+import { getTextbooks } from "../../Redux/Actions/textbookActions";
 
 let initialRender = true
 
 function App(props) {
   // I should have used useEffect, but I just wanted to avoid a stupid warning from react. 
-  
+  useEffect(() => {
+    props.getTextbooks()
+  }, []);
 
   return (
     <Router>
@@ -23,6 +27,9 @@ function App(props) {
       <Switch>
         <Route path="/cart">
           <CartShowcase />
+        </Route>
+        <Route path="/login">
+            <LoginPage/>
         </Route>
         <Route path="/about">The about page!</Route>
         <Route path="/">
@@ -51,8 +58,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     login: () => dispatch(login()), // the names you gave in the combine reducers method call
     increment: (amount) => dispatch(increment(amount)),
-    setAge: (age) => dispatch(setAge(age)),
-    
+    getTextbooks: () => dispatch(getTextbooks()),
   };
 };
 

@@ -4,6 +4,10 @@
 }
 #cart-button{
     pointer-events: none;
+    margin-left:2px
+}
+#search-bar{
+    margin-right:10px
 }
 
 #main-title{
@@ -35,10 +39,9 @@
 }
 /* // 1240 888 */
 @media only screen and (max-width: 1551px) {
-    #cart-form{
+    #cart-button{
         position: relative;
-        right:10px;
-        bottom:10px;
+        bottom: 3px;
     }
   }
 
@@ -49,7 +52,14 @@
         right:10px;
         top:5px;
     }
+    #login-logout-button{
+        margin-top:3px;
+    }
   }
+
+
+
+  
 
 
 
