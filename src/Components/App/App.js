@@ -12,14 +12,20 @@ import CartShowcase from "../Cart/CartShowcase";
 import ItemShowcase from "../ItemShowcase/ItemShowcase";
 import LoginPage from "../LoginPage/LoginPage";
 import { getTextbooks } from "../../Redux/Actions/textbookActions";
+import { getCartItems } from "../../Redux/Actions/cartActions";
 
 let initialRender = true
 
-function App(props) {
-  // I should have used useEffect, but I just wanted to avoid a stupid warning from react. 
+function App({getTextbooks, user}) {
   useEffect(() => {
-    props.getTextbooks()
+    getTextbooks()
   }, []);
+
+  useEffect(() => {
+    increment(5)
+    getCartItems(user.authToken);
+  }, [user.authToken]);
+
 
   return (
     <Router>
@@ -49,6 +55,7 @@ const mapStateToProps = (state) => {
     user: state.userReducer, // the names you gave in the combine reducers method call
     count: state.countReducer,
     textbooks: state.textbooksReducer,
+    cartItems: state.cartReducer,
   };
 };
 
@@ -59,6 +66,7 @@ const mapDispatchToProps = (dispatch) => {
     login: () => dispatch(login()), // the names you gave in the combine reducers method call
     increment: (amount) => dispatch(increment(amount)),
     getTextbooks: () => dispatch(getTextbooks()),
+    getCartItems: (authToken) => dispatch(getCartItems(authToken)),
   };
 };
 

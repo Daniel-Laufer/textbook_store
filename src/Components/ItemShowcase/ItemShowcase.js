@@ -33,7 +33,6 @@ function ItemShowcase(props) {
 }
 
 const mapStateToProps = (state) => {
-  console.log(state)
   return {
     textbooks: state.textbooksReducer,
   };

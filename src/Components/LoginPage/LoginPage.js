@@ -16,7 +16,7 @@ const LoginPage = (props) => {
 
       setEmail("");
       setPassword("");
-      if (props.user.error == null) setTimeout(() => history.push("/"), 3000);
+      if (props.user.error == null) setTimeout(() => history.push("/"), 800);
     }
   }, [props.user]);
 
