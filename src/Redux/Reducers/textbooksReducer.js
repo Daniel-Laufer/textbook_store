@@ -12,6 +12,8 @@ export default (
 ) => {
   switch (action.type) {
     case GET_TEXTBOOKS + "_FULFILLED":
+
+
       return {
         ...state,
         pending: false,

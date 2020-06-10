@@ -46,7 +46,7 @@
 
 
   @media only screen and (max-width: 650px) {
-    .ItemShowcase {
+    .item-showcase {
       justify-content: center;
     }
   }

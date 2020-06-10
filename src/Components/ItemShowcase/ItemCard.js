@@ -1,7 +1,10 @@
 import React from "react";
 import "./ItemCard.css";
+import { addItemToCart } from "../../Redux/Actions/cartActions";
+import { connect } from "react-redux";
 
-function ItemCard({ item, openModal }) {
+
+function ItemCard({ item, openModal, addItemToCart, user }) {
   return (
     <div className="card">
       <div id="imageContainer">
@@ -21,7 +24,7 @@ function ItemCard({ item, openModal }) {
       </div>
 
       <div id="cartButtonHolder" className="card-body">
-        <button type="button" className="btn btn-primary">
+        <button onClick={() => addItemToCart(user.authToken, item.textbookId)}type="button" className="btn btn-primary">
           <i className="fas fa-shopping-cart"></i>
         </button>
         
@@ -38,4 +41,18 @@ function ItemCard({ item, openModal }) {
   );
 }
 
-export default ItemCard;
+const mapStateToProps = (state) => {
+  return {
+    user: state.userReducer,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    addItemToCart: (auth, textbookId) =>
+      dispatch(addItemToCart(auth, textbookId)),
+  };
+};
+
+// connects react with redux!
+export default connect(mapStateToProps, mapDispatchToProps)(ItemCard);

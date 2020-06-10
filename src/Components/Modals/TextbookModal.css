@@ -6,12 +6,14 @@
 .textbook-modal {
   position: absolute;
   top: 40px;
-  left: 35%;
+  left: 32%;
   bottom: 40px;
   background-color: white;
-  width: 30%;
+  width: 35%;
   border: 3px solid rgb(49, 124, 246);
   outline: none;
+  min-width:210px;
+  max-height: 450px;
 }
 
 .close-modal-button {
@@ -48,4 +50,12 @@
 .modal-image {
   max-width: 100%;
   height: 200px;
+}
+
+
+@media only screen and (max-width: 650px) {
+  .textbook-modal {
+    left:23%;
+    top: 22%;
+  }
 }

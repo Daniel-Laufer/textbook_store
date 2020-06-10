@@ -5,7 +5,6 @@ import "./TextbookModal.css";
 Modal.setAppElement("#root");
 
 export default function TextbookModal({ funcs, item }) {
-  console.log(funcs.modalIsOpen);
   return (
     <Modal
       className="textbook-modal"

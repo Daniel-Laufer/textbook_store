@@ -6,7 +6,7 @@ import "./App.css"
 
 import { connect } from "react-redux";
 import { increment } from "../../Redux/Actions/countActions";
-import { login } from "../../Redux/Actions/userActions";
+import { login, loginWithOldtAuthToken } from "../../Redux/Actions/userActions";
 
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import CartShowcase from "../Cart/CartShowcase";
@@ -15,14 +15,23 @@ import LoginPage from "../LoginPage/LoginPage";
 import { getTextbooks } from "../../Redux/Actions/textbookActions";
 import { getCartItems } from "../../Redux/Actions/cartActions";
 
-function App({getTextbooks, user}) {
+
+function App({getTextbooks, user, loginWithOldtAuthToken}) {
   useEffect(() => {
     getTextbooks()
   }, []);
 
   useEffect(() => {
     increment(5)
-    getCartItems(user.authToken);
+    if(user.loggedIn)
+      getCartItems(user.authToken);
+    else{
+      const oldAuthToken = localStorage.authToken;
+      if(oldAuthToken){
+        loginWithOldtAuthToken({"token": oldAuthToken})
+        getCartItems(user.authToken);
+      }
+    }
   }, [user.authToken]);
 
 
@@ -68,6 +77,7 @@ const mapDispatchToProps = (dispatch) => {
     increment: (amount) => dispatch(increment(amount)),
     getTextbooks: () => dispatch(getTextbooks()),
     getCartItems: (authToken) => dispatch(getCartItems(authToken)),
+    loginWithOldtAuthToken: (authToken) => dispatch(loginWithOldtAuthToken(authToken))
   };
 };
 

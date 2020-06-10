@@ -13,7 +13,7 @@ const LoginPage = (props) => {
   const history = useHistory();
   useEffect(() => {
     if (props.user.loggedIn) {
-
+      localStorage.authToken = props.user.authToken.token;
       setEmail("");
       setPassword("");
       if (props.user.error == null) setTimeout(() => history.push("/"), 800);

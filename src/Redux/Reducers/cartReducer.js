@@ -1,10 +1,11 @@
-import { GET_CART_ITEMS } from "../actionNames.js";
+import { GET_CART_ITEMS, ADD_TO_CART } from "../actionNames.js";
 
 export default (
   state = {
     allCartItems: [],
     // cartItemsToDisplay: [],
     pending: false,
+    refreshRequested: false,
     error: null,
   },
   action
@@ -15,6 +16,7 @@ export default (
         ...state,
         pending: false,
         allCartItems: action.payload,
+        refreshRequested: false
         // cartItemsToDisplay: action.payload,
       };
     case GET_CART_ITEMS + "_PENDING":
@@ -26,6 +28,25 @@ export default (
         error: action.payload,
         allCartItems: [],
       };
+      
+
+      case ADD_TO_CART + "_FULFILLED":
+      return {
+        ...state,
+        pending: false,
+        refreshRequested: true
+        // cartItemsToDisplay: action.payload,
+      };
+    case ADD_TO_CART + "_PENDING":
+      return { ...state, pending: true };
+    case ADD_TO_CART + "_REJECTED":
+      return {
+        ...state,
+        pending: false,
+        error: action.payload,
+      };
+
+    
     //     case SEARCH_AND_UPDATE_TEXTBOOKS:
     //       const newItems = [];
     //       for (let key in state.allTextbooks) {

@@ -25,9 +25,12 @@ let AppNav = ({
 
   useEffect(() => {
       getCartItems(user.authToken);
-  }, [user.authToken]);
+  }, [user.authToken, cartItems.refreshRequested]);
+
+
 
   const handleLogOut = () => {
+    delete localStorage.authToken;
     logout();
     history.push("/")
   }
@@ -106,7 +109,7 @@ let AppNav = ({
           </Button>
         )}
         <Link to="/newPost">
-            <Button onClick={hideNav} id="new-post-button" variant="light">
+            <Button style={{"display": user.loggedIn ? "inline-block" : "none"}} onClick={hideNav} id="new-post-button" variant="light">
               +
             </Button>
           </Link>

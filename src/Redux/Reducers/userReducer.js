@@ -1,4 +1,4 @@
-import { LOGIN, LOGOUT } from "../actionNames";
+import { LOGIN, LOGOUT, LOGIN_WITH_OLD_AUTH_TOKEN} from "../actionNames";
 
 
 const initialState = {
@@ -13,6 +13,14 @@ const initialState = {
 
 export default (state = initialState, action) => {
   switch (action.type) {
+    case LOGIN_WITH_OLD_AUTH_TOKEN:
+      return{
+        ...state,
+        authToken: action.payload,
+        loggedIn: true,
+        pending: false,
+        error:null
+      }
     case LOGIN + "_FULFILLED":
       return {
         ...state,
