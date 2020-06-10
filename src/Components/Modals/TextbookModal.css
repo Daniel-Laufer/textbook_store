@@ -1,0 +1,51 @@
+:root {
+  --close-modal-button-WIDTH: 30px;
+  --close-modal-button-HEIGHT: 30px;
+}
+
+.textbook-modal {
+  position: absolute;
+  top: 40px;
+  left: 35%;
+  bottom: 40px;
+  background-color: white;
+  width: 30%;
+  border: 3px solid rgb(49, 124, 246);
+  outline: none;
+}
+
+.close-modal-button {
+  width: var(--close-modal-button-WIDTH);
+  height: var(--close-modal-button-HEIGHT);
+  position: absolute;
+  right: 0px;
+  top: -3px;
+  line-height: 5px;
+  padding-left: 10px;
+  border-radius: 0%;
+  left: calc(100% + 3px - var(--close-modal-button-WIDTH));
+  background-color: red;
+}
+
+.modal-image-container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  overflow: hidden;
+  background: #1488cc; /* fallback for old browsers */
+  background: -webkit-linear-gradient(
+    to right,
+    #2b32b2,
+    #1488cc
+  ); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(
+    to right,
+    #2b32b2,
+    #1488cc
+  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+.modal-image {
+  max-width: 100%;
+  height: 200px;
+}

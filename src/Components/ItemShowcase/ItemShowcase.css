@@ -1,18 +1,36 @@
-.ItemShowcase{
+:root{
+  --showcase-loader-icon-WIDTH: 130px;
+}
+
+
+.item-showcase{
     width: 100%;
     max-width: 1200px;
     display: flex;
     flex-wrap: wrap;
     margin: auto;
+    height: 100%;
+
+}
+
+.blur {
+  -webkit-filter: blur(5px);
+  -moz-filter: blur(5px);
+  -o-filter: blur(5px);
+  -ms-filter: blur(5px);
+  filter: blur(2px);
+
 }
 
 
 /* SPINNER CSS */
 
   .loaderIcon{
-    width:130px;
+  position:absolute;
+    left: 46%;
+    top: 200px;
+    width:var(--showcase-loader-icon-WIDTH);
     height:130px;
-    margin:50px auto;
     border:7px solid 	#007bff;
     border-radius:50%; 
     border-top-color:#d6d6d6;
@@ -23,6 +41,13 @@
   @keyframes spin{
     to{
       transform:rotate(360deg);
+    }
+  }
+
+
+  @media only screen and (max-width: 650px) {
+    .ItemShowcase {
+      justify-content: center;
     }
   }
 

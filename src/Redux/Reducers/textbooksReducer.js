@@ -6,7 +6,7 @@ export default (
     textbooksToDisplay: [],
     pending: true,
     error: null,
-    loadRequested: true
+    loadRequested: true,
   },
   action
 ) => {

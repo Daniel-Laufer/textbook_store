@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import { Navbar, FormControl, Form, Nav, Button } from "react-bootstrap";
 import { connect } from "react-redux";
 import { increment } from "../../Redux/Actions/countActions";
@@ -17,7 +17,8 @@ let AppNav = ({
   user,
   logout,
   cartItems,
-  getCartItems
+  getCartItems,
+  textbooks
 }) => {
 
   const history = useHistory();
@@ -32,13 +33,24 @@ let AppNav = ({
   }
 
 
+ const [navExpanded, setNavExpanded] = useState(false);
+
+
+ const hideNav = () => {
+   setNavExpanded(false);
+ }
+
+
+  const spinnerStyles = { display: cartItems.pending ? "block" : "none" };
+
+
   const cartButtonStyles = {'display': user.loggedIn ? 'flex': 'none'}
 
   return (
-    <Navbar collapseOnSelect expand="lg" bg="primary" variant="dark">
+    <Navbar expanded={navExpanded} onToggle={() => setNavExpanded(!navExpanded)} collapseOnSelect expand="lg" bg="primary" variant="dark">
       <Navbar.Toggle aria-controls="responsive-navbar-nav" />
       <Navbar.Collapse id="responsive-navbar-nav">
-        <Navbar.Brand href="#home">
+        <Navbar.Brand onClick={hideNav} href="#home">
           <Link id="main-title" to="/">
             The Textbook Store!
           </Link>
@@ -67,27 +79,39 @@ let AppNav = ({
         </Form>
         <Form style={cartButtonStyles} id="cart-form" inline>
           <Link to="/cart">
-            <Button id="cart-button" type="submit">
+            <Button onClick={hideNav} id="cart-button" type="submit">
               <i id="cartIcon" className="fas fa-shopping-cart"></i>
             </Button>
           </Link>
-          <p id="cart-item-counter">{cartItems.allCartItems.length}</p>
+          <p id="cart-item-counter">
+            <div style={spinnerStyles} className="loader">
+              <div className="cartLoaderIcon"></div>
+            </div>
+            {cartItems.pending ? '': cartItems.allCartItems.length}</p>
         </Form>
+        <div id="button-holder-div">
         {!user.loggedIn ? (
           <Link to="/login">
-            <Button id="login-logout-button" variant="outline-light">
+            <Button onClick={hideNav} id="login-logout-button" variant="outline-light">
               Log in
             </Button>
           </Link>
         ) : (
           <Button
             id="login-logout-button"
-            onClick={() => handleLogOut()}
+            onClick={() => {handleLogOut(); hideNav()}}
             variant="outline-light"
           >
             Log out
           </Button>
         )}
+        <Link to="/newPost">
+            <Button onClick={hideNav} id="new-post-button" variant="light">
+              +
+            </Button>
+          </Link>
+          </div>
+        {/* <Button id="newTextbookPost" style={{'display' : user.loggedIn ? 'flex': 'none'}} variant="light">+</Button> */}
       </Navbar.Collapse>
     </Navbar>
   );
@@ -108,7 +132,7 @@ const mapDispatchToProps = (dispatch) => {
     increment: (amount) => dispatch(increment(amount)),
     searchAndUpdateTextbooks: (searchTerm) =>
       dispatch(searchAndUpdateTextbooks(searchTerm)),
-    getCartItems: (authToken) => dispatch(getCartItems(authToken)),
+    getCartItems: (authToken) => dispatch(getCartItems(authToken))
   };
 };
 

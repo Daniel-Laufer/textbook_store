@@ -4,11 +4,14 @@ import "./CartShowcase.css";
 import { getCartItems } from "../../Redux/Actions/cartActions";
 import { connect } from "react-redux";
 
-function CartShowcase({ cartItems, getCartItems, user}) {
+function CartShowcase({ cartItems, textbooks}) {
+
   const spinnerStyles = { display: cartItems.pending ? "block" : "none" };
+
+
+
   return (
-    
-    <div className="CartShowcase">
+    <div className='CartShowcase'>
       <div style={spinnerStyles} className="loader">
         <div className="loaderIcon"></div>
       </div>
@@ -19,6 +22,7 @@ function CartShowcase({ cartItems, getCartItems, user}) {
           return <ItemCard key={index} item={item}/>;
         })
       )}
+
     </div>
   );
 }
@@ -34,7 +38,7 @@ const mapStateToProps = (state) => {
 //-ed automatically
 const mapDispatchToProps = (dispatch) => {
   return {
-    getCartItems: (authToken) => dispatch(getCartItems(authToken)),
+    getCartItems: (authToken) => dispatch(getCartItems(authToken))
   };
 };
 

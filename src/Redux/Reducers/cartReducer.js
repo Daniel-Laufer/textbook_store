@@ -20,18 +20,23 @@ export default (
     case GET_CART_ITEMS + "_PENDING":
       return { ...state, pending: true };
     case GET_CART_ITEMS + "_REJECTED":
-      return { ...state, pending: false, error: action.payload, allCartItems:[] };
-//     case SEARCH_AND_UPDATE_TEXTBOOKS:
-//       const newItems = [];
-//       for (let key in state.allTextbooks) {
-//         if (
-//           state.allTextbooks[key].title
-//             .toLowerCase()
-//             .includes(action.payload.toLowerCase())
-//         )
-//           newItems.push(state.allTextbooks[key]);
-//       }
-//       return { ...state, textbooksToDisplay: [...newItems] };
+      return {
+        ...state,
+        pending: false,
+        error: action.payload,
+        allCartItems: [],
+      };
+    //     case SEARCH_AND_UPDATE_TEXTBOOKS:
+    //       const newItems = [];
+    //       for (let key in state.allTextbooks) {
+    //         if (
+    //           state.allTextbooks[key].title
+    //             .toLowerCase()
+    //             .includes(action.payload.toLowerCase())
+    //         )
+    //           newItems.push(state.allTextbooks[key]);
+    //       }
+    //       return { ...state, textbooksToDisplay: [...newItems] };
     default:
       return state;
   }

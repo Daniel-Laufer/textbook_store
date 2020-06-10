@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 // import * as data from "../../StoreData/itemData.json";
 import AppNav from "../Navbar/Navbar";
 import "../Navbar/Navbar.css";
+import "./App.css"
 
 import { connect } from "react-redux";
 import { increment } from "../../Redux/Actions/countActions";
@@ -13,8 +14,6 @@ import ItemShowcase from "../ItemShowcase/ItemShowcase";
 import LoginPage from "../LoginPage/LoginPage";
 import { getTextbooks } from "../../Redux/Actions/textbookActions";
 import { getCartItems } from "../../Redux/Actions/cartActions";
-
-let initialRender = true
 
 function App({getTextbooks, user}) {
   useEffect(() => {
@@ -32,7 +31,9 @@ function App({getTextbooks, user}) {
       <AppNav />
       <Switch>
         <Route path="/cart">
+        <div className="App" >
           <CartShowcase />
+          </div>
         </Route>
         <Route path="/login">
             <LoginPage/>

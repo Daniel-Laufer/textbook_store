@@ -14,5 +14,3 @@ import promise from 'redux-promise-middleware'
 const middleware = [ promise, thunk ];
 
 export default createStore(combineReducers({searchReducer, countReducer, userReducer,textbooksReducer, cartReducer }), {}, compose(applyMiddleware(...middleware), composeWithDevTools()));
-
-

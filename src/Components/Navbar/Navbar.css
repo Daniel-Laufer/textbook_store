@@ -9,6 +9,9 @@
 #search-bar{
     margin-right:10px
 }
+#login-logout-button{
+  max-width: 100px;
+}
 
 #main-title{
     text-decoration: none;
@@ -24,6 +27,15 @@
     top:2px;
 }
 
+#button-holder-div{
+  display: flex;
+  width: 150px;
+  flex-direction: row;
+  justify-content: space-evenly;
+  margin-left:-10px;
+}
+
+
 
 #cart-item-counter{
     color: white;
@@ -31,12 +43,18 @@
     background-color: red;
     text-align: center;
     width:20px;
-    right:22px;
+    right:32px;
     bottom:5px;
     line-height: 21px;
     font-size: 15px;
     border-radius: 40%;
 }
+
+#new-post-button{
+  margin-top:0px;
+}
+
+
 /* // 1240 888 */
 @media only screen and (max-width: 1551px) {
     #cart-button{
@@ -46,14 +64,45 @@
   }
 
 
-@media only screen and (max-width: 1240px) {
+@media only screen and (max-width: 990px) {
     #cart-form{
         position: relative;
         right:10px;
         top:5px;
     }
-    #login-logout-button{
-        margin-top:3px;
+     #button-holder-div{
+    flex-direction: column;
+    margin-left:0px;
+    margin-top:10px;
+  }
+  #new-post-button{
+    margin-top:10px;
+  }
+
+  
+
+  }
+
+ 
+
+
+
+
+
+  .cartLoaderIcon{
+    width:12px;
+    height:12px;
+    margin:1px auto;
+    border:2px solid 	white;
+    border-radius:50%; 
+    border-top-color:#ff0000;
+  /*   border-bottom-color:red; */
+    animation:spin 0.8s linear infinite;
+  }
+  
+  @keyframes spin{
+    to{
+      transform:rotate(360deg);
     }
   }
 

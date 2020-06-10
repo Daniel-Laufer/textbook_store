@@ -9,7 +9,7 @@ import * as serviceWorker from './serviceWorker';
 
 import {Provider} from "react-redux";
 import store from "./Redux/store"
-import { getTextbooks } from "./Redux/Actions/textbookActions";
+import { getTextbooks} from "./Redux/Actions/textbookActions";
 
 // store.dispatch(getTextbooks());
 
@@ -18,9 +18,12 @@ import { getTextbooks } from "./Redux/Actions/textbookActions";
 // the store, it simply gives them the option to. That is why we need to call the connect 
 // function in child components
 ReactDOM.render(
+  <div>
+    
+  
   <Provider store={store}>
     <App />
-    </Provider>,
+    </Provider></div>,
   document.getElementById('root')
 );
 
