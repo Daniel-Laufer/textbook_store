@@ -12,6 +12,7 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import CartShowcase from "../Cart/CartShowcase";
 import ItemShowcase from "../ItemShowcase/ItemShowcase";
 import LoginPage from "../LoginPage/LoginPage";
+import NewTextbookPage from "../NewTextbookPage/NewTextbookPage";
 import { getTextbooks } from "../../Redux/Actions/textbookActions";
 import { getCartItems } from "../../Redux/Actions/cartActions";
 
@@ -46,6 +47,9 @@ function App({getTextbooks, user, loginWithOldtAuthToken}) {
         </Route>
         <Route path="/login">
             <LoginPage/>
+        </Route>
+        <Route path="/newPost">
+            <NewTextbookPage/>
         </Route>
         <Route path="/about">The about page!</Route>
         <Route path="/">
