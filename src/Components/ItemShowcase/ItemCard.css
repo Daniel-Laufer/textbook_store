@@ -12,6 +12,8 @@ box-shadow: 3px 2px 21px -2px rgba(138,134,138,0.72);
 #imageContainer{
     overflow: hidden;
     height:450px;
+    background-size: cover;
+
 }
 
 #textbookImage{

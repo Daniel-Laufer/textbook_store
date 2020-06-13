@@ -18,22 +18,35 @@ import { getCartItems } from "../../Redux/Actions/cartActions";
 
 
 function App({getTextbooks, user, loginWithOldtAuthToken}) {
-  useEffect(() => {
-    getTextbooks()
-  }, []);
+
+  // useEffect(() => {
+  //   getTextbooks()
+  // }, []);
 
   useEffect(() => {
     increment(5)
     if(user.loggedIn)
       getCartItems(user.authToken);
     else{
+      console.log(localStorage)
       const oldAuthToken = localStorage.authToken;
-      if(oldAuthToken){
+      const timeLoggedIn = new Date(localStorage.timeLoggedIn);
+      const now = new Date();
+
+      const timeDiff = Math.round(((now - timeLoggedIn % 86400000) % 3600000) / 60000); // minutes
+      console.log("Time diff: " + timeDiff)
+      
+      if(oldAuthToken && timeDiff < 10){
         loginWithOldtAuthToken({"token": oldAuthToken})
         getCartItems(user.authToken);
       }
+      else{
+        console.log("Deleted in App.js")
+        delete localStorage.authToken;
+        delete localStorage.timeLoggedIn;
+      }
     }
-  }, [user.authToken]);
+  }, []);
 
 
   return (
@@ -51,7 +64,12 @@ function App({getTextbooks, user, loginWithOldtAuthToken}) {
         <Route path="/newPost">
             <NewTextbookPage/>
         </Route>
-        <Route path="/about">The about page!</Route>
+        <Route path="/about">
+            <div>
+              <h1>The about page!</h1>
+              <p>This web app was created by Daniel Laufer.</p>
+            </div>
+        </Route>
         <Route path="/">
           <div className="App">
             <ItemShowcase />

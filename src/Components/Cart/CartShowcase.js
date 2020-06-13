@@ -3,26 +3,32 @@ import ItemCard from "../ItemShowcase/ItemCard";
 import "./CartShowcase.css";
 import { getCartItems } from "../../Redux/Actions/cartActions";
 import { connect } from "react-redux";
+import { Container} from "react-bootstrap";
 
-function CartShowcase({ cartItems, textbooks}) {
-
+function CartShowcase({ cartItems, textbooks, getCartItems, user }) {
   const spinnerStyles = { display: cartItems.pending ? "block" : "none" };
 
+    useEffect(() => {
+      if(cartItems.refreshRequested){
+        getCartItems(user.authToken);
+      }
+    }, []);
 
 
   return (
-    <div className='CartShowcase'>
+    <div className="CartShowcase">
+      {cartItems.allCartItems.length === 0 ? (
+        <div id="empty-cart-message">
+            <h1>Your cart is empty.</h1>
+        </div>
+      ) : (
+        cartItems.allCartItems.map((item, index) => {
+          return <ItemCard key={index} item={item} />;
+        })
+      )}
       <div style={spinnerStyles} className="loader">
         <div className="loaderIcon"></div>
       </div>
-      {cartItems.allCartItems.length === 0 ? (
-        <h1>No items in your cart!</h1>
-      ) : (
-        cartItems.allCartItems.map((item, index) => {
-          return <ItemCard key={index} item={item}/>;
-        })
-      )}
-
     </div>
   );
 }
@@ -38,7 +44,7 @@ const mapStateToProps = (state) => {
 //-ed automatically
 const mapDispatchToProps = (dispatch) => {
   return {
-    getCartItems: (authToken) => dispatch(getCartItems(authToken))
+    getCartItems: (authToken) => dispatch(getCartItems(authToken)),
   };
 };
 

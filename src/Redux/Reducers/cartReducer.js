@@ -5,8 +5,9 @@ export default (
     allCartItems: [],
     // cartItemsToDisplay: [],
     pending: false,
-    refreshRequested: false,
+    refreshRequested: true,
     error: null,
+    numberOfItems: 0
   },
   action
 ) => {
@@ -16,7 +17,8 @@ export default (
         ...state,
         pending: false,
         allCartItems: action.payload,
-        refreshRequested: false
+        refreshRequested: false,
+        numberOfItems: action.payload.length
         // cartItemsToDisplay: action.payload,
       };
     case GET_CART_ITEMS + "_PENDING":
@@ -34,7 +36,8 @@ export default (
       return {
         ...state,
         pending: false,
-        refreshRequested: true
+        refreshRequested: true,
+        numberOfItems: state.numberOfItems + 1
         // cartItemsToDisplay: action.payload,
       };
     case ADD_TO_CART + "_PENDING":

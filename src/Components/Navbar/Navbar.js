@@ -24,12 +24,14 @@ let AppNav = ({
   const history = useHistory();
 
   useEffect(() => {
+      if(cartItems.refreshRequested)
       getCartItems(user.authToken);
-  }, [user.authToken, cartItems.refreshRequested]);
+  }, [user.authToken]);
 
 
 
   const handleLogOut = () => {
+    console.log("Deleted in Navbar.js")
     delete localStorage.authToken;
     logout();
     history.push("/")
@@ -59,9 +61,12 @@ let AppNav = ({
           </Link>
         </Navbar.Brand>
         <Nav className="mr-auto">
-          <Nav.Link href="#home">Home</Nav.Link>
-          <Nav.Link href="#features">Features</Nav.Link>
-          <Nav.Link href="#pricing">Pricing</Nav.Link>
+          <Nav.Link>
+          <Link id="about-link" to="/about">
+            
+            About
+            </Link>
+            </Nav.Link>
         </Nav>
         <Form
           onSubmit={(e) => {
@@ -90,7 +95,7 @@ let AppNav = ({
             <div style={spinnerStyles} className="loader">
               <div className="cartLoaderIcon"></div>
             </div>
-            {cartItems.pending ? '': cartItems.allCartItems.length}</p>
+            {cartItems.numberOfItems}</p>
         </Form>
         <div id="button-holder-div">
         {!user.loggedIn ? (

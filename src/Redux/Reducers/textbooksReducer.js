@@ -1,4 +1,8 @@
-import { GET_TEXTBOOKS, SEARCH_AND_UPDATE_TEXTBOOKS } from "../actionNames.js";
+import {
+  GET_TEXTBOOKS,
+  SEARCH_AND_UPDATE_TEXTBOOKS,
+  CREATE_NEW_TEXTBOOK,
+} from "../actionNames.js";
 
 export default (
   state = {
@@ -7,24 +11,25 @@ export default (
     pending: true,
     error: null,
     loadRequested: true,
+    uploadPending: false,
+    refreshRequired: true,
   },
   action
 ) => {
   switch (action.type) {
     case GET_TEXTBOOKS + "_FULFILLED":
-
-
       return {
         ...state,
         pending: false,
         allTextbooks: action.payload,
         textbooksToDisplay: action.payload,
-        loadRequested: false
+        loadRequested: false,
+        refreshRequired: false,
       };
     case GET_TEXTBOOKS + "_PENDING":
       return { ...state, pending: true };
     case GET_TEXTBOOKS + "_REJECTED":
-      return { ...state, error: action.payload };
+      return { ...state, pending: false, error: action.payload };
     case SEARCH_AND_UPDATE_TEXTBOOKS:
       const newItems = [];
       for (let key in state.allTextbooks) {
@@ -36,6 +41,23 @@ export default (
           newItems.push(state.allTextbooks[key]);
       }
       return { ...state, textbooksToDisplay: [...newItems] };
+
+    case CREATE_NEW_TEXTBOOK + "_FULFILLED":
+      return {
+        ...state,
+        uploadPending: false,
+        refreshRequired: true,
+      };
+    case CREATE_NEW_TEXTBOOK + "_PENDING":
+      return { ...state, uploadPending: true };
+    case CREATE_NEW_TEXTBOOK + "_REJECTED":
+      return {
+        ...state,
+        uploadPending: false,
+        error: action.payload,
+        refreshRequired: false,
+      };
+
     default:
       return state;
   }

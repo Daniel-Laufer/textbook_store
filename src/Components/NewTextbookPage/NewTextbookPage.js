@@ -11,14 +11,23 @@ import {
   Badge,
 } from "react-bootstrap";
 import axios from "axios";
+import { useHistory } from "react-router-dom";
+import {createNewTextbook} from "../../Redux/Actions/textbookActions";
 
-function NewTextbookPage({ user }) {
+function NewTextbookPage({ textbooks, user, createNewTextbook}) {
   const [image, setImage] = useState(null);
   const [price, setPrice] = useState("");
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  const [submitError, setSubmitError] = useState(null);
 
-  console.log(image, title, price, description);
+  const history = useHistory();
+
+  useEffect(() => {
+    if(textbooks.error === null && textbooks.refreshRequired)
+    setTimeout(() => history.push("/"), 2000); 
+  }, [textbooks.refreshRequired])
+
 
   const handleTextInputChange = (e, inputType) => {
     switch (inputType) {
@@ -38,37 +47,12 @@ function NewTextbookPage({ user }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const headers = {
-      // 'Authorization': `Bearer ${authToken === null ? 1: authToken.token}`
-      Authorization: `Bearer ${user.authToken.token}`,
-    };
 
-    const formData = new FormData();
-    formData.append("file", image);
-
-    let imageURL;
-    axios
-      .post(
-        "http://localhost:5000/textbook-store-2e072/us-central1/api/image/Textbook_Images",
-        formData,
-        { headers }
-      )
-      .then((res) => {
-        imageURL = res.data.url;
-        const otherData = { description, title, price, imageURL };
-        axios
-          .post(
-            "http://localhost:5000/textbook-store-2e072/us-central1/api/createTextbook",
-            { otherData },
-            { headers }
-          )
-          .then((data) => console.log(data))
-          .catch((err) => console.log(err));
-      })
-      .catch((err) => {
-        console.log("ye");
-        console.log(err);
-      });
+    if(image === null || description === '' || title === '' || price === ''){
+      return setSubmitError("Error!");
+    }
+    createNewTextbook(user, image, description, title, price);
+    
   };
 
   const handleFileChange = (e) => {
@@ -122,6 +106,11 @@ function NewTextbookPage({ user }) {
             />
           </Form.Group>
         </Form>
+        {textbooks.error || submitError  ? (
+            <Alert variant="danger">Error: {textbooks.error || submitError}</Alert>
+          ) : (!textbooks.uploadPending && textbooks.refreshRequired ? (
+            <Alert variant="success">Success!</Alert>
+          ) : null)}
         <Button
           onClick={(e) => handleSubmit(e)}
           type="submit"
@@ -130,6 +119,7 @@ function NewTextbookPage({ user }) {
           Submit
         </Button>
       </Form>
+
     </Container>
   );
 }
@@ -137,8 +127,16 @@ function NewTextbookPage({ user }) {
 const mapStateToProps = (state) => {
   return {
     user: state.userReducer,
+    textbooks: state.textbooksReducer
   };
 };
 
+const mapDispatchToProps = (dispatch) => {
+  return {
+    createNewTextbook: (user, image, description, title, price) => dispatch(createNewTextbook(user, image, description, title, price))
+  };
+};
+
+
 // connects react with redux!
-export default connect(mapStateToProps, null)(NewTextbookPage);
+export default connect(mapStateToProps, mapDispatchToProps)(NewTextbookPage);

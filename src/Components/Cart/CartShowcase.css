@@ -4,6 +4,7 @@
     flex-wrap: wrap;
     justify-content: space-evenly;
     height: 100%;
+
 }
 
 
@@ -14,4 +15,15 @@
     -ms-filter: blur(5px);
     filter: blur(2px);
   
+  }
+
+  #empty-cart-message{
+    width:100vw;
+    height:100vh;
+    margin: auto;
+    margin-top:0px;
+    display: flex;
+    align-items: center;
+    margin-top:-50px;
+    justify-content: center;
   }

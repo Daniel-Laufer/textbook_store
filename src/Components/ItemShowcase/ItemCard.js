@@ -7,13 +7,13 @@ import { connect } from "react-redux";
 function ItemCard({ item, openModal, addItemToCart, user }) {
   return (
     <div className="card">
-      <div id="imageContainer">
-        <img
+      <div id="imageContainer" style={{"background-image": `url(${item.image})`}}>
+        {/* <img
           id="textbookImage"
           className="card-img-top"
           src={item.image}
           alt={item.title}
-        />
+        /> */}
       </div>
       <div className="card-body">
         <h5 className="card-title">{item.title}</h5>

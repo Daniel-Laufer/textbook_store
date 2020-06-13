@@ -36,6 +36,11 @@
 }
 
 
+#about-link{
+  text-decoration: none;
+    color:white;
+}
+
 
 #cart-item-counter{
     color: white;

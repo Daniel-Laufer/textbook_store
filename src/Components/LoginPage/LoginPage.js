@@ -14,6 +14,7 @@ const LoginPage = (props) => {
   useEffect(() => {
     if (props.user.loggedIn) {
       localStorage.authToken = props.user.authToken.token;
+      localStorage.timeLoggedIn = (new Date()).getTime();
       setEmail("");
       setPassword("");
       if (props.user.error == null) setTimeout(() => history.push("/"), 800);

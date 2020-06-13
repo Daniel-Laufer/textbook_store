@@ -19,11 +19,7 @@ export const addItemToCart = (authToken, textbookId) => {
   const headers = {
     // 'Authorization': `Bearer ${authToken === null ? 1: authToken.token}`
     'Authorization': `Bearer ${authToken.token}`
-
-
-    
   };
-
   return {
     type: ADD_TO_CART,
     payload: axios.post(`/cart/${textbookId}`, {}, {headers})
