@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import { Navbar, FormControl, Form, Nav, Button } from "react-bootstrap";
 import { connect } from "react-redux";
 import { increment } from "../../Redux/Actions/countActions";
@@ -10,7 +10,6 @@ import { getCartItems } from "../../Redux/Actions/cartActions";
 import "./Navbar.css";
 import { useHistory } from "react-router-dom";
 
-
 let AppNav = ({
   handleSearch,
   searchAndUpdateTextbooks,
@@ -18,41 +17,40 @@ let AppNav = ({
   logout,
   cartItems,
   getCartItems,
-  textbooks
 }) => {
-
   const history = useHistory();
 
   useEffect(() => {
-      if(cartItems.refreshRequested)
+    if (user.loggedIn){
       getCartItems(user.authToken);
-  }, [user.authToken]);
-
-
+    } 
+  }, [user.authToken, getCartItems, user.loggedIn]);
 
   const handleLogOut = () => {
-    console.log("Deleted in Navbar.js")
     delete localStorage.authToken;
     logout();
-    history.push("/")
-  }
+    history.push("/");
+  };
 
+  const [navExpanded, setNavExpanded] = useState(false);
 
- const [navExpanded, setNavExpanded] = useState(false);
-
-
- const hideNav = () => {
-   setNavExpanded(false);
- }
-
+  const hideNav = () => {
+    setNavExpanded(false);
+  };
 
   const spinnerStyles = { display: cartItems.pending ? "block" : "none" };
 
-
-  const cartButtonStyles = {'display': user.loggedIn ? 'flex': 'none'}
+  const cartButtonStyles = { display: user.loggedIn ? "flex" : "none" };
 
   return (
-    <Navbar expanded={navExpanded} onToggle={() => setNavExpanded(!navExpanded)} collapseOnSelect expand="lg" bg="primary" variant="dark">
+    <Navbar
+      expanded={navExpanded}
+      onToggle={() => setNavExpanded(!navExpanded)}
+      collapseOnSelect
+      expand="lg"
+      bg="primary"
+      variant="dark"
+    >
       <Navbar.Toggle aria-controls="responsive-navbar-nav" />
       <Navbar.Collapse id="responsive-navbar-nav">
         <Navbar.Brand onClick={hideNav} href="#home">
@@ -62,11 +60,10 @@ let AppNav = ({
         </Navbar.Brand>
         <Nav className="mr-auto">
           <Nav.Link>
-          <Link id="about-link" to="/about">
-            
-            About
+            <Link id="about-link" to="/about">
+              About
             </Link>
-            </Nav.Link>
+          </Nav.Link>
         </Nav>
         <Form
           onSubmit={(e) => {
@@ -95,30 +92,43 @@ let AppNav = ({
             <div style={spinnerStyles} className="loader">
               <div className="cartLoaderIcon"></div>
             </div>
-            {cartItems.numberOfItems}</p>
+            {cartItems.pending ? "" : cartItems.numberOfItems}
+          </p>
         </Form>
         <div id="button-holder-div">
-        {!user.loggedIn ? (
-          <Link to="/login">
-            <Button onClick={hideNav} id="login-logout-button" variant="outline-light">
-              Log in
+          {!user.loggedIn ? (
+            <Link to="/login">
+              <Button
+                onClick={hideNav}
+                id="login-logout-button"
+                variant="outline-light"
+              >
+                Log in
+              </Button>
+            </Link>
+          ) : (
+            <Button
+              id="login-logout-button"
+              onClick={() => {
+                handleLogOut();
+                hideNav();
+              }}
+              variant="outline-light"
+            >
+              Log out
             </Button>
-          </Link>
-        ) : (
-          <Button
-            id="login-logout-button"
-            onClick={() => {handleLogOut(); hideNav()}}
-            variant="outline-light"
-          >
-            Log out
-          </Button>
-        )}
-        <Link to="/newPost">
-            <Button style={{"display": user.loggedIn ? "inline-block" : "none"}} onClick={hideNav} id="new-post-button" variant="light">
+          )}
+          <Link to="/newPost">
+            <Button
+              style={{ display: user.loggedIn ? "inline-block" : "none" }}
+              onClick={hideNav}
+              id="new-post-button"
+              variant="light"
+            >
               +
             </Button>
           </Link>
-          </div>
+        </div>
         {/* <Button id="newTextbookPost" style={{'display' : user.loggedIn ? 'flex': 'none'}} variant="light">+</Button> */}
       </Navbar.Collapse>
     </Navbar>
@@ -127,7 +137,6 @@ let AppNav = ({
 
 const mapStateToProps = (state) => {
   return {
-    textbooks: state.textbooksReducer,
     user: state.userReducer,
     cartItems: state.cartReducer,
   };
@@ -140,7 +149,7 @@ const mapDispatchToProps = (dispatch) => {
     increment: (amount) => dispatch(increment(amount)),
     searchAndUpdateTextbooks: (searchTerm) =>
       dispatch(searchAndUpdateTextbooks(searchTerm)),
-    getCartItems: (authToken) => dispatch(getCartItems(authToken))
+    getCartItems: (authToken) => dispatch(getCartItems(authToken)),
   };
 };
 

@@ -1,21 +1,40 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import ItemCard from "../ItemShowcase/ItemCard";
 import "./CartShowcase.css";
 import { getCartItems } from "../../Redux/Actions/cartActions";
 import { connect } from "react-redux";
 import { Container} from "react-bootstrap";
+import TextbookModal from "../Modals/TextbookModal";
 
-function CartShowcase({ cartItems, textbooks, getCartItems, user }) {
+function CartShowcase({ cartItems, getCartItems, user }) {
+  const [modalIsOpen, setIsOpen] = useState(false);
+  const [focusedItem, setFocusedItem] = useState(null);
+
+
+  function openModal(item) {
+    setFocusedItem(item);
+    setIsOpen(true);
+  }
+  function closeModal() {
+    setIsOpen(false);
+  }
+  function afterOpenModal() {
+    // references are now sync'd and can be accessed.
+    // subtitle.style.color = "#f00";
+    return null;
+  }
+
   const spinnerStyles = { display: cartItems.pending ? "block" : "none" };
 
     useEffect(() => {
-      if(cartItems.refreshRequested){
+      if(cartItems.refreshRequested && user.loggedIn){
         getCartItems(user.authToken);
       }
-    }, []);
+    }, [getCartItems, user.authToken, cartItems.refreshRequested, user.loggedIn]); // this list was empty normally
 
 
   return (
+    <Container>
     <div className="CartShowcase">
       {cartItems.allCartItems.length === 0 ? (
         <div id="empty-cart-message">
@@ -23,13 +42,18 @@ function CartShowcase({ cartItems, textbooks, getCartItems, user }) {
         </div>
       ) : (
         cartItems.allCartItems.map((item, index) => {
-          return <ItemCard key={index} item={item} />;
+          return <ItemCard key={index} item={item} openModal={openModal} />;
         })
       )}
       <div style={spinnerStyles} className="loader">
         <div className="loaderIcon"></div>
       </div>
+      <TextbookModal
+        funcs={{ modalIsOpen, openModal, afterOpenModal, closeModal }}
+        item={focusedItem}
+      />
     </div>
+    </Container>
   );
 }
 const mapStateToProps = (state) => {

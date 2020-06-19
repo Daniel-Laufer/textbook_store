@@ -1,9 +1,10 @@
 .CartShowcase{
-    width: 100%;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-evenly;
-    height: 100%;
+  width: 100%;
+  max-width: 1200px;
+  display: flex;
+  flex-wrap: wrap;
+  margin: auto;
+  height: 100%;
 
 }
 

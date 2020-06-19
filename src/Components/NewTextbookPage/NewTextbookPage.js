@@ -8,9 +8,7 @@ import {
   InputGroup,
   FormControl,
   Col,
-  Badge,
 } from "react-bootstrap";
-import axios from "axios";
 import { useHistory } from "react-router-dom";
 import {createNewTextbook} from "../../Redux/Actions/textbookActions";
 
@@ -26,7 +24,7 @@ function NewTextbookPage({ textbooks, user, createNewTextbook}) {
   useEffect(() => {
     if(textbooks.error === null && textbooks.refreshRequired)
     setTimeout(() => history.push("/"), 2000); 
-  }, [textbooks.refreshRequired])
+  }, [textbooks.refreshRequired, history, textbooks.error])  // added history and textbooks.err dependences here, not sure if it makes a difference!
 
 
   const handleTextInputChange = (e, inputType) => {

@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
-import { login, logout } from "../../Redux/Actions/userActions";
+import { login } from "../../Redux/Actions/userActions";
 import { Form, Button, Container, Alert } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
+import { HashLink } from 'react-router-hash-link';
 
 import "./LoginPage.css";
 
@@ -19,7 +20,7 @@ const LoginPage = (props) => {
       setPassword("");
       if (props.user.error == null) setTimeout(() => history.push("/"), 800);
     }
-  }, [props.user]);
+  }, [props.user, history]);
 
   const handleEmailChange = (e) => {
     e.preventDefault();
@@ -73,6 +74,7 @@ const LoginPage = (props) => {
           Submit
         </Button>
       </Form>
+      <p style={{"marginTop": '10px'}}>Don't have an account? Sign up <HashLink to="/signup">here!</HashLink></p>
     </Container>
   );
 };

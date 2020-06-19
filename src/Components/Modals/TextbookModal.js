@@ -22,7 +22,7 @@ export default function TextbookModal({ funcs, item }) {
         X
       </button>
       <div className="modal-image-container">
-        <img className="modal-image" src={item ? item.image : "null"} />
+        <img className="modal-image" src={item ? item.image : "https://static.thenounproject.com/png/212328-200.png"} alt="A textbook!"/>
       </div>
       <div className="modal-content-div">
         <h2>{item ? item.title : "null"}</h2>

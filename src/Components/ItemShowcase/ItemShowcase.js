@@ -4,13 +4,12 @@ import { connect } from "react-redux";
 import { handleSearch } from "../../Redux/Actions/searchActions";
 import "./ItemShowcase.css";
 import { getTextbooks } from "../../Redux/Actions/textbookActions";
-import store from "../../Redux/store";
 import { Container } from "react-bootstrap";
 
 import TextbookModal from "../Modals/TextbookModal";
 import { addItemToCart } from "../../Redux/Actions/cartActions";
 
-function ItemShowcase(props) {
+function ItemShowcase({textbooks, getTextbooks }) {
   const [modalIsOpen, setIsOpen] = useState(false);
   const [focusedItem, setFocusedItem] = useState(null);
 
@@ -22,11 +21,11 @@ function ItemShowcase(props) {
 
   useEffect(() => {
     
-    if(props.textbooks.refreshRequired){
+    if(textbooks.refreshRequired){
       
-      props.getTextbooks();
+      getTextbooks();
     }
-  }, [])
+  }, [textbooks.refreshRequired, getTextbooks])
 
   function afterOpenModal() {
     // references are now sync'd and can be accessed.
@@ -38,14 +37,14 @@ function ItemShowcase(props) {
     setIsOpen(false);
   }
 
-  const spinnerStyles = { display: props.textbooks.pending ? "block" : "none" };
+  const spinnerStyles = { display: textbooks.pending ? "block" : "none" };
   return (
     <Container>
       <div className="item-showcase">
         <div style={spinnerStyles} className="loader">
           <div className="loaderIcon"></div>
         </div>
-        {props.textbooks.textbooksToDisplay.map((item, index) => {
+        {textbooks.textbooksToDisplay.map((item, index) => {
           return (
             <ItemCard
               openModal={openModal}

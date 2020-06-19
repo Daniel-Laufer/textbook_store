@@ -9,7 +9,6 @@ import * as serviceWorker from './serviceWorker';
 
 import {Provider} from "react-redux";
 import store from "./Redux/store"
-import { getTextbooks} from "./Redux/Actions/textbookActions";
 
 // store.dispatch(getTextbooks());
 
