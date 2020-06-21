@@ -13,6 +13,10 @@ import { useHistory } from "react-router-dom";
 import { createNewTextbook } from "../../Redux/Actions/textbookActions";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
+import Slider from "react-rangeslider";
+import "react-rangeslider/lib/index.css";
+import "./NewTextbookPage.css";
+
 const animatedComponents = makeAnimated();
 
 function NewTextbookPage({ textbooks, user, createNewTextbook }) {
@@ -21,10 +25,34 @@ function NewTextbookPage({ textbooks, user, createNewTextbook }) {
   const [title, setTitle] = useState("");
   const [course, setCourse] = useState("");
   const [campus, setCampus] = useState("");
-  const [privacySettings, setPrivacySettings] = useState({"Name": true, "Phone Number": true, "Email": true});
+  const [privacySettings, setPrivacySettings] = useState({
+    Name: true,
+    "Phone Number": true,
+    Email: true,
+  });
   const [sellingLocation, setSellingLocation] = useState("");
   const [description, setDescription] = useState("");
   const [submitError, setSubmitError] = useState(null);
+
+  const [pagesMissing, setPagesMissing] = useState(Math.floor(Math.random() * 100));
+  const [handWriting, setHandWriting] = useState(Math.floor(Math.random() * 100));
+  const [stains, setStains] = useState(Math.floor(Math.random() * 100));
+  const pagesMissingLabels = {
+    0: "None.",
+    50: "Just a few...",
+    100: "Quite a few!",
+  };
+  const handWritingLabels = {
+    0: "None.",
+    50: "Only a little",
+    100: "It's everwhere!",
+  };
+  const stainsLabels = {
+    0: "None.",
+    50: "Just a few little ones...",
+    100: "Many stains or one giant stain",
+  };
+
   const campuses = [
     { value: "UTM", label: "UTM" },
     { value: "UTSG", label: "UTSG" },
@@ -40,15 +68,25 @@ function NewTextbookPage({ textbooks, user, createNewTextbook }) {
   const handleSelectChange = (items, type) => {
     switch (type) {
       case "privacy":
-        if(!items){
-          return setPrivacySettings({"Name": false, "Phone Number": false, "Email": false})
+        if (!items) {
+          return setPrivacySettings({
+            Name: false,
+            "Phone Number": false,
+            Email: false,
+          });
         }
         const active = items.map((item) => {
           return item.label;
-        })
-        const newPrivacySettings = {"Name": true, "Phone Number": true, "Email": true};
-        ["Name", "Phone Number", "Email"].forEach((item)=> {
-          active.includes(item) ? newPrivacySettings[item] = true : newPrivacySettings[item] = false
+        });
+        const newPrivacySettings = {
+          Name: true,
+          "Phone Number": true,
+          Email: true,
+        };
+        ["Name", "Phone Number", "Email"].forEach((item) => {
+          active.includes(item)
+            ? (newPrivacySettings[item] = true)
+            : (newPrivacySettings[item] = false);
         });
         return setPrivacySettings(newPrivacySettings);
       case "campus":
@@ -81,7 +119,7 @@ function NewTextbookPage({ textbooks, user, createNewTextbook }) {
         setDescription(e.target.value);
         break;
       case "location":
-        setSellingLocation(e.target.value)
+        setSellingLocation(e.target.value);
       default:
         return null;
     }
@@ -89,15 +127,19 @@ function NewTextbookPage({ textbooks, user, createNewTextbook }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if([image, description, title, price, course, sellingLocation, campus].some((item) => item === '' || item === null)){
-    // if (image === null || description === "" || title === "" || price === "" }} ) {
+    if (
+      [image, description, title, price, course, sellingLocation, campus].some(
+        (item) => item === "" || item === null
+      )
+    ) {
+      // if (image === null || description === "" || title === "" || price === "" }} ) {
       return setSubmitError("An input field is empty!");
-    }
-    else if(isNaN(price)){
+    } else if (isNaN(price)) {
       return setSubmitError("The price is not a number!");
-    }
-    else if (!(privacySettings.Email || privacySettings["Phone Number"])){
-      return setSubmitError("Please provide at least one piece of contact information! (email and/or phone number)!");
+    } else if (!(privacySettings.Email || privacySettings["Phone Number"])) {
+      return setSubmitError(
+        "Please provide at least one piece of contact information! (email and/or phone number)!"
+      );
     }
     createNewTextbook(user, image, description, title, price);
   };
@@ -160,15 +202,59 @@ function NewTextbookPage({ textbooks, user, createNewTextbook }) {
         </Form.Row>
         <Form.Group>
           <Form.Label>Which UofT campus is this textbook used at?</Form.Label>
-          <Select placeholder="Campus" isClearable={true} onChange={(items) => handleSelectChange(items, 'campus')}options={campuses} />
+          <Select
+            placeholder="Campus"
+            isClearable={true}
+            onChange={(items) => handleSelectChange(items, "campus")}
+            options={campuses}
+          />
         </Form.Group>
+        <div id="slider-container">
+          <Form.Group>
+            <Form.Label>How many pages are missing?</Form.Label>
+            <Slider
+              tooltip={false}
+              className="slider"
+              min={0}
+              max={100}
+              value={pagesMissing}
+              labels={pagesMissingLabels}
+              onChange={(val) => setPagesMissing(val)}
+            />
+          </Form.Group>
+          <Form.Group>
+            <Form.Label>How much of your own handwriting is in it?</Form.Label>
+            <Slider
+              tooltip={false}
+              className="slider"
+              min={0}
+              max={100}
+              value={handWriting}
+              labels={handWritingLabels}
+              onChange={(val) => setHandWriting(val)}
+            />
+          </Form.Group>
+          <Form.Group>
+            <Form.Label>How many stains does it have?</Form.Label>
+            <Slider
+              tooltip={false}
+              className="slider"
+              min={0}
+              max={100}
+              value={stains}
+              labels={stainsLabels}
+              onChange={(val) => setStains(val)}
+            />
+          </Form.Group>
+        </div>
+
         <Form.Group>
           <Form.Label>
             Contact Information (at least one option from the following list{" "}
             <strong> must</strong> be selected: ['Phone Number', 'Email'])
           </Form.Label>
           <Select
-            onChange={(items) => handleSelectChange(items, 'privacy')}
+            onChange={(items) => handleSelectChange(items, "privacy")}
             closeMenuOnSelect={false}
             components={animatedComponents}
             options={privacyOptions}
@@ -202,7 +288,9 @@ function NewTextbookPage({ textbooks, user, createNewTextbook }) {
           <Alert variant="danger">
             Error: {textbooks.error || submitError}
           </Alert>
-        ) : !textbooks.uploadPending && textbooks.refreshRequired ? (
+        ) : !textbooks.uploadPending &&
+          textbooks.refreshRequired &&
+          user.loggedIn ? (
           <Alert variant="success">Success!</Alert>
         ) : null}
         <Button
