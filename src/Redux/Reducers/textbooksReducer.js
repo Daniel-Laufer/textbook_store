@@ -2,6 +2,7 @@ import {
   GET_TEXTBOOKS,
   SEARCH_AND_UPDATE_TEXTBOOKS,
   CREATE_NEW_TEXTBOOK,
+  APPLY_FILTER
 } from "../actionNames.js";
 
 export default (
@@ -36,11 +37,24 @@ export default (
         if (
           state.allTextbooks[key].title
             .toLowerCase()
-            .includes(action.payload.toLowerCase())
+            .includes(action.payload.searchTerm.toLowerCase())
         )
           newItems.push(state.allTextbooks[key]);
       }
       return { ...state, textbooksToDisplay: [...newItems] };
+      // case APPLY_FILTER:
+      //   const newItems = [];
+      //   for (let key in state.textbooksToDisplay) {
+      //     if (
+      //       state.textbooksToDisplay[key].title
+      //         .toLowerCase()
+      //         .includes(action.payload.toLowerCase())
+      //     )
+      //       newItems.push(state.textbooksToDisplay[key]);
+      //   }
+      //   return { ...state, textbooksToDisplay: [...newItems] };
+    
+    
 
     case CREATE_NEW_TEXTBOOK + "_FULFILLED":
       return {

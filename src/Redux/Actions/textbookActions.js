@@ -42,17 +42,17 @@ export const getTextbooks = () => {
     type: GET_TEXTBOOKS,
     // payload: new Promise((resolve, reject) => {
     //   setTimeout(() => {
-    //     resolve([...temp_data]);
+    //     resolve([]);
     //   }, 500);
     // }),
     payload: axios.get("/textbooks").then(res => res.data)
   };
 };
 
-export const searchAndUpdateTextbooks = (searchTerm) => {
+export const searchAndUpdateTextbooks = (searchTerm, filters) => {
   return {
     type: SEARCH_AND_UPDATE_TEXTBOOKS,
-    payload: searchTerm,
+    payload: {searchTerm, filters},
   };
 };
 // if(!image || description === '' || title === '' || price === '')

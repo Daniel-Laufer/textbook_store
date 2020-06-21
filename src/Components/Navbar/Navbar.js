@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Navbar, FormControl, Form, Nav, Button } from "react-bootstrap";
 import { connect } from "react-redux";
 import { increment } from "../../Redux/Actions/countActions";
-import { handleSearch } from "../../Redux/Actions/searchActions";
+import { updateSearch } from "../../Redux/Actions/searchActions";
 import { searchAndUpdateTextbooks } from "../../Redux/Actions/textbookActions";
 import { Link } from "react-router-dom";
 import { logout } from "../../Redux/Actions/userActions";
@@ -11,12 +11,13 @@ import "./Navbar.css";
 import { useHistory } from "react-router-dom";
 
 let AppNav = ({
-  handleSearch,
+  updateSearch,
   searchAndUpdateTextbooks,
   user,
   logout,
   cartItems,
   getCartItems,
+  search
 }) => {
   const history = useHistory();
 
@@ -65,7 +66,7 @@ let AppNav = ({
             </Link>
           </Nav.Link>
         </Nav>
-        <Form
+        {/* <Form
           onSubmit={(e) => {
             e.preventDefault();
           }}
@@ -75,13 +76,13 @@ let AppNav = ({
             id="search-bar"
             type="text"
             onChange={(e) => {
-              handleSearch(e.target.value);
-              searchAndUpdateTextbooks(e.target.value);
+              updateSearch(e.target.value);
+              searchAndUpdateTextbooks(search.searchTerm, search.filters);
             }}
-            placeholder="Search"
+            placeholder="quick search"
             className="mr-sm-2"
           />
-        </Form>
+        </Form> */}
         <Form style={cartButtonStyles} id="cart-form" inline>
           <Link to="/cart">
             <Button onClick={hideNav} id="cart-button" type="submit">
@@ -139,16 +140,17 @@ const mapStateToProps = (state) => {
   return {
     user: state.userReducer,
     cartItems: state.cartReducer,
+    search: state.searchReducer
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
     logout: () => dispatch(logout()),
-    handleSearch: (searchTerm) => dispatch(handleSearch(searchTerm)),
+    updateSearch: (searchTerm) => dispatch(updateSearch(searchTerm)),
     increment: (amount) => dispatch(increment(amount)),
-    searchAndUpdateTextbooks: (searchTerm) =>
-      dispatch(searchAndUpdateTextbooks(searchTerm)),
+    searchAndUpdateTextbooks: (searchTerm, filters) =>
+      dispatch(searchAndUpdateTextbooks(searchTerm, filters)),
     getCartItems: (authToken) => dispatch(getCartItems(authToken)),
   };
 };

@@ -1,18 +1,17 @@
 import React, { useState, useEffect } from "react";
 import ItemCard from "./ItemCard";
 import { connect } from "react-redux";
-import { handleSearch } from "../../Redux/Actions/searchActions";
 import "./ItemShowcase.css";
 import { getTextbooks } from "../../Redux/Actions/textbookActions";
 import { Container } from "react-bootstrap";
 
 import TextbookModal from "../Modals/TextbookModal";
 import { addItemToCart } from "../../Redux/Actions/cartActions";
+import FilterContainer from "./Filters/FilterContainer/FilterContainer";
 
-function ItemShowcase({textbooks, getTextbooks }) {
+function ItemShowcase({ textbooks, getTextbooks }) {
   const [modalIsOpen, setIsOpen] = useState(false);
   const [focusedItem, setFocusedItem] = useState(null);
-
 
   function openModal(item) {
     setFocusedItem(item);
@@ -20,12 +19,10 @@ function ItemShowcase({textbooks, getTextbooks }) {
   }
 
   useEffect(() => {
-    
-    if(textbooks.refreshRequired){
-      
+    if (textbooks.refreshRequired) {
       getTextbooks();
     }
-  }, [textbooks.refreshRequired, getTextbooks])
+  }, [textbooks.refreshRequired, getTextbooks]);
 
   function afterOpenModal() {
     // references are now sync'd and can be accessed.
@@ -39,26 +36,23 @@ function ItemShowcase({textbooks, getTextbooks }) {
 
   const spinnerStyles = { display: textbooks.pending ? "block" : "none" };
   return (
-    <Container>
-      <div className="item-showcase">
-        <div style={spinnerStyles} className="loader">
-          <div className="loaderIcon"></div>
+    <>
+      <FilterContainer />
+      <Container>
+        <div className="item-showcase">
+          <div style={spinnerStyles} className="loader">
+            <div className="loaderIcon"></div>
+          </div>
+          {textbooks.textbooksToDisplay.map((item, index) => {
+            return <ItemCard openModal={openModal} key={index} item={item} />;
+          })}
         </div>
-        {textbooks.textbooksToDisplay.map((item, index) => {
-          return (
-            <ItemCard
-              openModal={openModal}
-              key={index}
-              item={item}
-            />
-          );
-        })}
-      </div>
-      <TextbookModal
-        funcs={{ modalIsOpen, openModal, afterOpenModal, closeModal }}
-        item={focusedItem}
-      />
-    </Container>
+        <TextbookModal
+          funcs={{ modalIsOpen, openModal, afterOpenModal, closeModal }}
+          item={focusedItem}
+        />
+      </Container>
+    </>
   );
 }
 
@@ -71,7 +65,6 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    handleSearch: (searchTerm) => dispatch(handleSearch(searchTerm)),
     getTextbooks: () => dispatch(getTextbooks()),
     addItemToCart: (auth, textbookId) =>
       dispatch(addItemToCart(auth, textbookId)),

@@ -1,8 +1,14 @@
-import {HANDLE_SEARCH} from "../actionNames";
+import {UPDATE_FILTERS, UPDATE_SEARCH} from "../actionNames";
 
-export const handleSearch = (searchTerm) => {
+export const updateSearch = (searchTerm) => {
   return {
-    type: HANDLE_SEARCH,
+    type: UPDATE_SEARCH,
     payload: searchTerm,
+  };
+};
+export const updateFilters = (filters) => {
+  return {
+    type: UPDATE_FILTERS,
+    payload: filters,
   };
 };
