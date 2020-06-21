@@ -10,22 +10,61 @@ import {
   Col,
 } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
-import {createNewTextbook} from "../../Redux/Actions/textbookActions";
+import { createNewTextbook } from "../../Redux/Actions/textbookActions";
+import Select from "react-select";
+import makeAnimated from "react-select/animated";
+const animatedComponents = makeAnimated();
 
-function NewTextbookPage({ textbooks, user, createNewTextbook}) {
+function NewTextbookPage({ textbooks, user, createNewTextbook }) {
   const [image, setImage] = useState(null);
   const [price, setPrice] = useState("");
   const [title, setTitle] = useState("");
+  const [course, setCourse] = useState("");
+  const [campus, setCampus] = useState("");
+  const [privacySettings, setPrivacySettings] = useState({"Name": true, "Phone Number": true, "Email": true});
+  const [sellingLocation, setSellingLocation] = useState("");
   const [description, setDescription] = useState("");
   const [submitError, setSubmitError] = useState(null);
+  const campuses = [
+    { value: "UTM", label: "UTM" },
+    { value: "UTSG", label: "UTSG" },
+    { value: "UTSC", label: "UTSC" },
+  ];
+
+  const privacyOptions = [
+    { value: true, label: "Phone Number" },
+    { value: "lauferkdaniel@gmail.com", label: "Email" },
+    { name: "name", label: "Name" },
+  ];
+
+  const handleSelectChange = (items, type) => {
+    switch (type) {
+      case "privacy":
+        if(!items){
+          return setPrivacySettings({"Name": false, "Phone Number": false, "Email": false})
+        }
+        const active = items.map((item) => {
+          return item.label;
+        })
+        const newPrivacySettings = {"Name": true, "Phone Number": true, "Email": true};
+        ["Name", "Phone Number", "Email"].forEach((item)=> {
+          active.includes(item) ? newPrivacySettings[item] = true : newPrivacySettings[item] = false
+        });
+        return setPrivacySettings(newPrivacySettings);
+      case "campus":
+        setCampus(items ? items.value : null);
+        break;
+      default:
+        console.log("error!");
+    }
+  };
 
   const history = useHistory();
 
   useEffect(() => {
-    if(textbooks.error === null && textbooks.refreshRequired)
-    setTimeout(() => history.push("/"), 2000); 
-  }, [textbooks.refreshRequired, history, textbooks.error])  // added history and textbooks.err dependences here, not sure if it makes a difference!
-
+    if (textbooks.error === null && textbooks.refreshRequired)
+      setTimeout(() => history.push("/"), 2000);
+  }, [textbooks.refreshRequired, history, textbooks.error]); // added history and textbooks.err dependences here, not sure if it makes a difference!
 
   const handleTextInputChange = (e, inputType) => {
     switch (inputType) {
@@ -35,9 +74,14 @@ function NewTextbookPage({ textbooks, user, createNewTextbook}) {
       case "title":
         setTitle(e.target.value);
         break;
+      case "course":
+        setCourse(e.target.value);
+        break;
       case "description":
         setDescription(e.target.value);
         break;
+      case "location":
+        setSellingLocation(e.target.value)
       default:
         return null;
     }
@@ -45,12 +89,17 @@ function NewTextbookPage({ textbooks, user, createNewTextbook}) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    if(image === null || description === '' || title === '' || price === ''){
-      return setSubmitError("Error!");
+    if([image, description, title, price, course, sellingLocation, campus].some((item) => item === '' || item === null)){
+    // if (image === null || description === "" || title === "" || price === "" }} ) {
+      return setSubmitError("An input field is empty!");
+    }
+    else if(isNaN(price)){
+      return setSubmitError("The price is not a number!");
+    }
+    else if (!(privacySettings.Email || privacySettings["Phone Number"])){
+      return setSubmitError("Please provide at least one piece of contact information! (email and/or phone number)!");
     }
     createNewTextbook(user, image, description, title, price);
-    
   };
 
   const handleFileChange = (e) => {
@@ -86,6 +135,51 @@ function NewTextbookPage({ textbooks, user, createNewTextbook}) {
             </InputGroup>
           </Form.Group>
         </Form.Row>
+
+        <Form.Row>
+          <Form.Group as={Col} controlId="exampleForm.ControlInput1">
+            <Form.Label>Which course uses this textbook?</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="CSC148"
+              value={course}
+              onChange={(e) => handleTextInputChange(e, "course")}
+            />
+          </Form.Group>
+          {/* onChange={(item) => handleFilterChange(item, "campus")} */}
+
+          <Form.Group as={Col} controlId="exampleForm.ControlInput1">
+            <Form.Label>Desired Exchange Location</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="Calculus: Early Transcendentals"
+              value={sellingLocation}
+              onChange={(e) => handleTextInputChange(e, "location")}
+            />
+          </Form.Group>
+        </Form.Row>
+        <Form.Group>
+          <Form.Label>Which UofT campus is this textbook used at?</Form.Label>
+          <Select placeholder="Campus" isClearable={true} onChange={(items) => handleSelectChange(items, 'campus')}options={campuses} />
+        </Form.Group>
+        <Form.Group>
+          <Form.Label>
+            Contact Information (at least one option from the following list{" "}
+            <strong> must</strong> be selected: ['Phone Number', 'Email'])
+          </Form.Label>
+          <Select
+            onChange={(items) => handleSelectChange(items, 'privacy')}
+            closeMenuOnSelect={false}
+            components={animatedComponents}
+            options={privacyOptions}
+            defaultValue={[
+              { value: "905-501-8458", label: "Phone Number" },
+              { value: "lauferkdaniel@gmail.com", label: "Email" },
+              { name: "name", label: "Name" },
+            ]}
+            isMulti
+          />
+        </Form.Group>
         <Form.Group controlId="exampleForm.ControlTextarea1">
           <Form.Label>Description</Form.Label>
           <Form.Control
@@ -104,11 +198,13 @@ function NewTextbookPage({ textbooks, user, createNewTextbook}) {
             />
           </Form.Group>
         </Form>
-        {textbooks.error || submitError  ? (
-            <Alert variant="danger">Error: {textbooks.error || submitError}</Alert>
-          ) : (!textbooks.uploadPending && textbooks.refreshRequired ? (
-            <Alert variant="success">Success!</Alert>
-          ) : null)}
+        {textbooks.error || submitError ? (
+          <Alert variant="danger">
+            Error: {textbooks.error || submitError}
+          </Alert>
+        ) : !textbooks.uploadPending && textbooks.refreshRequired ? (
+          <Alert variant="success">Success!</Alert>
+        ) : null}
         <Button
           onClick={(e) => handleSubmit(e)}
           type="submit"
@@ -117,7 +213,6 @@ function NewTextbookPage({ textbooks, user, createNewTextbook}) {
           Submit
         </Button>
       </Form>
-
     </Container>
   );
 }
@@ -125,16 +220,16 @@ function NewTextbookPage({ textbooks, user, createNewTextbook}) {
 const mapStateToProps = (state) => {
   return {
     user: state.userReducer,
-    textbooks: state.textbooksReducer
+    textbooks: state.textbooksReducer,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    createNewTextbook: (user, image, description, title, price) => dispatch(createNewTextbook(user, image, description, title, price))
+    createNewTextbook: (user, image, description, title, price) =>
+      dispatch(createNewTextbook(user, image, description, title, price)),
   };
 };
-
 
 // connects react with redux!
 export default connect(mapStateToProps, mapDispatchToProps)(NewTextbookPage);
