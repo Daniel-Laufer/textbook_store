@@ -57,7 +57,7 @@ export const searchAndUpdateTextbooks = (searchTerm, filters) => {
 };
 // if(!image || description === '' || title === '' || price === '')
 
-export const createNewTextbook = (user, image, description, title, price) => {
+export const createNewTextbook = (user, image, description, title, price, course, campus, sellingLocation, pagesMissing, handWriting, stains, privacySettings) => {
   const headers = {
     Authorization: `Bearer ${user.authToken.token}`,
   };
@@ -72,7 +72,8 @@ export const createNewTextbook = (user, image, description, title, price) => {
       .post("/image/Textbook_Images", formData, { headers })
       .then((res) => {
         imageURL = res.data.url;
-        const otherData = { description, title, price, imageURL };
+        const otherData = { description, title, price, imageURL, course, campus, sellingLocation, textbookQuality: {pagesMissing, handWriting, stains}, privacySettings };
+        console.log(otherData)
         axios
           .post("/createTextbook", { otherData }, { headers })
           .then((data) => console.log(data))

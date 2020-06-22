@@ -3,20 +3,88 @@
   --close-modal-button-HEIGHT: 30px;
 }
 
-.textbook-modal {
-  position: absolute;
-  top: 40px;
-  left: 32%;
-  bottom: 40px;
-  background-color: white;
-  width: 35%;
-  border: 3px solid rgb(49, 124, 246);
-  outline: none;
-  min-width:210px;
-  max-height: 450px;
+
+.modal-title{
+  font-size: 22px; 
+  padding:3px;
 }
 
+.slider-display{
+  width:90%;
+}
+.modal-content-div{
+  overflow: hidden;
+  height: 100%;;
+}
+
+.rangeslider-horizontal .rangeslider__handle {
+  width:20px !important;
+  height: 20px !important;
+}
+.ReactModal__Body--open {
+  overflow-y: hidden;
+}
+.course-campus-info-container{
+
+}
+
+.ReactModal__Overlay.ReactModal__Overlay--after-open{
+  display: flex !important;
+  justify-content: center !important;
+  align-items:center;
+}
+
+.title-info-container{
+}
+::-webkit-scrollbar {
+  display: none;
+}
+
+
+#scroll-down-gif{
+  position: absolute;
+  width: 100px;
+  left:33%;
+  top:85%;
+}
+
+
+
+
+
+.textbook-modal {
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+
+  position: absolute;
+  overflow-y:scroll;
+  overflow-x:hidden;
+  /* top: 100px; */
+  /* left: 38%; */
+  /* bottom: 40px; */
+  background-color: white;
+  width: 35%;
+  border: 1px solid rgb(49, 124, 246);
+  outline: none;
+  /* min-width:210px; */
+  height:500px;
+  max-width: 320px;
+  border-radius: 5%;;
+}
+
+
+.modal-section-title{
+  font-weight: bolder;
+}
+
+
+
+.textbook-modal > .rangeslider{
+  width: 300px !important;
+}
+
+
 .close-modal-button {
+  display: none;
   width: var(--close-modal-button-WIDTH);
   height: var(--close-modal-button-HEIGHT);
   position: absolute;
@@ -52,10 +120,47 @@
   height: 200px;
 }
 
+.list-group-item{
+  border: 2px solid rgb(168, 164, 164) !important;
+  border-right: 0px !important;
+  border-left: 0px !important;
+  padding:2px !important;
+}
+
+.list-group-item:not(:first-of-type){
+  border-top:0px !important;
+}
+
+
 
 @media only screen and (max-width: 650px) {
   .textbook-modal {
-    left:23%;
-    top: 22%;
+    /* left: 17%; */
+    width: 65%;
+    /* top:16%; */
   }
+  #scroll-down-gif{
+    left:29%;
+  }
+
+  .modal-title{
+    font-size: 20px; 
+  }
+  
+}
+
+@media only screen and (min-width: 1360px) {
+  .textbook-modal {
+    /* left: 48%; */
+  }
+  
+}
+
+@media only screen and (max-height: 570px) {
+  .textbook-modal {
+    /* left: 17%; */
+    width: 65%;
+    height:80vh;
+  }
+  
 }

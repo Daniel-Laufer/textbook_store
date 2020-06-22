@@ -83,7 +83,7 @@ const FilterContainer = ({
             onChange={(e) => {
               updateSearch(e.target.value);
             }}
-            placeholder="title search"
+            placeholder="Search for a title"
             className="mr-sm-2"
           />
         </Form>

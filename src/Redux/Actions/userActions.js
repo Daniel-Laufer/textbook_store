@@ -10,10 +10,10 @@ export const login = (email, password) => {
 }
 
 
-export const signUp = (email, password, name, username) => {
+export const signUp = (email, password, name, username, phoneNumber, campus) => {
     return{
         type: SIGNUP,
-        payload: axios.post('/signup', {"email":email, "password":password, "name": name, "userName": username}).then(res => res.data)
+        payload: axios.post('/signup', {"email":email, "password":password, "name": name, "userName": username, phoneNumber, campus}).then(res => res.data)
     }
 }
 

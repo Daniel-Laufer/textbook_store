@@ -141,7 +141,7 @@ function NewTextbookPage({ textbooks, user, createNewTextbook }) {
         "Please provide at least one piece of contact information! (email and/or phone number)!"
       );
     }
-    createNewTextbook(user, image, description, title, price);
+    createNewTextbook(user, image, description, title, price, course, campus, sellingLocation, pagesMissing, handWriting, stains, privacySettings);
   };
 
   const handleFileChange = (e) => {
@@ -314,8 +314,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    createNewTextbook: (user, image, description, title, price) =>
-      dispatch(createNewTextbook(user, image, description, title, price)),
+    createNewTextbook: (user, image, description, title, price, course, campus, sellingLocation, pagesMissing, handWriting, stains, privacySettings) =>
+      dispatch(createNewTextbook(user, image, description, title, price, course, campus, sellingLocation, pagesMissing, handWriting, stains, privacySettings)),
   };
 };
 

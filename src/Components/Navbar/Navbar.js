@@ -50,51 +50,38 @@ let AppNav = ({
       collapseOnSelect
       expand="lg"
       bg="primary"
+      id="nav"
       variant="dark"
     >
       <Navbar.Toggle aria-controls="responsive-navbar-nav" />
       <Navbar.Collapse id="responsive-navbar-nav">
-        <Navbar.Brand onClick={hideNav} href="#home">
+        <div className="nav-brand">
+
           <Link id="main-title" to="/">
-            The Textbook Store!
+            The Textbook Trading Post
           </Link>
-        </Navbar.Brand>
+        </div>
+        {/* </Navbar.Brand> */}
         <Nav className="mr-auto">
-          <Nav.Link>
+          <div className="nav-link">
+
             <Link id="about-link" to="/about">
               About
             </Link>
-          </Nav.Link>
+          </div>
         </Nav>
-        {/* <Form
-          onSubmit={(e) => {
-            e.preventDefault();
-          }}
-          inline
-        >
-          <FormControl
-            id="search-bar"
-            type="text"
-            onChange={(e) => {
-              updateSearch(e.target.value);
-              searchAndUpdateTextbooks(search.searchTerm, search.filters);
-            }}
-            placeholder="quick search"
-            className="mr-sm-2"
-          />
-        </Form> */}
         <Form style={cartButtonStyles} id="cart-form" inline>
           <Link to="/cart">
             <Button onClick={hideNav} id="cart-button" type="submit">
               <i id="cartIcon" className="fas fa-shopping-cart"></i>
             </Button>
           </Link>
-          <p id="cart-item-counter">
+          <div id="cart-item-counter">
             <div style={spinnerStyles} className="loader">
               <div className="cartLoaderIcon"></div>
             </div>
             {cartItems.pending ? "" : cartItems.numberOfItems}
-          </p>
+          </div>
         </Form>
         <div id="button-holder-div">
           {!user.loggedIn ? (

@@ -7,7 +7,7 @@ import { connect } from "react-redux";
 function ItemCard({ item, openModal, addItemToCart, user }) {
   return (
     <div className="card">
-      <div id="imageContainer" style={{"background-image": `url(${item.image})`}}>
+      <div id="imageContainer" style={{"backgroundImage": `url(${item.image})`}}>
         {/* <img
           id="textbookImage"
           className="card-img-top"
@@ -18,10 +18,11 @@ function ItemCard({ item, openModal, addItemToCart, user }) {
       <div className="card-body">
         <h5 className="card-title">{item.title}</h5>
         <p className="card-text">
-          Some quick example text to build on the card title and make up the
-          bulk of the card's content.
+          {item.description.length > 25 ? item.description.substring(0, 25) + '...': item.description}
         </p>
+        <p><strong><em>Expand this card to see more!</em></strong></p>
       </div>
+      
 
       <div id="cartButtonHolder" className="card-body">
         <button onClick={() => addItemToCart(user.authToken, item.textbookId)}type="button" className="btn btn-primary">

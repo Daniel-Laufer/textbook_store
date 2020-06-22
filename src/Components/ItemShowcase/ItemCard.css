@@ -9,6 +9,7 @@
 -moz-box-shadow: 3px 2px 21px -2px rgba(138,134,138,0.72);
 box-shadow: 3px 2px 21px -2px rgba(138,134,138,0.72);
 transition: all .2s ease-in-out;
+border-radius: 5%;
 }
 
 .card:hover{
@@ -18,11 +19,19 @@ transition: all .2s ease-in-out;
 box-shadow: 3px 2px 21px -2px rgba(39, 37, 39, 0.72);
 }
 
+.card-title{
+    font-size: 17px;
+}
+
 #imageContainer{
     overflow: hidden;
     height:450px;
     background-size: cover;
     background-position: center;
+    border-radius: 5%;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+
 
 }
 
