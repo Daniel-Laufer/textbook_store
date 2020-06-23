@@ -128,7 +128,7 @@ function NewTextbookPage({ textbooks, user, createNewTextbook }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (
-      [image, description, title, price, course, sellingLocation, campus].some(
+      [image, title, price, course, sellingLocation, campus].some(
         (item) => item === "" || item === null
       )
     ) {
@@ -267,7 +267,7 @@ function NewTextbookPage({ textbooks, user, createNewTextbook }) {
           />
         </Form.Group>
         <Form.Group controlId="exampleForm.ControlTextarea1">
-          <Form.Label>Description</Form.Label>
+          <Form.Label>Additional Notes</Form.Label>
           <Form.Control
             value={description}
             onChange={(e) => handleTextInputChange(e, "description")}

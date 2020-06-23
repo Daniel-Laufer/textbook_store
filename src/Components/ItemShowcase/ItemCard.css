@@ -12,6 +12,56 @@ transition: all .2s ease-in-out;
 border-radius: 5%;
 }
 
+
+
+#cartCountIcon{
+    color:orange;
+    font-size:32px;
+    position: absolute;
+    left: -15px;
+    top:-12px;
+}
+
+#cartCount{
+    position: absolute;
+    color:white;
+    font-weight: bold;
+    font-size:15px;
+    line-height: 11px;;
+    margin-left:-1px;
+
+}
+
+.sellerInfoContainer{
+    display: flex;
+    justify-content: flex-start;
+}
+.sellerUsername{
+    line-height: 24px;;
+}
+
+#profilePicture{
+    width:25px;
+    height: 25px;
+    border-radius: 50%;
+    background-size: cover;
+    margin-right:20px;
+}
+
+#cartCountContainer:hover > #cartCountIcon{
+    /* transform: scale(1.5); */
+    animation:spin 0.8s linear infinite;
+}
+
+@keyframes spin{
+    to{
+      transform:rotate(360deg);
+      transform: scale(2);
+    }
+  }
+
+
+
 .card:hover{
     transform: scale(1.1);
     webkit-box-shadow: 3px 2px 21px -2px rgba(39, 37, 39, 0.72);
@@ -21,11 +71,20 @@ box-shadow: 3px 2px 21px -2px rgba(39, 37, 39, 0.72);
 
 .card-title{
     font-size: 17px;
+
+}
+
+.card-body{
+    height:360px;
+}
+
+.cart-title-container{
+    height:40px;
 }
 
 #imageContainer{
     overflow: hidden;
-    height:450px;
+    height:430px !important;
     background-size: cover;
     background-position: center;
     border-radius: 5%;

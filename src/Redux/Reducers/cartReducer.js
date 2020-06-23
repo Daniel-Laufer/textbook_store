@@ -3,11 +3,13 @@ import { GET_CART_ITEMS, ADD_TO_CART } from "../actionNames.js";
 export default (
   state = {
     allCartItems: [],
+
     // cartItemsToDisplay: [],
     pending: false,
     refreshRequested: true,
     error: null,
-    numberOfItems: 0
+    numberOfItems: 0,
+    cartItemIds: null
   },
   action
 ) => {
@@ -16,9 +18,10 @@ export default (
       return {
         ...state,
         pending: false,
-        allCartItems: action.payload,
+        allCartItems: action.payload.cartItemData,
+        cartItemIds: action.payload.cartItemIds,
         refreshRequested: false,
-        numberOfItems: action.payload.length
+        numberOfItems: action.payload.cartItemData.length
         // cartItemsToDisplay: action.payload,
       };
     case GET_CART_ITEMS + "_PENDING":

@@ -73,7 +73,7 @@ let AppNav = ({
         <Form style={cartButtonStyles} id="cart-form" inline>
           <Link to="/cart">
             <Button onClick={hideNav} id="cart-button" type="submit">
-              <i id="cartIcon" className="fas fa-shopping-cart"></i>
+              <i id="cartIcon" className="fas fa-star"></i>
             </Button>
           </Link>
           <div id="cart-item-counter">
