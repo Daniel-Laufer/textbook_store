@@ -124,3 +124,26 @@ box-shadow: 3px 2px 21px -2px rgba(39, 37, 39, 0.72);
 #cartButtonHolder > button:first-child{
     color: blue;
 } */
+
+/* #cartButtonHolder > .loader{
+    width:50px;
+}
+
+
+#cartButtonHolder > .loader > .cartLoaderIcon{
+    width:22px;
+    height:22px;
+    margin:1px auto;
+    margin-left:20px;
+    border:3px solid 	white;
+    border-radius:50%; 
+    border-top-color:#ff0000;
+  /*   border-bottom-color:red; */
+    /* animation:spin 0.8s linear infinite; */
+  /* }
+  
+  @keyframes spin{
+    to{
+      transform:rotate(360deg);
+    }
+  } */ 

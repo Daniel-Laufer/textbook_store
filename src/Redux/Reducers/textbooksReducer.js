@@ -2,7 +2,7 @@ import {
   GET_TEXTBOOKS,
   SEARCH_AND_UPDATE_TEXTBOOKS,
   CREATE_NEW_TEXTBOOK,
-  APPLY_FILTER
+  APPLY_FILTER,
 } from "../actionNames.js";
 
 export default (
@@ -33,6 +33,10 @@ export default (
       return { ...state, pending: false, error: action.payload };
     case SEARCH_AND_UPDATE_TEXTBOOKS:
       const newItems = [];
+      const filtersToCheck = Object.keys(action.payload.filters).filter(
+        (key) => action.payload.filters[key] !== null
+      );
+
       for (let key in state.allTextbooks) {
         if (
           state.allTextbooks[key].title
@@ -41,20 +45,33 @@ export default (
         )
           newItems.push(state.allTextbooks[key]);
       }
+      if(filtersToCheck.length > 0){
+
+        let newItemsAfterFilters = []
+  
+        filtersToCheck.forEach((filter) => {
+          newItems.forEach((item, index) => {
+            if (item[filter] === action.payload.filters[filter]) 
+              newItemsAfterFilters.push(item);
+            
+        
+          });
+        });
+        return { ...state, textbooksToDisplay: [...newItemsAfterFilters] };
+      }
+
       return { ...state, textbooksToDisplay: [...newItems] };
-      // case APPLY_FILTER:
-      //   const newItems = [];
-      //   for (let key in state.textbooksToDisplay) {
-      //     if (
-      //       state.textbooksToDisplay[key].title
-      //         .toLowerCase()
-      //         .includes(action.payload.toLowerCase())
-      //     )
-      //       newItems.push(state.textbooksToDisplay[key]);
-      //   }
-      //   return { ...state, textbooksToDisplay: [...newItems] };
-    
-    
+    // case APPLY_FILTER:
+    //   const newItems = [];
+    //   for (let key in state.textbooksToDisplay) {
+    //     if (
+    //       state.textbooksToDisplay[key].title
+    //         .toLowerCase()
+    //         .includes(action.payload.toLowerCase())
+    //     )
+    //       newItems.push(state.textbooksToDisplay[key]);
+    //   }
+    //   return { ...state, textbooksToDisplay: [...newItems] };
 
     case CREATE_NEW_TEXTBOOK + "_FULFILLED":
       return {

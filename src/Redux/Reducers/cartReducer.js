@@ -1,4 +1,8 @@
-import { GET_CART_ITEMS, ADD_TO_CART } from "../actionNames.js";
+import {
+  GET_CART_ITEMS,
+  ADD_TO_CART,
+  DELETE_FROM_CART,
+} from "../actionNames.js";
 
 export default (
   state = {
@@ -9,7 +13,7 @@ export default (
     refreshRequested: true,
     error: null,
     numberOfItems: 0,
-    cartItemIds: null
+    cartItemIds: null,
   },
   action
 ) => {
@@ -21,7 +25,7 @@ export default (
         allCartItems: action.payload.cartItemData,
         cartItemIds: action.payload.cartItemIds,
         refreshRequested: false,
-        numberOfItems: action.payload.cartItemData.length
+        numberOfItems: action.payload.cartItemData.length,
         // cartItemsToDisplay: action.payload,
       };
     case GET_CART_ITEMS + "_PENDING":
@@ -33,14 +37,13 @@ export default (
         error: action.payload,
         allCartItems: [],
       };
-      
 
-      case ADD_TO_CART + "_FULFILLED":
+    case ADD_TO_CART + "_FULFILLED":
       return {
         ...state,
         pending: false,
         refreshRequested: true,
-        numberOfItems: state.numberOfItems + 1
+        numberOfItems: state.numberOfItems + 1,
         // cartItemsToDisplay: action.payload,
       };
     case ADD_TO_CART + "_PENDING":
@@ -52,7 +55,23 @@ export default (
         error: action.payload,
       };
 
-    
+    case DELETE_FROM_CART + "_FULFILLED":
+      return {
+        ...state,
+        pending: false,
+        refreshRequested: true,
+        numberOfItems: state.numberOfItems - 1,
+        // cartItemsToDisplay: action.payload,
+      };
+    case DELETE_FROM_CART + "_PENDING":
+      return { ...state, pending: true };
+    case DELETE_FROM_CART + "_REJECTED":
+      return {
+        ...state,
+        pending: false,
+        error: action.payload,
+      };
+
     //     case SEARCH_AND_UPDATE_TEXTBOOKS:
     //       const newItems = [];
     //       for (let key in state.allTextbooks) {

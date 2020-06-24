@@ -58,7 +58,7 @@ let AppNav = ({
         <div className="nav-brand">
 
           <Link id="main-title" to="/">
-            The Textbook Trading Post
+            Textbook Exchanger
           </Link>
         </div>
         {/* </Navbar.Brand> */}

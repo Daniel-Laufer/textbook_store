@@ -1,4 +1,4 @@
-import { GET_CART_ITEMS, ADD_TO_CART } from "../actionNames";
+import { GET_CART_ITEMS, ADD_TO_CART, DELETE_FROM_CART } from "../actionNames";
 const axios = require("axios");
 
 
@@ -24,5 +24,19 @@ export const addItemToCart = (authToken, textbookId) => {
     type: ADD_TO_CART,
     payload: axios.post(`/cart/${textbookId}`, {}, {headers})
       .then((data) => data.data),
+  };
+}
+
+
+export const deleteItemFromCart = (authToken, textbookId) => {
+
+  const headers = {
+    // 'Authorization': `Bearer ${authToken === null ? 1: authToken.token}`
+    'Authorization': `Bearer ${authToken.token}`
+  };
+  return {
+    type: DELETE_FROM_CART,
+    payload: axios.delete(`/cart/${textbookId}`, {headers})
+      .then((data) => data.data)
   };
 }

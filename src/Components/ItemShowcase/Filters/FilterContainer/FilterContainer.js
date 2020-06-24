@@ -34,7 +34,7 @@ const FilterContainer = ({
   const [campusFilter, setCampusFilter] = useState(null);
 
   useEffect(() => {
-    updateFilters({ courseFilter, campusFilter });
+    updateFilters({ course: courseFilter, campus: campusFilter });
   }, [courseFilter, campusFilter, updateFilters]);
 
   useEffect(() => {
@@ -44,10 +44,10 @@ const FilterContainer = ({
   const handleFilterChange = (item, type) => {
     switch (type) {
       case "course":
-        setCourseFilter(item ? item.value : null);
+        setCourseFilter(item ? item.value.toUpperCase() : null);
         break;
       case "campus":
-        setCampusFilter(item ? item.value : null);
+        setCampusFilter(item ? item.value.toUpperCase() : null);
         break;
       default:
         console.log("error!");
