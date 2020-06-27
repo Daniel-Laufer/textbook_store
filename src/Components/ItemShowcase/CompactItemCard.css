@@ -1,0 +1,154 @@
+.compact-card{
+    width:100%;
+    border: 1px solid black;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    
+}
+
+.compact-card-title{
+    font-size:13px;
+    margin-left:20px;
+    font-weight: bolder;
+    width:180px;
+}
+
+.compact-item-showcase{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.compact-card-button-holder{
+    margin-left:auto;
+}
+.compact-card-button-holder > button{
+    margin-right:3px;
+    width:50px;
+
+}
+.compact-card-button-holder :last-child{
+    margin-right:0px;
+
+}
+
+.compact-campus{
+    font-size: 10px;
+    width:90px;
+}
+.compact-sellingLocation{
+    font-size: 10px;
+}
+.compact-price{
+    font-size: 10px;
+    width:50px;
+}
+
+.divider{
+    height:39px;
+    width:1.8px !important;
+    background-color:gray;
+    margin-right:10px;
+    margin-left:10px;
+    font-weight: normal;
+}
+
+
+
+.compact-profile-picture{
+    width: 20px;
+    height: 20px;
+    background-size: cover;
+    background-position: center;
+    object-fit: cover;
+    border-radius: 45%;
+    margin-right:10px;
+
+}
+.compact-seller-info-container{
+    display: flex;
+    align-items: center;
+    /* border: 1px solid gray; */
+    padding-left:20px;
+    padding-right:20px;
+    width:130px;
+}
+
+.compact-seller-userName{
+    font-size:10px;
+    line-height: 2px;
+}
+
+
+
+
+
+/* Cart count  */
+.compact-cart-count-container{
+    width:40px;
+    display: flex;
+}
+
+.compact-cart-count{
+    position: relative;
+    align-self: center;
+    left:-22px;
+    top:2px;
+    color:white;
+    font-weight: bold;
+    font-size:15px;
+    line-height: 11px;;
+    margin-left:-1px;
+}
+
+.compact-cart-count-icon{
+    color:orange;
+    font-size:32px;
+}
+
+
+.compact-cart-count-container:hover > .compact-cart-count-icon{
+    /* transform: scale(1.5); */
+    animation:spin 0.8s linear infinite;
+}
+
+@keyframes spin{
+    to{
+      transform:rotate(360deg);
+      transform: scale(2);
+    }
+  }
+
+
+
+@media only screen and (max-width: 1240px) {
+    .compact-card{
+        flex-direction: column;
+        
+    }
+
+    .compact-card-title{
+        margin-left:13px !important;
+        
+    }
+
+    .compact-card > *{
+        width:100%;
+        /* align-self: center; */
+        
+    }
+    .compact-seller-info-container{
+        display: flex;
+        align-self: flex-start !important;
+       
+        padding-left:0px;
+        padding-right:0px;
+        width:130px;
+    }
+
+    .divider{
+        display: none;
+    }
+
+  }

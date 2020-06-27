@@ -3,6 +3,7 @@ import {
   LOGOUT,
   LOGIN_WITH_OLD_AUTH_TOKEN,
   SIGNUP,
+  GET_USER_PUBLIC_INFO
 } from "../actionNames";
 
 const initialState = {

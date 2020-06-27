@@ -45,6 +45,46 @@ export const getTextbooks = () => {
     //     resolve([]);
     //   }, 500);
     // }),
+
+  //   {
+  //     "campus": "UTSG",
+  //     "profilePicture": "https://firebasestorage.googleapis.com/v0/b/textbook-store-2e072.appspot.com/o/User_Profile_Images%2Fdefault%2Fdefault-user-icon.jpg?alt=media&token=1ba92de6-b192-4525-a2b0-0cc0f9da2ea0",
+  //     "timeCreated": "2020-06-23T20:48:39.050Z",
+  //     "userId": "q18lcP6XzsYaD9Von3fY9MMv2os1",
+  //     "userName": "CanadianGuy"
+  // }
+  // [
+  //   {
+  //     "campus": "UTSG",
+  //     "cartCount": 3,
+  //     "image": "https://firebasestorage.googleapis.com/v0/b/textbook-store-2e072.appspot.com/o/Textbook_Images%2F325803570647.jpg?alt=media&token=58261f15-6158-4a2b-8069-3ecf991fa644",
+  //     "privacySettings": {
+  //         "Name": true,
+  //         "Email": true,
+  //         "Phone Number": false
+  //     },
+  //     "course": "ECO100",
+  //     "price": "53.00",
+  //     "seller": {
+  //         "sellerId": "vtklzZdwhshks9YQoIy3N4HwoAv1",
+  //         "sellerUsername": "DanL9875",
+  //         "profilePicture": "https://firebasestorage.googleapis.com/v0/b/textbook-store-2e072.appspot.com/o/User_Profile_Images%2Fmaxresdefault%20(1).jpg?alt=media&token=1bbaf302-beff-4bc3-9dea-2b829f391d3f"
+  //     },
+  //     "description": "None.",
+  //     "textbookQuality": {
+  //         "stains": 0,
+  //         "pagesMissing": 0,
+  //         "handWriting": 0
+  //     },
+  //     "sellingLocation": "Bahen Center",
+  //     "title": "Macroeconomics, Fifteenth Canadian Edition",
+  //     "timePosted": "2020-06-23T19:36:50.866Z",
+  //     "textbookId": "64RKdsgSZe1U8FnBRPOb"
+  // }
+  // ]
+
+
+
     payload: axios.get("/textbooks").then(res => res.data)
   };
 };
@@ -73,7 +113,6 @@ export const createNewTextbook = (user, image, description, title, price, course
       .then((res) => {
         imageURL = res.data.url;
         const otherData = { description, title, price, imageURL, course, campus, sellingLocation, textbookQuality: {pagesMissing, handWriting, stains}, privacySettings };
-        console.log(otherData)
         axios
           .post("/createTextbook", { otherData }, { headers })
           .then((data) => console.log(data))
