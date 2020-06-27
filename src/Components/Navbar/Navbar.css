@@ -4,6 +4,7 @@
     sans-serif !important;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  min-height:82px;
 }
 
 #cartIcon{
@@ -24,9 +25,16 @@
   font-size:18px;
 }
 
+.settings-button{
+  font-size:25px;
+  line-height: 20px;
+  max-width: 51px;
+}
+
 
 #login-logout-button{
   max-width: 100px;
+  margin-right:10px;
 }
 
 #main-title{
@@ -45,7 +53,7 @@
 
 #button-holder-div{
   display: flex;
-  width: 150px;
+  width: 200px;
   flex-direction: row;
   justify-content: space-evenly;
   margin-left:-10px;
@@ -99,6 +107,17 @@
   #new-post-button{
     margin-top:10px;
   }
+
+  .settings-button{
+    width:50px !important;
+    height: 39px;
+  }
+  
+  #cartIcon{
+    margin-left:-4px !important;
+  }
+
+
 
   
 

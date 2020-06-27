@@ -10,21 +10,26 @@ import { getCartItems } from "../../Redux/Actions/cartActions";
 import "./Navbar.css";
 import { useHistory } from "react-router-dom";
 
+import SettingsMenu from "./SettingsMenu";
+
 let AppNav = ({
   updateSearch,
   searchAndUpdateTextbooks,
+  settings,
   user,
   logout,
   cartItems,
   getCartItems,
-  search
+  search,
 }) => {
+  const [settingsMenuOpen, setSettingsMenuOpen] = useState(true);
+
   const history = useHistory();
 
   useEffect(() => {
-    if (user.loggedIn){
+    if (user.loggedIn) {
       getCartItems(user.authToken);
-    } 
+    }
   }, [user.authToken, getCartItems, user.loggedIn]);
 
   const handleLogOut = () => {
@@ -44,6 +49,7 @@ let AppNav = ({
   const cartButtonStyles = { display: user.loggedIn ? "flex" : "none" };
 
   return (
+    <>
     <Navbar
       expanded={navExpanded}
       onToggle={() => setNavExpanded(!navExpanded)}
@@ -56,7 +62,6 @@ let AppNav = ({
       <Navbar.Toggle aria-controls="responsive-navbar-nav" />
       <Navbar.Collapse id="responsive-navbar-nav">
         <div className="nav-brand">
-
           <Link id="main-title" to="/">
             Textbook Exchanger
           </Link>
@@ -64,7 +69,6 @@ let AppNav = ({
         {/* </Navbar.Brand> */}
         <Nav className="mr-auto">
           <div className="nav-link">
-
             <Link id="about-link" to="/about">
               About
             </Link>
@@ -116,10 +120,19 @@ let AppNav = ({
               +
             </Button>
           </Link>
+          <Button
+            className="settings-button"
+            onClick={() => {console.log(settingsMenuOpen);setSettingsMenuOpen(!settingsMenuOpen)}}
+          >
+            <i className="fas fa-cog"></i>
+          </Button>
+          {settingsMenuOpen ? <SettingsMenu setSettingsMenuOpen={setSettingsMenuOpen}/> : null}
         </div>
         {/* <Button id="newTextbookPost" style={{'display' : user.loggedIn ? 'flex': 'none'}} variant="light">+</Button> */}
       </Navbar.Collapse>
     </Navbar>
+    
+    </>
   );
 };
 
@@ -127,7 +140,8 @@ const mapStateToProps = (state) => {
   return {
     user: state.userReducer,
     cartItems: state.cartReducer,
-    search: state.searchReducer
+    search: state.searchReducer,
+    settings: state.settingsReducer,
   };
 };
 

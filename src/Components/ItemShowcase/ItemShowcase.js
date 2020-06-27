@@ -12,10 +12,9 @@ import TextbookModal from "../Modals/TextbookModal";
 import { addItemToCart, getCartItems } from "../../Redux/Actions/cartActions";
 import FilterContainer from "./Filters/FilterContainer/FilterContainer";
 
-function ItemShowcase({ textbooks, getTextbooks, cart }) {
+function ItemShowcase({ textbooks, getTextbooks, cart, settings}) {
   const [modalIsOpen, setIsOpen] = useState(false);
   const [focusedItem, setFocusedItem] = useState(null);
-  const [isCompactView, setIsCompactView] = useState(true);
   const [refreshedCart, setRefreshedCart] = useState(false);
 
   function openModal(item) {
@@ -59,16 +58,13 @@ function ItemShowcase({ textbooks, getTextbooks, cart }) {
   return (
     <>
       <FilterContainer />
-      <button onClick={() => setIsCompactView(!isCompactView)}>
-        Compact View
-      </button>
       <Container>
-        <div className={isCompactView ? "compact-item-showcase" : "item-showcase"} >
+        <div className={settings.settings.compactCards ? "compact-item-showcase" : "item-showcase"} >
           <div style={spinnerStyles} className="loader">
             <div className="loaderIcon"></div>
           </div>
           {textbooks.textbooksToDisplay.map((item, index) => {
-            if (isCompactView)
+            if (settings.settings.compactCards)
               return (
                 <CompactItemCard
                   openModal={openModal}
@@ -94,7 +90,8 @@ const mapStateToProps = (state) => {
   return {
     textbooks: state.textbooksReducer,
     user: state.userReducer,
-    cart: state.cartReducer
+    cart: state.cartReducer,
+    settings: state.settingsReducer
   };
 };
 
