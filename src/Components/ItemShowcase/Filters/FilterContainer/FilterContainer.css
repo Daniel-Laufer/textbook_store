@@ -16,7 +16,7 @@
 }
 
 #search-bar{
-    width: 30vw;
+    width: 20vw;
 }
 
 
@@ -27,8 +27,16 @@
 }
 
 
-@media only screen and (max-width: 750px) {
+@media only screen and (max-width: 860px) {
     #search-bar{
+        margin-top: 20px;
+        width: 78vw;
+    }
+  }
+
+
+@media only screen and (max-width: 554px) {
+    .select{
         margin-top: 20px;
         width: 78vw;
     }

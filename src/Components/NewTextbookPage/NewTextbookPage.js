@@ -154,7 +154,7 @@ function NewTextbookPage({ textbooks, user, createNewTextbook }) {
 
   useEffect(() => {
     if (textbooks.error === null && textbooks.refreshRequired)
-      setTimeout(() => history.push("/"), 2000);
+      setTimeout(() => history.push("/textbooks"), 2000);
   }, [textbooks.refreshRequired, history, textbooks.error]); // added history and textbooks.err dependences here, not sure if it makes a difference!
 
   const handleTextInputChange = (e, inputType) => {

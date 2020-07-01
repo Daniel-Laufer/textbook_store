@@ -4,7 +4,12 @@ import "./TextbookModal.css";
 import Slider from "react-rangeslider";
 import "react-rangeslider/lib/index.css";
 
+
+
+
 Modal.setAppElement("#root");
+
+Modal.defaultStyles.overlay.backgroundColor = 'rgba(89,89,89, 0.75)';
 
 export default function TextbookModal({ funcs, item }) {
   const handWritingLabels = {

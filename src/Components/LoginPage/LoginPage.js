@@ -18,7 +18,7 @@ const LoginPage = (props) => {
       localStorage.timeLoggedIn = (new Date()).getTime();
       setEmail("");
       setPassword("");
-      if (props.user.error == null) setTimeout(() => history.push("/"), 800);
+      if (props.user.error == null) setTimeout(() => history.push("/textbooks"), 800);
     }
   }, [props.user, history]);
 

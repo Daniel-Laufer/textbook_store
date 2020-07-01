@@ -1,29 +1,30 @@
-import React, { useEffect } from "react";
-// import * as data from "../../StoreData/itemData.json";
-import AppNav from "../Navbar/Navbar";
+import React, { useEffect } from "react"; 
+import { connect } from "react-redux";
+
+/*                    CSS                                            */   
 import "../Navbar/Navbar.css";
 import "./App.css";
 
-import { connect } from "react-redux";
-import { increment } from "../../Redux/Actions/countActions";
-import { login, loginWithOldtAuthToken } from "../../Redux/Actions/userActions";
-
+/*                    COMPONENTS                                            */   
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import CartShowcase from "../Cart/CartShowcase";
 import ItemShowcase from "../ItemShowcase/ItemShowcase";
 import LoginPage from "../LoginPage/LoginPage";
 import SignUpPage from "../SignUpPage/SignUpPage";
 import NewTextbookPage from "../NewTextbookPage/NewTextbookPage";
+import AppNav from "../Navbar/Navbar";
+import HomePage from "../../Containers/HomePage";
+
+/*                   ACTIONS                                                   */   
 import { getTextbooks } from "../../Redux/Actions/textbookActions";
 import { getCartItems } from "../../Redux/Actions/cartActions";
+import { login, loginWithOldtAuthToken } from "../../Redux/Actions/userActions";
+
+
+ /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 function App({ getTextbooks, user, loginWithOldtAuthToken, settings }) {
-  // useEffect(() => {
-  //   getTextbooks()
-  // }, []);
-
   useEffect(() => {
-    increment(5);
     if (user.loggedIn) {
       getCartItems(user.authToken);
     } else {
@@ -69,10 +70,13 @@ function App({ getTextbooks, user, loginWithOldtAuthToken, settings }) {
             <p>This web app was created by Daniel Laufer.</p>
           </div>
         </Route>
-        <Route path="/">
+        <Route path="/textbooks">
           <div className="App" style={{"backgroundColor": settings.settings.darkTheme ? 'rgb(56,56,56)': "rgb(255,255,255)"}}>
             <ItemShowcase />
           </div>
+        </Route>
+        <Route path="/">
+          <HomePage/>
         </Route>
       </Switch>
     </Router>
@@ -96,7 +100,6 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     login: () => dispatch(login()), // the names you gave in the combine reducers method call
-    increment: (amount) => dispatch(increment(amount)),
     getTextbooks: () => dispatch(getTextbooks()),
     getCartItems: (authToken) => dispatch(getCartItems(authToken)),
     loginWithOldtAuthToken: (authToken) =>

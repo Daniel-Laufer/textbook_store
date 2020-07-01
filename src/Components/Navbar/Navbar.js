@@ -35,7 +35,7 @@ let AppNav = ({
   const handleLogOut = () => {
     delete localStorage.authToken;
     logout();
-    history.push("/");
+    history.push("/textbooks");
   };
 
   const [navExpanded, setNavExpanded] = useState(false);
@@ -68,8 +68,8 @@ let AppNav = ({
         {/* </Navbar.Brand> */}
         <Nav className="mr-auto">
           <div className="nav-link">
-            <Link id="about-link" to="/about">
-              About
+            <Link id="browse-link" to="/textbooks">
+              Browse
             </Link>
           </div>
         </Nav>

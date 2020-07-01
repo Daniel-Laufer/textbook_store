@@ -36,7 +36,7 @@ const SignUpPage = ({ user, signUp }) => {
       setName("");
       setError("");
       setUsername("");
-      if (user.error == null) setTimeout(() => history.push("/"), 800);
+      if (user.error == null) setTimeout(() => history.push("/textbooks"), 800);
     }
   }, [user, history]); // added history here
 
