@@ -1,6 +1,6 @@
 .filter-container{
     margin: auto;
-    margin-top: 20px;
+    padding-top: 20px;
     display: flex;
     width:85%;
     justify-content: space-around;

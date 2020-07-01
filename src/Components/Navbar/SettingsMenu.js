@@ -20,16 +20,19 @@ let SettingsMenu = ({ setSettingsMenuOpen, settings, updateSettings }) => {
       if (e.target.className && !ignore.includes(e.target.className)) {
         setSettingsMenuOpen(false);
       }
-      console.log(e.target.className)
     });
   }, []);
 
   const handleChecked = (type) => {
+    let newSettings;
     switch (type) {
       case "compact":
-        let newSettings = settings.settings;
-        // console.log(newSettings)
+        newSettings = settings.settings;
         newSettings.compactCards = !newSettings.compactCards;
+        return updateSettings(newSettings);
+      case "dark":
+        newSettings = settings.settings;
+        newSettings.darkTheme = !newSettings.darkTheme;
         return updateSettings(newSettings);
       default:
         return null;
@@ -49,6 +52,13 @@ let SettingsMenu = ({ setSettingsMenuOpen, settings, updateSettings }) => {
               type={"checkbox"}
               id={`default-checkbox`}
               label={`Compact Card View`}
+            />
+            <Form.Check
+              checked={settings.settings.darkTheme}
+              onClick={() => handleChecked("dark")}
+              type={"checkbox"}
+              id={`default-checkbox`}
+              label={`Dark Theme`}
             />
           </div>
         </Form>

@@ -17,7 +17,7 @@ import NewTextbookPage from "../NewTextbookPage/NewTextbookPage";
 import { getTextbooks } from "../../Redux/Actions/textbookActions";
 import { getCartItems } from "../../Redux/Actions/cartActions";
 
-function App({ getTextbooks, user, loginWithOldtAuthToken }) {
+function App({ getTextbooks, user, loginWithOldtAuthToken, settings }) {
   // useEffect(() => {
   //   getTextbooks()
   // }, []);
@@ -46,12 +46,12 @@ function App({ getTextbooks, user, loginWithOldtAuthToken }) {
   }, [loginWithOldtAuthToken, user.authToken, user.loggedIn]);
 
   return (
-    <Router>
+    <Router >
       <AppNav />
       <Switch>
         <Route path="/cart">
-          <div className="App">
-            <CartShowcase />
+          <div className="App" style={{"backgroundColor": settings.settings.darkTheme ? 'rgb(56,56,56)': "rgb(255,255,255)"}}>
+            <CartShowcase/>
           </div>
         </Route>
         <Route path="/login">
@@ -70,7 +70,7 @@ function App({ getTextbooks, user, loginWithOldtAuthToken }) {
           </div>
         </Route>
         <Route path="/">
-          <div className="App">
+          <div className="App" style={{"backgroundColor": settings.settings.darkTheme ? 'rgb(56,56,56)': "rgb(255,255,255)"}}>
             <ItemShowcase />
           </div>
         </Route>
@@ -87,6 +87,7 @@ const mapStateToProps = (state) => {
     count: state.countReducer,
     textbooks: state.textbooksReducer,
     cartItems: state.cartReducer,
+    settings: state.settingsReducer
   };
 };
 

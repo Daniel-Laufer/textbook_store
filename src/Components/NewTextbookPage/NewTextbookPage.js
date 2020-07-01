@@ -16,6 +16,8 @@ import makeAnimated from "react-select/animated";
 import Slider from "react-rangeslider";
 import "react-rangeslider/lib/index.css";
 import "./NewTextbookPage.css";
+import axios from "axios";
+import courseData from "../ItemShowcase/Filters/FilterContainer/courseData";
 
 const animatedComponents = makeAnimated();
 
@@ -24,6 +26,11 @@ function NewTextbookPage({ textbooks, user, createNewTextbook }) {
   const [price, setPrice] = useState("");
   const [title, setTitle] = useState("");
   const [course, setCourse] = useState("");
+
+  const [courses, setCourses] = useState(null);
+  const [coursePrefixFilter, setCoursePrefixFilter] = useState(null);
+  const [coursePrefixes, setCoursePrefixes] = useState(null);
+
   const [campus, setCampus] = useState("");
   const [privacySettings, setPrivacySettings] = useState({
     Name: true,
@@ -34,8 +41,12 @@ function NewTextbookPage({ textbooks, user, createNewTextbook }) {
   const [description, setDescription] = useState("");
   const [submitError, setSubmitError] = useState(null);
 
-  const [pagesMissing, setPagesMissing] = useState(Math.floor(Math.random() * 100));
-  const [handWriting, setHandWriting] = useState(Math.floor(Math.random() * 100));
+  const [pagesMissing, setPagesMissing] = useState(
+    Math.floor(Math.random() * 100)
+  );
+  const [handWriting, setHandWriting] = useState(
+    Math.floor(Math.random() * 100)
+  );
   const [stains, setStains] = useState(Math.floor(Math.random() * 100));
   const pagesMissingLabels = {
     0: "None.",
@@ -65,6 +76,42 @@ function NewTextbookPage({ textbooks, user, createNewTextbook }) {
     { name: "name", label: "Name" },
   ];
 
+  useEffect(() => {
+    setCourses({});
+
+    let coursePrefixes = [];
+    for (let i = 0; i < courseData.coursePrefixes.length; i++) {
+      let course = courseData.coursePrefixes[i];
+      let toAppend = {
+        value: course.toLowerCase(),
+        label: course.toUpperCase(),
+      };
+      coursePrefixes.push(toAppend);
+    }
+    setCoursePrefixes(coursePrefixes);
+  }, []);
+
+  // filter out the unecessary courses
+  useEffect(() => {
+    console.log(coursePrefixFilter)
+    if (coursePrefixFilter) {
+      let courses = [];
+      for (let i = 0; i < courseData.courses.length; i++) {
+        let course = courseData.courses[i];
+        let upperCaseCourse = course.toUpperCase();
+        if (upperCaseCourse.startsWith(coursePrefixFilter.toUpperCase())) {
+          let toAppend = {
+            value: course.toLowerCase(),
+            label: upperCaseCourse,
+          };
+          courses.push(toAppend);
+        }
+      }
+      console.log(courses)
+      setCourses(courses);
+    }
+  }, [coursePrefixFilter]);
+
   const handleSelectChange = (items, type) => {
     switch (type) {
       case "privacy":
@@ -92,6 +139,12 @@ function NewTextbookPage({ textbooks, user, createNewTextbook }) {
       case "campus":
         setCampus(items ? items.value : null);
         break;
+      case "coursePrefix":
+        setCoursePrefixFilter(items ? items.value : null);
+        break;
+      case "course":
+        setCourse(items ? items.value : null)
+        break;
       default:
         console.log("error!");
     }
@@ -112,9 +165,6 @@ function NewTextbookPage({ textbooks, user, createNewTextbook }) {
       case "title":
         setTitle(e.target.value);
         break;
-      case "course":
-        setCourse(e.target.value);
-        break;
       case "description":
         setDescription(e.target.value);
         break;
@@ -126,6 +176,16 @@ function NewTextbookPage({ textbooks, user, createNewTextbook }) {
   };
 
   const handleSubmit = (e) => {
+    const supportedFileFormats = [
+      "jpg",
+      "jpeg",
+      "png",
+      "apng",
+      "bmp",
+      "jfif",
+      "pjpeg",
+      "svg",
+    ];
     e.preventDefault();
     if (
       [image, title, price, course, sellingLocation, campus].some(
@@ -136,15 +196,37 @@ function NewTextbookPage({ textbooks, user, createNewTextbook }) {
       return setSubmitError("An input field is empty!");
     } else if (isNaN(price)) {
       return setSubmitError("The price is not a number!");
+    } else if (
+      !supportedFileFormats.includes(
+        image.name.split(".")[image.name.split(".").length - 1].toLowerCase()
+      )
+    ) {
+      return setSubmitError("That image type is not supported!");
     } else if (!(privacySettings.Email || privacySettings["Phone Number"])) {
       return setSubmitError(
         "Please provide at least one piece of contact information! (email and/or phone number)!"
       );
     }
-    createNewTextbook(user, image, description, title, price, course, campus, sellingLocation, pagesMissing, handWriting, stains, privacySettings);
+    createNewTextbook(
+      user,
+      image,
+      description,
+      title,
+      price,
+      course,
+      campus,
+      sellingLocation,
+      pagesMissing,
+      handWriting,
+      stains,
+      privacySettings
+    );
   };
 
   const handleFileChange = (e) => {
+    // console.log(e.target.files[0])
+    //{ name: "IMG_2848.HEIC.gif", lastModified: 1593550543093, webkitRelativePath: "", size: 7315216, type: "image/gif" }
+
     setImage(e.target.files[0]);
   };
 
@@ -180,26 +262,37 @@ function NewTextbookPage({ textbooks, user, createNewTextbook }) {
 
         <Form.Row>
           <Form.Group as={Col} controlId="exampleForm.ControlInput1">
-            <Form.Label>Which course uses this textbook?</Form.Label>
-            <Form.Control
-              type="text"
-              placeholder="CSC148"
-              value={course}
-              onChange={(e) => handleTextInputChange(e, "course")}
+          <Form.Label>Which academic department uses this textbook? Please select its corresponding course prefix:</Form.Label>
+            <Select
+              placeholder="CSC"
+              onChange={(items) => handleSelectChange(items, "coursePrefix")}
+              isClearable={true}
+              className="select"
+              options={coursePrefixes}
             />
           </Form.Group>
-          {/* onChange={(item) => handleFilterChange(item, "campus")} */}
-
           <Form.Group as={Col} controlId="exampleForm.ControlInput1">
-            <Form.Label>Desired Exchange Location</Form.Label>
-            <Form.Control
-              type="text"
-              placeholder="Calculus: Early Transcendentals"
-              value={sellingLocation}
-              onChange={(e) => handleTextInputChange(e, "location")}
+            <Form.Label>Which course uses this textbook? Please finish answering the previous question first 😉</Form.Label>
+            <Select
+              isDisabled={coursePrefixFilter ? false : true}
+              placeholder="Course"
+              onChange={(items) => handleSelectChange(items, "course")}
+              isClearable={true}
+              className="select"
+              options={courses}
             />
           </Form.Group>
         </Form.Row>
+        <Form.Group>
+          <Form.Label>Desired Exchange Location</Form.Label>
+          <Form.Control
+            type="text"
+            placeholder="At square one mall"
+            value={sellingLocation}
+            onChange={(e) => handleTextInputChange(e, "location")}
+          />
+        </Form.Group>
+
         <Form.Group>
           <Form.Label>Which UofT campus is this textbook used at?</Form.Label>
           <Select
@@ -314,8 +407,36 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    createNewTextbook: (user, image, description, title, price, course, campus, sellingLocation, pagesMissing, handWriting, stains, privacySettings) =>
-      dispatch(createNewTextbook(user, image, description, title, price, course, campus, sellingLocation, pagesMissing, handWriting, stains, privacySettings)),
+    createNewTextbook: (
+      user,
+      image,
+      description,
+      title,
+      price,
+      course,
+      campus,
+      sellingLocation,
+      pagesMissing,
+      handWriting,
+      stains,
+      privacySettings
+    ) =>
+      dispatch(
+        createNewTextbook(
+          user,
+          image,
+          description,
+          title,
+          price,
+          course,
+          campus,
+          sellingLocation,
+          pagesMissing,
+          handWriting,
+          stains,
+          privacySettings
+        )
+      ),
   };
 };
 

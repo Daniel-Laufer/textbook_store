@@ -84,14 +84,12 @@ export default function TextbookModal({ funcs, item }) {
   const assignQualityLabels = () => {
     let qualityOfTextbooks = {};
     let keys = Object.keys(item.textbookQuality);
-    console.log(keys);
     for (const key in keys) {
       qualityOfTextbooks[keys[key]] = {
         color: getLevelColor(item.textbookQuality[keys[key]]),
         data: getLevelMessage(item.textbookQuality[keys[key]], keys[key]),
       };
     }
-    console.log(qualityOfTextbooks);
     setQualityOfTextbooks(qualityOfTextbooks);
   };
 
@@ -109,7 +107,6 @@ export default function TextbookModal({ funcs, item }) {
       setTimeout(
         () => {
           const modalRef = document.getElementsByClassName("textbook-modal")[0];
-          console.log(isOverflown(modalRef));
           if (isOverflown(modalRef))
             modalRef.addEventListener("scroll", () =>
               modalRef.scrollTop > 0 ? setScrolled(true) : setScrolled(false)

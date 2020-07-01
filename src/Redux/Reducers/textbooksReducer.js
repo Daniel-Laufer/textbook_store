@@ -40,6 +40,7 @@ export default (
       const filtersToCheck = Object.keys(action.payload.filters).filter(
         (key) => action.payload.filters[key] !== null
       );
+      console.log(filtersToCheck)
 
       for (let key in state.allTextbooks) {
         if (
@@ -57,7 +58,12 @@ export default (
         newItems.forEach((item) => {
           pushItem = true;
           filtersToCheck.forEach((filter) => {
-            if (item[filter] !== action.payload.filters[filter])
+            if(filter === 'coursePrefix'){
+              // console.log(item[filter], action.payload.filters[filter])
+              if(!item['course'].toUpperCase().startsWith(action.payload.filters[filter]))
+                pushItem = false
+            }
+            else if (item[filter] !== action.payload.filters[filter])
               pushItem = false;
           });
           if (pushItem) newItemsAfterFilters.push(item);

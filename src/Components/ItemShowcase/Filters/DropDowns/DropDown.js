@@ -12,7 +12,7 @@ const DropDown = ({ items }) => {
       
     return (
 
-      <select onChange={(e) => console.log(e.target)}>
+      <select>
         <option value={0}>Course</option>
     {
           items.map((item, index) => {

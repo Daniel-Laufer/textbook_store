@@ -22,7 +22,7 @@ let AppNav = ({
   getCartItems,
   search,
 }) => {
-  const [settingsMenuOpen, setSettingsMenuOpen] = useState(true);
+  const [settingsMenuOpen, setSettingsMenuOpen] = useState(false);
 
   const history = useHistory();
 
@@ -55,7 +55,6 @@ let AppNav = ({
       onToggle={() => setNavExpanded(!navExpanded)}
       collapseOnSelect
       expand="lg"
-      bg="primary"
       id="nav"
       variant="dark"
     >
@@ -122,7 +121,7 @@ let AppNav = ({
           </Link>
           <Button
             className="settings-button"
-            onClick={() => {console.log(settingsMenuOpen);setSettingsMenuOpen(!settingsMenuOpen)}}
+            onClick={() => {setSettingsMenuOpen(!settingsMenuOpen)}}
           >
             <i className="fas fa-cog"></i>
           </Button>

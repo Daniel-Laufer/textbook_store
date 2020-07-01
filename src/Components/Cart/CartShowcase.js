@@ -6,7 +6,7 @@ import { connect } from "react-redux";
 import { Container} from "react-bootstrap";
 import TextbookModal from "../Modals/TextbookModal";
 
-function CartShowcase({ cartItems, getCartItems, user }) {
+function CartShowcase({ cartItems, getCartItems, user, settings }) {
   const [modalIsOpen, setIsOpen] = useState(false);
   const [focusedItem, setFocusedItem] = useState(null);
 
@@ -34,7 +34,7 @@ function CartShowcase({ cartItems, getCartItems, user }) {
 
 
   return (
-    <Container>
+    <Container style={{"backgroundColor": settings.settings.darkTheme ? 'rgb(56,56,56)': "rgb(255,255,255)"}}>
     <div className="CartShowcase">
       {cartItems.allCartItems.length === 0 ? (
         <div id="empty-cart-message">
@@ -61,6 +61,7 @@ const mapStateToProps = (state) => {
     user: state.userReducer, // the names you gave in the combine reducers method call
     cartItems: state.cartReducer,
     textbooks: state.textbooksReducer,
+    settings: state.settingsReducer
   };
 };
 

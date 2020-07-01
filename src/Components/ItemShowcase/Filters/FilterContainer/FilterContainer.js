@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import Select from "react-select";
 import { FormControl, Form } from "react-bootstrap";
+import axios from "axios";
+import courseData from "./courseData";
 
 import "./FilterContainer.css";
 import {
@@ -10,13 +12,13 @@ import {
 } from "../../../../Redux/Actions/searchActions";
 import { searchAndUpdateTextbooks } from "../../../../Redux/Actions/textbookActions";
 
-const courses = [
-  { value: "csc148", label: "CSC148" },
-  { value: "soc100", label: "SOC100" },
-  { value: "mat136", label: "MAT136" },
-  { value: "mat102", label: "MAT102" },
-  { value: "phy100", label: "PHY100" },
-];
+// let courses = [
+//   { value: "csc148", label: "CSC148" },
+//   { value: "soc100", label: "SOC100" },
+//   { value: "mat136", label: "MAT136" },
+//   { value: "mat102", label: "MAT102" },
+//   { value: "phy100", label: "PHY100" },
+// ];
 
 const campuses = [
   { value: "utm", label: "UTM" },
@@ -29,17 +31,62 @@ const FilterContainer = ({
   updateFilters,
   updateSearch,
   searchAndUpdateTextbooks,
+  settings,
 }) => {
   const [courseFilter, setCourseFilter] = useState(null);
   const [campusFilter, setCampusFilter] = useState(null);
+  const [coursePrefixFilter, setCoursePrefixFilter] = useState(null);
+
+  const [courses, setCourses] = useState({});
+  const [coursePrefixes, setCoursePrefixes] = useState({});
 
   useEffect(() => {
-    updateFilters({ course: courseFilter, campus: campusFilter });
-  }, [courseFilter, campusFilter, updateFilters]);
+    updateFilters({
+      course: courseFilter,
+      campus: campusFilter,
+      coursePrefix: coursePrefixFilter,
+    });
+  }, [courseFilter, campusFilter, coursePrefixFilter, updateFilters]);
+
+  // filter out the unecessary courses
+  useEffect(() => {
+    if (coursePrefixFilter) {
+      let courses = [];
+      for (let i = 0; i < courseData.courses.length; i++) {
+        let course = courseData.courses[i];
+        let upperCaseCourse = course.toUpperCase();
+        if (upperCaseCourse.startsWith(coursePrefixFilter)) {
+          let toAppend = {
+            value: course.toLowerCase(),
+            label: upperCaseCourse,
+          };
+          courses.push(toAppend);
+        }
+      }
+      setCourses(courses);
+    }
+    else{
+      setCourses(null);
+    }
+
+  }, [coursePrefixFilter]);
 
   useEffect(() => {
     searchAndUpdateTextbooks(search.searchTerm, search.filters);
   }, [search.searchTerm, search.filters, searchAndUpdateTextbooks]);
+
+  useEffect(() => {
+    
+    setCourses({});
+
+    let coursePrefixes = [];
+    for (let i = 0; i < courseData.coursePrefixes.length; i++) {
+      let course = courseData.coursePrefixes[i];
+      let toAppend = {"value": course.toLowerCase(), "label": course.toUpperCase()};
+      coursePrefixes.push(toAppend);
+    }
+    setCoursePrefixes(coursePrefixes);
+  }, []);
 
   const handleFilterChange = (item, type) => {
     switch (type) {
@@ -49,15 +96,37 @@ const FilterContainer = ({
       case "campus":
         setCampusFilter(item ? item.value.toUpperCase() : null);
         break;
+      case "coursePrefix":
+        setCoursePrefixFilter(item ? item.value.toUpperCase() : null);
+        
+        break;
       default:
         console.log("error!");
     }
+
+    // console.log(coursePrefixes)
+    // console.log(courses)
   };
 
   return (
     <>
-      <div className="filter-container">
+      <div
+        className="filter-container"
+        style={{
+          backgroundColor: settings.settings.darkTheme
+            ? "rgb(56,56,56)"
+            : "rgb(255,255,255)",
+        }}
+      >
         <Select
+          placeholder="Department"
+          onChange={(item) => handleFilterChange(item, "coursePrefix")}
+          isClearable={true}
+          className="select"
+          options={coursePrefixes}
+        />
+        <Select
+          isDisabled={coursePrefixFilter ? false : true}
           placeholder="Course"
           onChange={(item) => handleFilterChange(item, "course")}
           isClearable={true}
@@ -89,7 +158,7 @@ const FilterContainer = ({
         </Form>
       </div>
 
-      <hr />
+      <hr style={{ color: "white" }} />
       {/* <p>{'Displaying results for:'}  <strong><em>{(search.searchTerm ? `|    Quick Search: ${search.searchTerm}    |` : '') + (courseFilter ? `|    Course: ${courseFilter}    |` : '') + (campusFilter ? `|    Campus: ${campusFilter}    |` : '')}</em></strong></p> */}
     </>
   );
@@ -98,6 +167,7 @@ const FilterContainer = ({
 const mapStateToProps = (state) => {
   return {
     search: state.searchReducer,
+    settings: state.settingsReducer,
   };
 };
 

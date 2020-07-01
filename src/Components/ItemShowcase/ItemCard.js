@@ -106,6 +106,7 @@ function ItemCard({
         <div id="cartButtonHolder" className="card-body">
           <button
             disabled={user.loggedIn ? false : true}
+            title={`Add to cart ${user.loggedIn ? '': "(Please login first!)"}`} 
             onClick={() => {
               addItemToCart(user.authToken, item.textbookId);
               item.cartCount += 1;
@@ -118,7 +119,6 @@ function ItemCard({
 
           <button
             type="button"
-            disabled={displayDelete ? false : true}
             onClick={() => openModal(item)}
             className="btn btn-info"
           >
@@ -126,13 +126,14 @@ function ItemCard({
           </button>
           <button
             type="button"
+            title={`Remove from cart ${user.loggedIn ? '': "(Please login first!)"} ${displayDelete ? '': "(This item is not in your cart!)"}`} 
             disabled={displayDelete ? false : true}
             onClick={() => {
               handleDelete();
             }}
             className="btn btn-danger"
           >
-            <i class="far fa-times-circle"></i>
+            <i className="far fa-times-circle"></i>
           </button>
         </div>
       </div>
