@@ -1,74 +1,92 @@
-#home-page-wrapper{
-    font-family: 'Quicksand', sans-serif;
+:root{
+    --fade-in-duration: 3s;
+}
+
+#home-page-wrapper {
+  font-family: "Quicksand", sans-serif;
+}
+
+#page-1 {
+  height: calc(100vh - 82px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-image: url("https://firebasestorage.googleapis.com/v0/b/textbook-store-2e072.appspot.com/o/App_images_and_gifs%2Fbackground.png?alt=media&token=96ee3e42-d511-4d13-8195-259240ec6684");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+#page-1-content {
+  color: white;
+  border-radius: 5rem;
+  margin: auto;
+  width: 70%;
+  text-align: center;
+  -webkit-animation: fadein var(--fade-in-duration);
+  -moz-animation: fadein var(--fade-in-duration);
+  -ms-animation: fadein var(--fade-in-duration);
+  -o-animation: fadein var(--fade-in-duration);
+  animation: fadein var(--fade-in-duration);
 }
 
 
-#page-1{
-    height: calc(100vh - 83px);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-image: url("https://cdn4.vectorstock.com/i/1000x1000/97/58/abstract-background-with-blue-paper-layers-vector-1829758.jpg");
-    background-size:cover;
-    background-repeat: no-repeat;
+
+@keyframes fadein {
+  from {
+    opacity: 0;
+    transform: translateY(-80px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0px);
+  }
 }
 
-#page-1-content{
-    color:white;
-    border-radius: 5rem;
-    margin:auto;
-    width:70%;
-    text-align: center;
-    
+#page-1-content > a {
+  border-radius: 5rem;
+  display: block;
+  width: 200px;
+  margin: auto;
+  margin-top: 10px;
+  color: black;
+  background-color: white;
+  border: none;
+  cursor: pointer;
+  padding: 12px;
+  padding-left: 16px;
+  padding-right: 16px;
 }
-#page-1-content > a{
-    border-radius:5rem;   
-    display: block;
-    width:200px;
-    margin:auto;
-    margin-top:10px;
-    color:black;
-    background-color:white;
-    border:none;
-    cursor: pointer;
-    padding:12px;
-    padding-left:16px;
-    padding-right:16px;
+#page-1-content > h1 {
+  font-weight: bolder;
+  font-size: 39px;
 }
-#page-1-content > h1{
-    font-weight: bolder;
-    font-size:39px;
-}
-#page-1-content > *{
-    margin-top:20px;
+#page-1-content > * {
+  margin-top: 20px;
 }
 
-#under-title-text{
-    font-size: 20px;
+#under-title-text {
+  font-size: 20px;
 }
 
-#page-2{
-    height: calc(100vh);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: rgba(56,56,56,1);
-    background-size:cover;
-    background-repeat: no-repeat;
+#page-2 {
+  height: calc(100vh);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+  background-size: cover;
+  background-repeat: no-repeat;
 }
 
-#page-2-content{
-    color:white;
-    border-radius: 5rem;
-    margin:auto;
-    width:70%;
-    text-align: center;
-    
+#page-2-content {
+  border-radius: 5rem;
+  margin: auto;
+  width: 70%;
+  text-align: center;
 }
-#page-2-content > button{
-    border-radius:5rem;   
-    border:none;
-    cursor: pointer;
+#page-2-content > button {
+  border-radius: 5rem;
+  border: none;
+  cursor: pointer;
 }
-
-

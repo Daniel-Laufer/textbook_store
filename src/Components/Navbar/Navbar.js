@@ -62,6 +62,7 @@ let AppNav = ({
       <Navbar.Collapse id="responsive-navbar-nav">
         <div className="nav-brand">
           <Link id="main-title" to="/">
+            <img id="navbar-logo" src="https://firebasestorage.googleapis.com/v0/b/textbook-store-2e072.appspot.com/o/App_images_and_gifs%2FtextbookLogo.png?alt=media&token=a0a8c552-c182-422c-b519-9f2ef5a6a571"/>
             Textbook Exchanger
           </Link>
         </div>

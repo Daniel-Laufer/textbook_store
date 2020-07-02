@@ -12,6 +12,12 @@ background: linear-gradient(to right, #182848, #4b6cb7); /* W3C, IE 10+/ Edge, F
 
 }
 
+
+#navbar-logo{
+  width:60px;
+  margin-right:3px;
+}
+
 #cartIcon{
     font-size: 2rem;
     color: white;
@@ -49,6 +55,7 @@ background: linear-gradient(to right, #182848, #4b6cb7); /* W3C, IE 10+/ Edge, F
 #main-title{
     text-decoration: none;
     color:white;
+    font-weight: bolder;
 }
 #mainNav{
     list-style-type: none;

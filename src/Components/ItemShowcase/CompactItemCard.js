@@ -47,11 +47,12 @@ function CompactItemCard({
       <div className="compact-card" style={{"color": !settings.settings.darkTheme ? 'rgb(0,0,0)': "rgb(255,255,255)"}}>
         <div className="compact-cart-count-container">
           <i
-            style={{ display: item.cartCount === 0 ? "none" : "block" }}
+            // style={{ display: item.cartCount === 0 ? "none" : "block" }}
+            style={{ color: item.cartCount === 0 ? "gray" : "orange" }}
             className="compact-cart-count-icon fas fa-star"
           ></i>
           <div
-            style={{ display: item.cartCount === 0 ? "none" : "block" }}
+            // style={{ display: item.cartCount === 0 ? "none" : "block" }}
             className="compact-cart-count"
           >
             {item ? item.cartCount : 0}

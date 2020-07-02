@@ -185,6 +185,12 @@ export default function TextbookModal({ funcs, item }) {
           </li>
         </ul>
         <div className="modal-content-div" onScroll={() => setScrolled(true)}>
+        <div className="contact-container">
+            <span className="modal-section-title">
+              <strong>Contact Information</strong>
+            </span>
+            <p>{item ? item.description : "null"}</p>
+          </div>
           <div className="textbook-quality-div">
             {qualityOfTextbooks ? (
               <>
@@ -245,12 +251,6 @@ export default function TextbookModal({ funcs, item }) {
             )}
           </div>
           <hr />
-          <div className="description-container">
-            <span className="modal-section-title">
-              <strong>Contact Information</strong>
-            </span>
-            <p>{item ? item.description : "null"}</p>
-          </div>
           <hr />
           <div className="description-container">
             <span className="modal-section-title">

@@ -5,6 +5,8 @@ export default (state={searchTerm: '', filters: {}}, action) => {
         case UPDATE_SEARCH:
             return {...state, searchTerm: action.payload}
         case UPDATE_FILTERS:
+            // if(!filters.coursePrefix)
+            //     filters.course = null;
             return {...state, filters: {...action.payload}}
         default:
             return state

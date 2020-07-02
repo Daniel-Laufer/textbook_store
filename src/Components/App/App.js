@@ -1,11 +1,13 @@
-import React, { useEffect } from "react"; 
+import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 
-/*                    CSS                                            */   
+/*                    CSS                                            */
+
 import "../Navbar/Navbar.css";
 import "./App.css";
 
-/*                    COMPONENTS                                            */   
+/*                    COMPONENTS                                            */
+
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import CartShowcase from "../Cart/CartShowcase";
 import ItemShowcase from "../ItemShowcase/ItemShowcase";
@@ -15,15 +17,19 @@ import NewTextbookPage from "../NewTextbookPage/NewTextbookPage";
 import AppNav from "../Navbar/Navbar";
 import HomePage from "../../Containers/HomePage";
 
-/*                   ACTIONS                                                   */   
+/*                   ACTIONS                                                   */
+
 import { getTextbooks } from "../../Redux/Actions/textbookActions";
 import { getCartItems } from "../../Redux/Actions/cartActions";
 import { login, loginWithOldtAuthToken } from "../../Redux/Actions/userActions";
 
+/*                   OTHER                                                   */
 
- /////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 function App({ getTextbooks, user, loginWithOldtAuthToken, settings }) {
+  const [redirectRequested, setRedirectRequested] = useState(false);
+
   useEffect(() => {
     if (user.loggedIn) {
       getCartItems(user.authToken);
@@ -47,12 +53,19 @@ function App({ getTextbooks, user, loginWithOldtAuthToken, settings }) {
   }, [loginWithOldtAuthToken, user.authToken, user.loggedIn]);
 
   return (
-    <Router >
+    <Router>
       <AppNav />
       <Switch>
         <Route path="/cart">
-          <div className="App" style={{"backgroundColor": settings.settings.darkTheme ? 'rgb(56,56,56)': "rgb(255,255,255)"}}>
-            <CartShowcase/>
+          <div
+            className="App"
+            style={{
+              backgroundColor: settings.settings.darkTheme
+                ? "rgb(56,56,56)"
+                : "rgb(255,255,255)",
+            }}
+          >
+            <CartShowcase />
           </div>
         </Route>
         <Route path="/login">
@@ -71,12 +84,19 @@ function App({ getTextbooks, user, loginWithOldtAuthToken, settings }) {
           </div>
         </Route>
         <Route path="/textbooks">
-          <div className="App" style={{"backgroundColor": settings.settings.darkTheme ? 'rgb(56,56,56)': "rgb(255,255,255)"}}>
+          <div
+            className="App"
+            style={{
+              backgroundColor: settings.settings.darkTheme
+                ? "rgb(56,56,56)"
+                : "rgb(255,255,255)",
+            }}
+          >
             <ItemShowcase />
           </div>
         </Route>
         <Route path="/">
-          <HomePage/>
+          <HomePage />
         </Route>
       </Switch>
     </Router>
@@ -91,7 +111,7 @@ const mapStateToProps = (state) => {
     count: state.countReducer,
     textbooks: state.textbooksReducer,
     cartItems: state.cartReducer,
-    settings: state.settingsReducer
+    settings: state.settingsReducer,
   };
 };
 

@@ -1,10 +1,11 @@
-import React, {useRef} from "react";
+import React, { useRef } from "react";
 import "./HomePage.css";
-import {Link} from "react-scroll"
+import { Link } from "react-scroll";
+import { useHistory } from "react-router-dom";
 
-const HomePage = () => {
-    const myRef = useRef(null)
 
+const HomePage = ({user}) => {
+  const myRef = useRef(null);
 
   return (
     <div id="home-page-wrapper">
@@ -19,14 +20,24 @@ const HomePage = () => {
             An app that allows for the easy and effective exchange of textbooks
             between students!
           </div>
-          
-          <Link to="page-2" smooth={true} duration={1000}>Learn More!</Link>
+
+          <Link to="page-2" smooth={true} duration={1000}>
+            Learn More!
+          </Link>
+        </div>
+      </div>
+      <div id="page-2">
+        <div id="page-2-content">
+          <h1>
+            How does it work?
+          </h1>
           
         </div>
       </div>
-      <div id="page-2"></div>
     </div>
   );
 };
+
+
 
 export default HomePage;

@@ -97,6 +97,9 @@ const FilterContainer = ({
         setCampusFilter(item ? item.value.toUpperCase() : null);
         break;
       case "coursePrefix":
+        if(!item){
+          setCourseFilter(null);
+        }
         setCoursePrefixFilter(item ? item.value.toUpperCase() : null);
         
         break;
@@ -120,6 +123,7 @@ const FilterContainer = ({
       >
         <Select
           placeholder="Department"
+          value={coursePrefixFilter ? { value: coursePrefixFilter, label:  coursePrefixFilter}: null}
           onChange={(item) => handleFilterChange(item, "coursePrefix")}
           isClearable={true}
           className="select"
@@ -128,6 +132,7 @@ const FilterContainer = ({
         <Select
           isDisabled={coursePrefixFilter ? false : true}
           placeholder="Course"
+          value={courseFilter ? { value: courseFilter, label:  courseFilter}: null}
           onChange={(item) => handleFilterChange(item, "course")}
           isClearable={true}
           className="select"
@@ -135,6 +140,7 @@ const FilterContainer = ({
         />
         <Select
           placeholder="Campus"
+          value={campusFilter ? { value: campusFilter, label:  campusFilter}: null}
           onChange={(item) => handleFilterChange(item, "campus")}
           isClearable={true}
           className="select"
@@ -152,7 +158,7 @@ const FilterContainer = ({
             onChange={(e) => {
               updateSearch(e.target.value);
             }}
-            placeholder="Search for a title"
+            placeholder="Search by title"
             className="mr-sm-2"
           />
         </Form>

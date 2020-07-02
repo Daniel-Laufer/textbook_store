@@ -36,6 +36,7 @@
 
 .title-info-container{
 }
+
 ::-webkit-scrollbar {
   display: none;
 }
@@ -57,6 +58,8 @@
 
   position: absolute;
   overflow-y:scroll;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
   overflow-x:hidden;
   /* top: 100px; */
   /* left: 38%; */
