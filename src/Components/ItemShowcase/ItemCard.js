@@ -15,8 +15,10 @@ function ItemCard({
   user,
   cart,
   getCartItems,
+  darkTheme
 }) {
   const [displayDelete, setDisplayDelete] = useState(false);
+  console.log(darkTheme)
 
   useEffect(() => {
     if (cart.cartItemIds && cart.cartItemIds.includes(item.textbookId)) {
@@ -39,9 +41,11 @@ function ItemCard({
     item.cartCount -= 1;
   };
 
+  const darkCardBackgroundColor = "rgb(89, 88, 88)";
+
   if (item) {
     return (
-      <div className="card">
+      <div className="card"  style={darkTheme ? {backgroundColor: darkCardBackgroundColor, color: "white"}: {}}>
         <div id="cartCountContainer">
           <i
             id="cartCountIcon"
@@ -59,6 +63,7 @@ function ItemCard({
         </div>
         <div
           id="imageContainer"
+          style={darkTheme ? {backgroundColor: darkCardBackgroundColor}: {}}
           style={{ backgroundImage: `url(${item.image})` }}
         >
           {/* <img
@@ -68,7 +73,7 @@ function ItemCard({
           alt={item.title}
         /> */}
         </div>
-        <div className="card-body">
+        <div className="card-body" >
           <div className="card-title-container">
             <h5 className="card-title">
               {item.title.length > 35
@@ -89,19 +94,19 @@ function ItemCard({
             </div>
           </div>
           <ul className="list-group list-group-flush">
-            <li className="list-group-item">
+            <li className="list-group-item" style={darkTheme ? {backgroundColor: darkCardBackgroundColor}: {}}>
               <span className="modal-section-title">
                 <strong>Used at: </strong>
               </span>
               {item ? item.campus.toUpperCase() : ""}
             </li>
-            <li className="list-group-item">
+            <li className="list-group-item" style={darkTheme ? {backgroundColor: darkCardBackgroundColor}: {}}>
               <span className="modal-section-title">
                 <strong>Course: </strong>
               </span>
               {item ? item.course.toUpperCase() : ""}
             </li>
-            <li className="list-group-item">
+            <li className="list-group-item" style={darkTheme ? {backgroundColor: darkCardBackgroundColor}: {}}>
               <span className="modal-section-title">
                 <strong>Pickup Location: </strong>
               </span>

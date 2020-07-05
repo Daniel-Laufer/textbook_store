@@ -8,7 +8,9 @@ Modal.setAppElement("#root");
 
 Modal.defaultStyles.overlay.backgroundColor = "rgba(89,89,89, 0.75)";
 
-export default function TextbookModal({ funcs, item }) {
+const darkCardBackgroundColor = "rgb(89, 88, 88)";
+
+export default function TextbookModal({ funcs, item, darkTheme }) {
   const handWritingLabels = {
     0: "None.",
     50: "Only a little",
@@ -31,7 +33,7 @@ export default function TextbookModal({ funcs, item }) {
   };
   const getLevelMessage = (num, type) => {
     if (num >= 0 && num < 25) {
-      return { message: "None", level: <span rol="img">😄</span> };
+      return { message: "none", level: <span rol="img">😄</span> };
     } else if (num >= 25 && num < 50) {
       const out = { level: <span rol="img">🙂</span> };
       switch (type) {
@@ -71,10 +73,10 @@ export default function TextbookModal({ funcs, item }) {
           out["message"] = "everywhere!";
           return out;
         case "stains":
-          out["message"] = "Stains everwhere";
+          out["message"] = "stains everwhere";
           return out;
         case "pagesMissing":
-          out["message"] = "Many pages are missing";
+          out["message"] = "many are missing";
           return out;
         default:
           out["message"] = "";
@@ -156,30 +158,74 @@ export default function TextbookModal({ funcs, item }) {
           alt="A textbook!"
         />
       </div>
-      <div className="modal-data-container" onScroll={() => setScrolled(true)}>
+      <div
+        className="modal-data-container"
+        style={{
+          backgroundColor: darkTheme
+            ? darkCardBackgroundColor
+            : "rgb(255,255,255)",
+          color: darkTheme ? "white" : "black",
+        }}
+        onScroll={() => {
+          console.log(darkTheme);
+          setScrolled(true);
+        }}
+      >
         <div className="title-info-container">
           <h2 className="modal-title">{item ? item.title : "null"}</h2>
         </div>
         <ul className="list-group list-group-flush">
-          <li className="list-group-item">
+          <li
+            className="list-group-item"
+            style={{
+              backgroundColor: darkTheme
+                ? darkCardBackgroundColor
+                : "rgb(255,255,255)",
+              color: darkTheme ? "white" : "black",
+            }}
+          >
             <span className="modal-section-title">
               <strong>Used at: </strong>
             </span>
             {item ? item.campus.toUpperCase() : ""}
           </li>
-          <li className="list-group-item">
+          <li
+            className="list-group-item"
+            style={{
+              backgroundColor: darkTheme
+                ? darkCardBackgroundColor
+                : "rgb(255,255,255)",
+              color: darkTheme ? "white" : "black",
+            }}
+          >
             <span className="modal-section-title">
               <strong>Course: </strong>
             </span>
             {item ? item.course.toUpperCase() : ""}
           </li>
-          <li className="list-group-item">
+          <li
+            className="list-group-item"
+            style={{
+              backgroundColor: darkTheme
+                ? darkCardBackgroundColor
+                : "rgb(255,255,255)",
+              color: darkTheme ? "white" : "black",
+            }}
+          >
             <span className="modal-section-title">
               <strong>Pickup Location: </strong>
             </span>
             {item ? item.sellingLocation : ""}
           </li>
-          <li className="list-group-item">
+          <li
+            className="list-group-item"
+            style={{
+              backgroundColor: darkTheme
+                ? darkCardBackgroundColor
+                : "rgb(255,255,255)",
+              color: darkTheme ? "white" : "black",
+            }}
+          >
             <span className="modal-section-title">
               <strong>Contact Information</strong>
               <br />
@@ -213,7 +259,15 @@ export default function TextbookModal({ funcs, item }) {
               </span>
             )}
           </li>
-          <li className="list-group-item">
+          <li
+            className="list-group-item"
+            style={{
+              backgroundColor: darkTheme
+                ? darkCardBackgroundColor
+                : "rgb(255,255,255)",
+              color: darkTheme ? "white" : "black",
+            }}
+          >
             {qualityOfTextbooks ? (
               <>
                 <span className="modal-section-title">
@@ -273,7 +327,15 @@ export default function TextbookModal({ funcs, item }) {
               <></>
             )}
           </li>
-          <li className="list-group=item">
+          <li
+            className="list-group=item"
+            style={{
+              backgroundColor: darkTheme
+                ? darkCardBackgroundColor
+                : "rgb(255,255,255)",
+              color: darkTheme ? "white" : "black",
+            }}
+          >
             <span className="modal-section-title">
               <strong>Additional Notes</strong>
             </span>

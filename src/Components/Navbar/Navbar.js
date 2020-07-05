@@ -18,6 +18,7 @@ let AppNav = ({
   cartItems,
   getCartItems,
   getSignedInProfile,
+  settings
 }) => {
   const [settingsMenuOpen, setSettingsMenuOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
@@ -31,10 +32,10 @@ let AppNav = ({
   }, [user.authToken, getCartItems, user.loggedIn]);
 
   useEffect(() => {
-    if (user.loggedIn) {
+    if (user.loggedIn && user.updateRequested) {
       getSignedInProfile(user.authToken);
     }
-  }, [user.authToken, user.loggedIn, getSignedInProfile]);
+  }, [user.updateRequested, user.authToken, user.loggedIn, getSignedInProfile]);
 
 
   const [navExpanded, setNavExpanded] = useState(false);
@@ -91,7 +92,7 @@ let AppNav = ({
               {cartItems.pending ? "" : cartItems.numberOfItems}
             </div>
           </Form>
-          <div id="button-holder-div">
+          <div id="button-holder-div" style={!user.loggedIn ? {"width": "150px"}: {}}>
             {!user.loggedIn ? (
               <Link to="/login">
                 <Button
@@ -122,10 +123,10 @@ let AppNav = ({
               <i className="fas fa-cog"></i>
             </Button>
             {settingsMenuOpen ? (
-              <SettingsMenu setSettingsMenuOpen={setSettingsMenuOpen} />
+              <SettingsMenu darkTheme={settings.settings.darkTheme} setSettingsMenuOpen={setSettingsMenuOpen} />
             ) : null}
             {userMenuOpen ? (
-              <UserMenu hideNav={hideNav} setUserMenuOpen={setUserMenuOpen} />
+              <UserMenu darkTheme={settings.settings.darkTheme} hideNav={hideNav} setUserMenuOpen={setUserMenuOpen} />
             ) : null}
             {/* <Button id="profilePictureButton"></Button> */}
             {(user.publicUserInfo) ? (

@@ -3,7 +3,12 @@ import { connect } from "react-redux";
 import "./SettingsMenu.css";
 import { Form } from "react-bootstrap";
 import { updateSettings } from "../../Redux/Actions/settingsActions";
-let SettingsMenu = ({ setSettingsMenuOpen, settings, updateSettings }) => {
+let SettingsMenu = ({
+  setSettingsMenuOpen,
+  settings,
+  updateSettings,
+  darkTheme,
+}) => {
   useEffect(() => {
     document.getElementById("root").addEventListener("click", (e) => {
       // if(e.target.)
@@ -13,9 +18,12 @@ let SettingsMenu = ({ setSettingsMenuOpen, settings, updateSettings }) => {
         "form-check-input",
         "form-check",
         "fas fa-cog",
-        "settings-button btn btn-primary"
+        "settings-button btn btn-primary",
       ];
-      if (e.target.className && !ignore.includes(e.target.className) || e.target.className === '') {
+      if (
+        (e.target.className && !ignore.includes(e.target.className)) ||
+        e.target.className === ""
+      ) {
         setSettingsMenuOpen(false);
       }
     });
@@ -39,7 +47,13 @@ let SettingsMenu = ({ setSettingsMenuOpen, settings, updateSettings }) => {
 
   return (
     <>
-      <div className="settings-menu-container">
+      <div
+        className="settings-menu-container"
+        style={{
+          backgroundColor: darkTheme ? "rgb(56,56,56)" : "rgb(255,255,255)",
+          color: darkTheme ? "white" : "black",
+        }}
+      >
         {/* <div className="settings-menu-point"></div> */}
         Settings
         <Form>

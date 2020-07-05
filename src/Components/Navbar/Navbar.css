@@ -28,6 +28,7 @@ background: linear-gradient(to right, #182848, #4b6cb7); /* W3C, IE 10+/ Edge, F
     pointer-events: none;
     margin-left:2px;
     background-color:transparent;
+    margin-right:-20px;
 }
 
 .nav-brand{
@@ -69,7 +70,7 @@ background: linear-gradient(to right, #182848, #4b6cb7); /* W3C, IE 10+/ Edge, F
 
 #button-holder-div{
   display: flex;
-  width: 300px;
+  width: 210px;
   flex-direction: row;
   justify-content: space-evenly;
   margin-left:-10px;
@@ -113,7 +114,7 @@ background: linear-gradient(to right, #182848, #4b6cb7); /* W3C, IE 10+/ Edge, F
     background-color: rgba(255, 0, 0, 1);
     text-align: center;
     width:17px;
-    right:38px;
+    right:18px;
     bottom:16px;
     line-height: 17px;
     font-size: 15px;

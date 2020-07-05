@@ -37,6 +37,7 @@ const LoginPage = (props) => {
   };
 
   return (
+    <div className="root-form-container" style={{color: props.darkTheme ? "white": "black"}}>
     <Container className="form-container">
       <Form>
         <Form.Group controlId="formBasicEmail">
@@ -46,7 +47,7 @@ const LoginPage = (props) => {
             type="email"
             placeholder="Enter email"
           />
-          <Form.Text className="text-muted">
+          <Form.Text className={!props.darkTheme ? "text-muted": ""}>
             We'll never share your email with anyone else.
           </Form.Text>
         </Form.Group>
@@ -76,6 +77,7 @@ const LoginPage = (props) => {
       </Form>
       <p style={{"marginTop": '10px'}}>Don't have an account? Sign up <HashLink to="/signup">here!</HashLink></p>
     </Container>
+    </div>
   );
 };
 

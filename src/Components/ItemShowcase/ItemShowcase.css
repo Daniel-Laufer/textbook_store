@@ -2,13 +2,22 @@
   --showcase-loader-icon-WIDTH: 130px;
 }
 
+.container{
+  overflow-x: visible !important;
+}
+
+
+
 .item-showcase{
+  padding-top:20px;
     width: 100%;
     max-width: 1200px;
     display: flex;
     flex-wrap: wrap;
     margin: auto;
-    height: 100%;
+    overflow-y: auto;
+    overflow-x: visible !important;
+    padding-left:10px;
 
 }
 

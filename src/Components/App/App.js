@@ -27,7 +27,13 @@ import { login, loginWithOldtAuthToken } from "../../Redux/Actions/userActions";
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-function App({ getTextbooks, user, loginWithOldtAuthToken, settings, cartItems }) {
+function App({
+  getTextbooks,
+  user,
+  loginWithOldtAuthToken,
+  settings,
+  cartItems,
+}) {
   const [redirectRequested, setRedirectRequested] = useState(false);
 
   useEffect(() => {
@@ -68,17 +74,25 @@ function App({ getTextbooks, user, loginWithOldtAuthToken, settings, cartItems }
                 : "rgb(255,255,255)",
             }}
           >
-            <CartShowcase />
+            <CartShowcase/>
           </div>
         </Route>
         <Route path="/login">
-          <LoginPage />
+          <div
+            style={{
+              backgroundColor: settings.settings.darkTheme
+                ? "rgb(56,56,56)"
+                : "rgb(255,255,255)",
+            }}
+          >
+            <LoginPage darkTheme={settings.settings.darkTheme}/>
+          </div>
         </Route>
         <Route path="/signup">
           <SignUpPage />
         </Route>
         <Route path="/newPost">
-          <NewTextbookPage />
+          <NewTextbookPage darkTheme={settings.settings.darkTheme}/>
         </Route>
         <Route path="/about">
           <div>

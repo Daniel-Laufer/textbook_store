@@ -12,7 +12,7 @@ import TextbookModal from "../Modals/TextbookModal";
 import { addItemToCart } from "../../Redux/Actions/cartActions";
 import FilterContainer from "./Filters/FilterContainer/FilterContainer";
 
-function ItemShowcase({ textbooks, getTextbooks, cart, settings}) {
+function ItemShowcase({ textbooks, getTextbooks, cart, settings }) {
   const [modalIsOpen, setIsOpen] = useState(false);
   const [focusedItem, setFocusedItem] = useState(null);
   const [refreshedCart, setRefreshedCart] = useState(false);
@@ -34,9 +34,6 @@ function ItemShowcase({ textbooks, getTextbooks, cart, settings}) {
   //   }
   // }, [cart.refreshRequired]);
 
-
-  
-
   function afterOpenModal() {
     // references are now sync'd and can be accessed.
     // subtitle.style.color = "#f00";
@@ -48,40 +45,63 @@ function ItemShowcase({ textbooks, getTextbooks, cart, settings}) {
   }
 
   const sendCartRefreshRequest = () => {
-    if(!refreshedCart){
+    if (!refreshedCart) {
       setRefreshedCart(true);
       cart.refreshRequired = true;
     }
-  }
+  };
 
   const spinnerStyles = { display: textbooks.pending ? "block" : "none" };
   return (
     <>
       <FilterContainer />
-      <Container>
-        <div className={settings.settings.compactCards ? "compact-item-showcase" : "item-showcase"} >
-          <div style={spinnerStyles} className="loader">
-            <div className="loaderIcon"></div>
-          </div>
-          {textbooks.textbooksToDisplay.map((item, index) => {
-            if (settings.settings.compactCards)
+      <div
+        style={{
+          backgroundColor: settings.settings.darkTheme
+            ? "rgb(56,56,56)"
+            : "rgb(255,255,255)",
+        }}
+      >
+        <Container>
+          <div
+            className={
+              settings.settings.compactCards
+                ? "compact-item-showcase"
+                : "item-showcase"
+            }
+          >
+            <div style={spinnerStyles} className="loader">
+              <div className="loaderIcon"></div>
+            </div>
+            {textbooks.textbooksToDisplay.map((item, index) => {
+              if (settings.settings.compactCards)
+                return (
+                  <CompactItemCard
+                    openModal={openModal}
+                    darkTheme={settings.settings.darkTheme}
+                    key={index}
+                    item={item}
+                    sendCartRefreshRequest={sendCartRefreshRequest}
+                  />
+                );
+
               return (
-                <CompactItemCard
+                <ItemCard
+                  darkTheme={settings.settings.darkTheme}
                   openModal={openModal}
                   key={index}
                   item={item}
-                  sendCartRefreshRequest={sendCartRefreshRequest}
                 />
               );
-
-            return <ItemCard openModal={openModal} key={index} item={item} />;
-          })}
+            })}
           </div>
-        <TextbookModal
-          funcs={{ modalIsOpen, openModal, afterOpenModal, closeModal }}
-          item={focusedItem}
-        />
-      </Container>
+          <TextbookModal
+            darkTheme={settings.settings.darkTheme}
+            funcs={{ modalIsOpen, openModal, afterOpenModal, closeModal }}
+            item={focusedItem}
+          />
+        </Container>
+      </div>
     </>
   );
 }
@@ -91,7 +111,7 @@ const mapStateToProps = (state) => {
     textbooks: state.textbooksReducer,
     user: state.userReducer,
     cart: state.cartReducer,
-    settings: state.settingsReducer
+    settings: state.settingsReducer,
   };
 };
 

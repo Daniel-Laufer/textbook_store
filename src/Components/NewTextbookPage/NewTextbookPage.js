@@ -18,11 +18,10 @@ import "react-rangeslider/lib/index.css";
 import "./NewTextbookPage.css";
 import courseData from "../ItemShowcase/Filters/FilterContainer/courseData";
 import heic2any from "heic2any";
-import gifshot from "gifshot";
 
 const animatedComponents = makeAnimated();
 
-function NewTextbookPage({ textbooks, user, createNewTextbook }) {
+function NewTextbookPage({ textbooks, user, createNewTextbook, darkTheme}) {
   const [image, setImage] = useState(null);
   const [price, setPrice] = useState("");
   const [title, setTitle] = useState("");
@@ -271,9 +270,20 @@ function NewTextbookPage({ textbooks, user, createNewTextbook }) {
   };
 
   return (
-    <Container className="form-container">
+    <div style={{
+      backgroundColor: darkTheme
+        ? "rgb(56,56,56)"
+        : "rgb(255,255,255)",
+    }}>
+
+    
+    <Container className="form-container" style={{
+      color: darkTheme
+        ? "white"
+        : "black",
+    }}>
       <h1>New Post</h1>
-      <Form>
+      <Form >
         <Form.Row>
           <Form.Group as={Col} controlId="exampleForm.ControlInput1">
             <Form.Label>Title</Form.Label>
@@ -443,7 +453,7 @@ function NewTextbookPage({ textbooks, user, createNewTextbook }) {
           Submit
         </Button>
       </Form>
-    </Container>
+    </Container></div>
   );
 }
 

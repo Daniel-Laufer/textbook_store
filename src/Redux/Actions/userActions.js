@@ -1,4 +1,4 @@
-import {LOGIN, LOGOUT, SIGNUP, GET_SIGNED_IN_PROFILE} from "../actionNames";
+import {LOGIN, LOGOUT, SIGNUP, GET_SIGNED_IN_PROFILE, UPDATE_PROFILE_PICTURE} from "../actionNames";
 import axios from "axios";
 
 
@@ -45,3 +45,32 @@ export const logout = () => {
     }
 }
 
+
+
+
+export const updateProfilePicture = (user, image) => {
+    const headers = {
+      Authorization: `Bearer ${user.authToken.token}`,
+    };
+    const formData = new FormData();
+    formData.append("file", image);
+  
+    let imageURL;
+  
+    return {
+      type: UPDATE_PROFILE_PICTURE,
+      payload: axios
+        .post("/image/User_Profile_Images", formData, { headers })
+        .then((res) => {
+          imageURL = res.data.url;
+          console.log(imageURL)
+          axios
+            .put("user/profilePicture", {imageURL}, { headers })
+            .then((data) =>  data)
+            .catch((err) => console.log(err));
+        })
+        .catch((err) => {
+          console.log(err);
+        }),
+    };
+  };

@@ -3,7 +3,8 @@ import {
   LOGOUT,
   LOGIN_WITH_OLD_AUTH_TOKEN,
   SIGNUP,
-  GET_SIGNED_IN_PROFILE
+  GET_SIGNED_IN_PROFILE,
+  UPDATE_PROFILE_PICTURE
 } from "../actionNames";
 
 const initialState = {
@@ -13,7 +14,8 @@ const initialState = {
   pending: false,
   error: null,
   loadProfilePending: false,
-  publicUserInfo: null
+  publicUserInfo: null,
+  updateRequested: true
   //   fname: "ERROR",
   //   lname: "ERROR",
 };
@@ -59,11 +61,25 @@ export default (state = initialState, action) => {
       return {
         ...state,
         loadProfilePending: false,
+        updateRequested: false,
         publicUserInfo: {...action.payload}
       };
     case GET_SIGNED_IN_PROFILE + "_PENDING":
       return { ...state, loadProfilePending: true };
     case GET_SIGNED_IN_PROFILE + "_REJECTED":
+      return { ...state, error: action.payload, loadProfilePending: false, updateRequested: false };
+
+
+
+    case UPDATE_PROFILE_PICTURE + "_FULFILLED":
+      return {
+        ...state,
+        updateRequested: true,
+        loadProfilePending: false
+      };
+    case UPDATE_PROFILE_PICTURE + "_PENDING":
+      return { ...state, loadProfilePending: true };
+    case UPDATE_PROFILE_PICTURE + "_REJECTED":
       return { ...state, error: action.payload, loadProfilePending: false };
 
 

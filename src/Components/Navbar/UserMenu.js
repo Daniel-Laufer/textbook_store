@@ -1,12 +1,22 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import "./UserMenu.css";
 import { Button } from "react-bootstrap";
 import { updateSettings } from "../../Redux/Actions/settingsActions";
-import { logout } from "../../Redux/Actions/userActions";
+import { logout, updateProfilePicture } from "../../Redux/Actions/userActions";
 import { useHistory, Link } from "react-router-dom";
+import heic2any from "heic2any";
 
-let UserMenu = ({ setUserMenuOpen, user, logout, hideNav }) => {
+let UserMenu = ({
+  setUserMenuOpen,
+  user,
+  logout,
+  hideNav,
+  updateProfilePicture,
+  darkTheme
+}) => {
+  const [image, setImage] = useState(null);
+
   useEffect(() => {
     document.getElementById("root").addEventListener("click", (e) => {
       // if(e.target.)
@@ -36,15 +46,56 @@ let UserMenu = ({ setUserMenuOpen, user, logout, hideNav }) => {
   const history = useHistory();
 
   const handleLogOut = () => {
-      setUserMenuOpen(false);
+    setUserMenuOpen(false);
     delete localStorage.authToken;
     logout();
     history.push("/textbooks");
   };
 
+  const handleFileChange = (e) => {
+    // console.log(e.target.files[0])
+    //{ name: "IMG_2848.HEIC.gif", lastModified: 1593550543093, webkitRelativePath: "", size: 7315216, type: "image/gif" }
+    console.log(e.target.files[0]);
+
+    if (
+      e.target.files[0].name
+        .split(".")
+        [e.target.files[0].name.split(".").length - 1].toLowerCase() === "heic"
+    ) {
+      new Promise((resolve, reject) => {
+        heic2any({
+          blob: e.target.files[0],
+          toType: "image/jpeg",
+          quality: 0.4,
+        })
+          .then(function (resultBlob) {
+            const file = new File([resultBlob], "converted.jpg", {
+              type: "image/jpeg",
+            });
+            resolve(file);
+          })
+          .catch((err) => reject(err));
+      })
+        .then((data) => {
+          setImage(data);
+          updateProfilePicture(user, data);
+        })
+        .catch((err) => console.log(err));
+    } else {
+      console.log("else");
+      setImage(e.target.files[0]);
+    }
+  };
+
   return (
     <>
-      <div className="user-menu-container">
+      <div
+        className="user-menu-container"
+        style={{
+          backgroundColor: darkTheme ? "rgb(56,56,56)" : "rgb(255,255,255)",
+          color: darkTheme ? "white" : "black",
+        }}
+      >
         {user.publicUserInfo ? (
           <>
             <div className="user-menu-profile-pic-container">
@@ -55,7 +106,11 @@ let UserMenu = ({ setUserMenuOpen, user, logout, hideNav }) => {
               />
               <div className="user-menu-input-container">
                 <i className="change-photo-icon fas fa-camera"></i>
-                <input className="user-menu-input" type="file" />
+                <input
+                  className="user-menu-input"
+                  type="file"
+                  onChange={(e) => handleFileChange(e)}
+                />
               </div>
             </div>
             <hr />
@@ -98,6 +153,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     logout: () => dispatch(logout()),
+    updateProfilePicture: (user, image) =>
+      dispatch(updateProfilePicture(user, image)),
   };
 };
 
