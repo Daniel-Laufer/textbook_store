@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import "./SettingsMenu.css";
 import { Form } from "react-bootstrap";
 import { updateSettings } from "../../Redux/Actions/settingsActions";
-import { NonceProvider } from "react-select";
 let SettingsMenu = ({ setSettingsMenuOpen, settings, updateSettings }) => {
   useEffect(() => {
     document.getElementById("root").addEventListener("click", (e) => {
@@ -15,13 +14,12 @@ let SettingsMenu = ({ setSettingsMenuOpen, settings, updateSettings }) => {
         "form-check",
         "fas fa-cog",
         "settings-button btn btn-primary"
-        
       ];
-      if (e.target.className && !ignore.includes(e.target.className)) {
+      if (e.target.className && !ignore.includes(e.target.className) || e.target.className === '') {
         setSettingsMenuOpen(false);
       }
     });
-  }, []);
+  }, [setSettingsMenuOpen]);
 
   const handleChecked = (type) => {
     let newSettings;

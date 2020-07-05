@@ -2,8 +2,6 @@ import {
   GET_TEXTBOOKS,
   SEARCH_AND_UPDATE_TEXTBOOKS,
   CREATE_NEW_TEXTBOOK,
-  APPLY_FILTER,
-  GET_USER_PUBLIC_INFO
 } from "../actionNames.js";
 
 export default (
@@ -40,7 +38,6 @@ export default (
       const filtersToCheck = Object.keys(action.payload.filters).filter(
         (key) => action.payload.filters[key] !== null
       );
-      console.log(filtersToCheck)
 
       for (let key in state.allTextbooks) {
         if (

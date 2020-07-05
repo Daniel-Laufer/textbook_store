@@ -112,6 +112,7 @@ export const createNewTextbook = (user, image, description, title, price, course
       .post("/image/Textbook_Images", formData, { headers })
       .then((res) => {
         imageURL = res.data.url;
+        console.log(imageURL)
         const otherData = { description, title, price, imageURL, course, campus, sellingLocation, textbookQuality: {pagesMissing, handWriting, stains}, privacySettings };
         axios
           .post("/createTextbook", { otherData }, { headers })
@@ -119,7 +120,7 @@ export const createNewTextbook = (user, image, description, title, price, course
           .catch((err) => console.log(err));
       })
       .catch((err) => {
-        // console.log(err);
+        console.log(err);
         return null;
       }),
   };

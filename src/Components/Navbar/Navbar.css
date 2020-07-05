@@ -69,11 +69,35 @@ background: linear-gradient(to right, #182848, #4b6cb7); /* W3C, IE 10+/ Edge, F
 
 #button-holder-div{
   display: flex;
-  width: 200px;
+  width: 300px;
   flex-direction: row;
   justify-content: space-evenly;
   margin-left:-10px;
+  flex-wrap: wrap;
 
+}
+
+
+#profilePictureButton{
+  /* display: none; */
+  margin-left:2px;
+  max-height:40px;
+  max-width: 51px;
+  background-color: transparent;
+}
+
+#nav-profile-pic{
+  height:40px;
+  width:40px;
+  cursor: pointer;
+  /* margin-top:-3px; */
+  /* margin-left:-6px; */
+    background-size: cover;
+    background-position: center;
+    object-fit: cover;
+    object-position: center;
+    border-radius: 35%;
+    margin-right:10px;
 }
 
 
@@ -110,6 +134,10 @@ background: linear-gradient(to right, #182848, #4b6cb7); /* W3C, IE 10+/ Edge, F
   }
 
 
+
+
+
+
 @media only screen and (max-width: 990px) {
     #cart-form{
         position: relative;
@@ -117,8 +145,16 @@ background: linear-gradient(to right, #182848, #4b6cb7); /* W3C, IE 10+/ Edge, F
         top:5px;
     }
      #button-holder-div{
-    flex-direction: column;
-    margin-left:0px;
+    flex-direction: row;
+    margin-left:-17px;
+    margin-top:10px;
+    width:200px;
+    justify-content: space-around;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  #button-holder-div > *{
+    margin-left: 5px;
     margin-top:10px;
   }
   #new-post-button{
@@ -132,6 +168,9 @@ background: linear-gradient(to right, #182848, #4b6cb7); /* W3C, IE 10+/ Edge, F
   
   #cartIcon{
     margin-left:-4px !important;
+  }
+  #new-post-button{
+    margin-top:-2px;
   }
 
 
@@ -157,6 +196,19 @@ background: linear-gradient(to right, #182848, #4b6cb7); /* W3C, IE 10+/ Edge, F
   /*   border-bottom-color:red; */
     animation:spin 0.8s linear infinite;
   }
+
+
+  .profilePictureLoaderIcon{
+    height:40px;
+  width:40px;
+    margin:1px auto;
+    border:2px solid 	white;
+    border-radius:50%; 
+    border-top-color:greenyellow;
+  /*   border-bottom-color:red; */
+    animation:spin 0.8s linear infinite;
+  }
+
   
   @keyframes spin{
     to{

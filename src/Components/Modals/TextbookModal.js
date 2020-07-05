@@ -4,12 +4,9 @@ import "./TextbookModal.css";
 import Slider from "react-rangeslider";
 import "react-rangeslider/lib/index.css";
 
-
-
-
 Modal.setAppElement("#root");
 
-Modal.defaultStyles.overlay.backgroundColor = 'rgba(89,89,89, 0.75)';
+Modal.defaultStyles.overlay.backgroundColor = "rgba(89,89,89, 0.75)";
 
 export default function TextbookModal({ funcs, item }) {
   const handWritingLabels = {
@@ -27,51 +24,51 @@ export default function TextbookModal({ funcs, item }) {
 
   const getLevelColor = (num) => {
     if (num >= 0 && num < 25) return "green";
-    else if (num >= 25 && num < 50) return "rgb(199, 199, 16)";
+    else if (num >= 25 && num < 50) return "rgb(128, 171, 43)";
     else if (num >= 50 && num < 75) return "orange";
     else if (num >= 75 && num <= 100) return "red";
     else return "purple";
   };
   const getLevelMessage = (num, type) => {
     if (num >= 0 && num < 25) {
-      return { message: "None", level: "Great!" };
+      return { message: "None", level: <span rol="img">😄</span> };
     } else if (num >= 25 && num < 50) {
-      const out = { level: "Good!" };
+      const out = { level: <span rol="img">🙂</span> };
       switch (type) {
         case "handWriting":
-          out["message"] = "On a few pages...";
+          out["message"] = "on a few pages";
           return out;
         case "stains":
-          out["message"] = "One or two little ones";
+          out["message"] = "one or two little ones";
           return out;
         case "pagesMissing":
-          out["message"] = "One or two...";
+          out["message"] = "one or two...";
           return out;
         default:
           out["message"] = "";
           return out;
       }
     } else if (num >= 50 && num < 75) {
-      const out = { level: "Not Great." };
+      const out = { level: <span rol="img">😔</span> };
       switch (type) {
         case "handWriting":
-          out["message"] = "Handwriting on quite a few pages";
+          out["message"] = "on several pages";
           return out;
         case "stains":
-          out["message"] = "Quite a few stains exist";
+          out["message"] = "several stains exist";
           return out;
         case "pagesMissing":
-          out["message"] = "Quite a few are missing";
+          out["message"] = "several are missing";
           return out;
         default:
           out["message"] = "";
           return out;
       }
     } else if (num >= 75 && num <= 100) {
-      const out = { level: "Bad." };
+      const out = { level: <span rol="img">😨</span> };
       switch (type) {
         case "handWriting":
-          out["message"] = "Almost every page";
+          out["message"] = "everywhere!";
           return out;
         case "stains":
           out["message"] = "Stains everwhere";
@@ -128,8 +125,7 @@ export default function TextbookModal({ funcs, item }) {
   }, [funcs.modalIsOpen]);
 
   const [scrolled, setScrolled] = useState(false);
-
-  return (
+  return item ? (
     <Modal
       id="yes"
       className="textbook-modal"
@@ -160,46 +156,71 @@ export default function TextbookModal({ funcs, item }) {
           alt="A textbook!"
         />
       </div>
-      <div className="modal-data-container">
+      <div className="modal-data-container" onScroll={() => setScrolled(true)}>
         <div className="title-info-container">
           <h2 className="modal-title">{item ? item.title : "null"}</h2>
         </div>
-        <ul class="list-group list-group-flush">
-          <li class="list-group-item">
+        <ul className="list-group list-group-flush">
+          <li className="list-group-item">
             <span className="modal-section-title">
               <strong>Used at: </strong>
             </span>
             {item ? item.campus.toUpperCase() : ""}
           </li>
-          <li class="list-group-item">
+          <li className="list-group-item">
             <span className="modal-section-title">
               <strong>Course: </strong>
             </span>
             {item ? item.course.toUpperCase() : ""}
           </li>
-          <li class="list-group-item">
+          <li className="list-group-item">
             <span className="modal-section-title">
               <strong>Pickup Location: </strong>
             </span>
             {item ? item.sellingLocation : ""}
           </li>
-        </ul>
-        <div className="modal-content-div" onScroll={() => setScrolled(true)}>
-        <div className="contact-container">
+          <li className="list-group-item">
             <span className="modal-section-title">
               <strong>Contact Information</strong>
+              <br />
             </span>
-            <p>{item ? item.description : "null"}</p>
-          </div>
-          <div className="textbook-quality-div">
+            {item.sellerPublicInfo.name ? (
+              <div>
+                <strong>Name: </strong> {item.sellerPublicInfo.name}
+              </div>
+            ) : (
+              <span role={"img"} aria-label={"hidden"}>
+                <strong>Name: </strong>🔒
+              </span>
+            )}
+            {item.sellerPublicInfo.email ? (
+              <div>
+                <strong>Email: </strong> {item.sellerPublicInfo.email}
+              </div>
+            ) : (
+              <span role={"img"} aria-label={"hidden"}>
+                <strong>Email: </strong>🔒
+              </span>
+            )}
+            {item.sellerPublicInfo.phoneNumber ? (
+              <div>
+                <strong>Phone Number: </strong>{" "}
+                {item.sellerPublicInfo.phoneNumber}
+              </div>
+            ) : (
+              <span role={"img"} aria-label={"hidden"}>
+                <strong>Phone Number: </strong> 🔒
+              </span>
+            )}
+          </li>
+          <li className="list-group-item">
             {qualityOfTextbooks ? (
               <>
                 <span className="modal-section-title">
                   <strong>Textbook Quality</strong>
                 </span>
                 <div>
-                  Amount of Handwriting:
-                  <br />
+                  Handwriting:
                   <strong>
                     <span
                       style={{
@@ -208,14 +229,14 @@ export default function TextbookModal({ funcs, item }) {
                           : "purple",
                       }}
                     >
+                      {"   "}
+                      {qualityOfTextbooks.handWriting.data.message}{" "}
                       {qualityOfTextbooks.handWriting.data.level}
                     </span>
-                    ({qualityOfTextbooks.handWriting.data.message})
                   </strong>
                 </div>
                 <div>
-                  Amount of Stains:
-                  <br />
+                  Stains:
                   <strong>
                     <span
                       style={{
@@ -224,14 +245,14 @@ export default function TextbookModal({ funcs, item }) {
                           : "purple",
                       }}
                     >
+                      {"   "}
+                      {qualityOfTextbooks.stains.data.message}{" "}
                       {qualityOfTextbooks.stains.data.level}
                     </span>
-                    ({qualityOfTextbooks.stains.data.message})
                   </strong>
                 </div>
                 <div>
-                  Amount of Pages Missing:
-                  <br />
+                  Pages Missing:
                   <strong>
                     <span
                       style={{
@@ -240,25 +261,25 @@ export default function TextbookModal({ funcs, item }) {
                           : "purple",
                       }}
                     >
+                      {" "}
+                      {"   "}
+                      {qualityOfTextbooks.pagesMissing.data.message}{" "}
                       {qualityOfTextbooks.pagesMissing.data.level}
                     </span>
-                    ({qualityOfTextbooks.pagesMissing.data.message})
                   </strong>
                 </div>
               </>
             ) : (
               <></>
             )}
-          </div>
-          <hr />
-          <hr />
-          <div className="description-container">
+          </li>
+          <li className="list-group=item">
             <span className="modal-section-title">
               <strong>Additional Notes</strong>
             </span>
             <p>{item ? item.description : "null"}</p>
-          </div>
-        </div>
+          </li>
+        </ul>
       </div>
       <img
         style={scrolled ? { display: "none" } : { display: "block" }}
@@ -268,5 +289,5 @@ export default function TextbookModal({ funcs, item }) {
         alt="scroll down"
       />
     </Modal>
-  );
+  ) : null;
 }

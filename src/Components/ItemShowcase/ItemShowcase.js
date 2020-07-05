@@ -9,7 +9,7 @@ import { getTextbooks } from "../../Redux/Actions/textbookActions";
 import { Container } from "react-bootstrap";
 
 import TextbookModal from "../Modals/TextbookModal";
-import { addItemToCart, getCartItems } from "../../Redux/Actions/cartActions";
+import { addItemToCart } from "../../Redux/Actions/cartActions";
 import FilterContainer from "./Filters/FilterContainer/FilterContainer";
 
 function ItemShowcase({ textbooks, getTextbooks, cart, settings}) {

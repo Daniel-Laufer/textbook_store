@@ -16,8 +16,9 @@ import makeAnimated from "react-select/animated";
 import Slider from "react-rangeslider";
 import "react-rangeslider/lib/index.css";
 import "./NewTextbookPage.css";
-import axios from "axios";
 import courseData from "../ItemShowcase/Filters/FilterContainer/courseData";
+import heic2any from "heic2any";
+import gifshot from "gifshot";
 
 const animatedComponents = makeAnimated();
 
@@ -93,7 +94,7 @@ function NewTextbookPage({ textbooks, user, createNewTextbook }) {
 
   // filter out the unecessary courses
   useEffect(() => {
-    console.log(coursePrefixFilter)
+    console.log(coursePrefixFilter);
     if (coursePrefixFilter) {
       let courses = [];
       for (let i = 0; i < courseData.courses.length; i++) {
@@ -107,7 +108,7 @@ function NewTextbookPage({ textbooks, user, createNewTextbook }) {
           courses.push(toAppend);
         }
       }
-      console.log(courses)
+      console.log(courses);
       setCourses(courses);
     }
   }, [coursePrefixFilter]);
@@ -143,7 +144,7 @@ function NewTextbookPage({ textbooks, user, createNewTextbook }) {
         setCoursePrefixFilter(items ? items.value : null);
         break;
       case "course":
-        setCourse(items ? items.value : null)
+        setCourse(items ? items.value : null);
         break;
       default:
         console.log("error!");
@@ -170,6 +171,7 @@ function NewTextbookPage({ textbooks, user, createNewTextbook }) {
         break;
       case "location":
         setSellingLocation(e.target.value);
+        break;
       default:
         return null;
     }
@@ -192,21 +194,27 @@ function NewTextbookPage({ textbooks, user, createNewTextbook }) {
         (item) => item === "" || item === null
       )
     ) {
+      console.log("empty error")
       // if (image === null || description === "" || title === "" || price === "" }} ) {
       return setSubmitError("An input field is empty!");
     } else if (isNaN(price)) {
+      console.log("price error")
       return setSubmitError("The price is not a number!");
     } else if (
       !supportedFileFormats.includes(
         image.name.split(".")[image.name.split(".").length - 1].toLowerCase()
       )
     ) {
+      console.log("image error")
       return setSubmitError("That image type is not supported!");
     } else if (!(privacySettings.Email || privacySettings["Phone Number"])) {
+      console.log("privacy")
       return setSubmitError(
         "Please provide at least one piece of contact information! (email and/or phone number)!"
       );
     }
+    console.log("submitting!!!!!!!")
+    console.log(image);
     createNewTextbook(
       user,
       image,
@@ -223,11 +231,43 @@ function NewTextbookPage({ textbooks, user, createNewTextbook }) {
     );
   };
 
+
   const handleFileChange = (e) => {
     // console.log(e.target.files[0])
     //{ name: "IMG_2848.HEIC.gif", lastModified: 1593550543093, webkitRelativePath: "", size: 7315216, type: "image/gif" }
+    console.log(e.target.files[0]);
 
-    setImage(e.target.files[0]);
+    if(e.target.files[0].name.split(".")[e.target.files[0].name.split(".").length - 1].toLowerCase() === 'heic'){
+      new Promise((resolve, reject) => {
+        heic2any({
+          blob: e.target.files[0],
+          toType: "image/jpeg",
+          quality: 0.4
+        })
+          .then(function (resultBlob) {
+            const file = new File([resultBlob], "converted.jpg", {type: "image/jpeg"});
+            resolve(file)
+          })
+          .catch((err) => reject(err));
+      })
+      .then((data) => {
+        console.log("done with that")
+        console.log(data)
+        setImage(data);
+        console.log("new image ", image)
+      }) 
+      .catch((err) => console.log(err));
+    }
+    else{
+      console.log("else")
+      setImage(e.target.files[0]);
+    }
+    
+
+
+      
+
+    
   };
 
   return (
@@ -262,7 +302,10 @@ function NewTextbookPage({ textbooks, user, createNewTextbook }) {
 
         <Form.Row>
           <Form.Group as={Col} controlId="exampleForm.ControlInput1">
-          <Form.Label>Which academic department uses this textbook? Please select its corresponding course prefix:</Form.Label>
+            <Form.Label>
+              Which academic department uses this textbook? Please select its
+              corresponding course prefix:
+            </Form.Label>
             <Select
               placeholder="CSC"
               onChange={(items) => handleSelectChange(items, "coursePrefix")}
@@ -272,7 +315,13 @@ function NewTextbookPage({ textbooks, user, createNewTextbook }) {
             />
           </Form.Group>
           <Form.Group as={Col} controlId="exampleForm.ControlInput1">
-            <Form.Label>Which course uses this textbook? Please finish answering the previous question first 😉</Form.Label>
+            <Form.Label>
+              Which course uses this textbook? Please finish answering the
+              previous question first{" "}
+              <span role={"img"} aria-label="winky face">
+                😉
+              </span>
+            </Form.Label>
             <Select
               isDisabled={coursePrefixFilter ? false : true}
               placeholder="Course"
@@ -387,7 +436,7 @@ function NewTextbookPage({ textbooks, user, createNewTextbook }) {
           <Alert variant="success">Success!</Alert>
         ) : null}
         <Button
-          onClick={(e) => handleSubmit(e)}
+          onClick={(e) => {console.log("submit called"); handleSubmit(e)}}
           type="submit"
           variant="primary"
         >

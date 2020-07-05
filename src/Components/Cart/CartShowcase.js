@@ -27,7 +27,9 @@ function CartShowcase({ cartItems, getCartItems, user, settings }) {
   const spinnerStyles = { display: cartItems.pending ? "block" : "none" };
 
     useEffect(() => {
-      if(cartItems.refreshRequested && user.loggedIn){
+      if(cartItems.refreshRequested && user.loggedIn && !cartItems.pending){
+        console.log("Cartshowcase getCartItems")
+
         getCartItems(user.authToken);
       }
     }, [getCartItems, user.authToken, cartItems.refreshRequested, user.loggedIn]); // this list was empty normally

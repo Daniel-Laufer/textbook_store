@@ -26,7 +26,9 @@ function ItemCard({
   }, [cart.cartItemIds]);
 
   useEffect(() => {
-    if (cart.refreshRequested && user.loggedIn) {
+    if (cart.refreshRequested && user.loggedIn && !cart.pending) {
+      console.log("Card getCartItems")
+
       getCartItems(user.authToken);
       cart.refreshRequested = false;
     }
@@ -36,7 +38,6 @@ function ItemCard({
     deleteItemFromCart(user.authToken, item.textbookId);
     item.cartCount -= 1;
   };
-  const spinnerStyles = { display: cart.pending ? "block" : "none" };
 
   if (item) {
     return (
@@ -80,26 +81,27 @@ function ItemCard({
             <img
               id="profile-picture"
               src={item.sellerPublicInfo.profilePicture}
+              alt="profile picture"
             />
             <div className="sellerUsername">
               {item.sellerPublicInfo.userName.substring(0, 16) +
                 (item.sellerPublicInfo.userName.length > 16 ? "..." : "")}
             </div>
           </div>
-          <ul class="list-group list-group-flush">
-            <li class="list-group-item">
+          <ul className="list-group list-group-flush">
+            <li className="list-group-item">
               <span className="modal-section-title">
                 <strong>Used at: </strong>
               </span>
               {item ? item.campus.toUpperCase() : ""}
             </li>
-            <li class="list-group-item">
+            <li className="list-group-item">
               <span className="modal-section-title">
                 <strong>Course: </strong>
               </span>
               {item ? item.course.toUpperCase() : ""}
             </li>
-            <li class="list-group-item">
+            <li className="list-group-item">
               <span className="modal-section-title">
                 <strong>Pickup Location: </strong>
               </span>

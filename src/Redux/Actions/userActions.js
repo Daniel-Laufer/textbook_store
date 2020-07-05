@@ -1,11 +1,11 @@
-import {LOGIN, LOGOUT, SIGNUP, GET_USER_PUBLIC_INFO} from "../actionNames";
+import {LOGIN, LOGOUT, SIGNUP, GET_SIGNED_IN_PROFILE} from "../actionNames";
 import axios from "axios";
 
 
 export const login = (email, password) => {
     return{
         type: LOGIN,
-        payload: axios.post('/login', {"email":email, "password":password}).then(res => res.data)
+    payload: axios.post('/login', {"email":email, "password":password}).then(res => res.data)
     }
 }
 
@@ -17,12 +17,16 @@ export const signUp = (email, password, name, username, phoneNumber, campus) => 
     }
 }
 
-export const getUserPublicInfo = (userId) => {
-    return{
-        type: GET_USER_PUBLIC_INFO,
-        payload: axios.get(`/userId${userId}`).then(res => res.data)
-    }
-}
+export const getSignedInProfile = (authToken) => {
+    const headers = {
+      'Authorization': `Bearer ${!authToken ? 1: authToken.token}`
+  };
+    return {
+      type: GET_SIGNED_IN_PROFILE,
+      payload: axios.get(`https://us-central1-textbook-store-2e072.cloudfunctions.net/api/user`, {headers})
+        .then((data) => data.data),
+    };
+  };
 
 export const loginWithOldtAuthToken = (pastAuthToken) => {
     return{

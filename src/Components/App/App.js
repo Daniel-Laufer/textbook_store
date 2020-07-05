@@ -27,7 +27,7 @@ import { login, loginWithOldtAuthToken } from "../../Redux/Actions/userActions";
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-function App({ getTextbooks, user, loginWithOldtAuthToken, settings }) {
+function App({ getTextbooks, user, loginWithOldtAuthToken, settings, cartItems }) {
   const [redirectRequested, setRedirectRequested] = useState(false);
 
   useEffect(() => {
@@ -44,7 +44,10 @@ function App({ getTextbooks, user, loginWithOldtAuthToken, settings }) {
 
       if (oldAuthToken && timeDiff < 10) {
         loginWithOldtAuthToken({ token: oldAuthToken });
-        getCartItems(user.authToken);
+        if (!cartItems.pending) {
+          console.log("App getCartItems");
+          getCartItems(user.authToken);
+        }
       } else {
         delete localStorage.authToken;
         delete localStorage.timeLoggedIn;
