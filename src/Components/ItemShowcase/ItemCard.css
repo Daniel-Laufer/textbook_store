@@ -12,6 +12,15 @@
   border-radius: 5%;
   margin-bottom:30px;
 }
+ 
+
+.btn.btn-primary:disabled {
+  background-color: #bad0f5;
+}
+.btn.btn-danger:disabled {
+  background-color: #e8a5a5;
+}
+
 
 #profile-picture {
   width: 20px;
@@ -44,7 +53,7 @@
 }
 
 
-@media only screen and (max-width: 1550px) {
+/* @media only screen and (max-width: 1550px) {
   .delete-button-container{
 
     left: 175px;
@@ -60,25 +69,38 @@
     
     
   }
-}
+} */
 
-.delete-button-container{
-  background-color:white;
-  position: absolute;
-  left:197px;
-  top: -12px;
-  border-radius: 100%;
-  height: 25px;
-  z-index: 99;
-  
-}
 
 
 .delete-button-icon {
   color: red;
   font-size: 32px;
-  cursor: pointer;
+  position: absolute;
+  left: 205px;
+  top: -12px;
 
+}
+.delete-button-icon-background {
+  color: white;
+  font-size: 32px;
+  position: absolute;
+  left: 205px;
+  top: -12px;
+  border-radius: 50%;
+
+}
+
+
+@media only screen and (max-width: 1199px) {
+  .delete-button-icon {
+    left: 170px;
+  
+  }
+  .delete-button-icon-background {
+    left: 170px;
+  
+  }
 }
 
 

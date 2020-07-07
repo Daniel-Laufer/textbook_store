@@ -79,6 +79,7 @@ function ItemCard({
           </div>
         </div>
         <div className="delete-button-container">
+          <i className="delete-button-icon-background fas fa-circle"></i>
           <i className="delete-button-icon fas fa-times-circle"></i>
         </div>
         <div
@@ -174,7 +175,7 @@ function ItemCard({
 
         <div id="cartButtonHolder" className="card-body">
           <button
-            style={myCard ? { opacity: "0" } : {}}
+            // style={myCard ? { opacity: "0" } : {}}
             disabled={
               myCard || !cart.cartItemIds || displayDelete ? true : false
             }
@@ -200,7 +201,7 @@ function ItemCard({
             <i className="fas fa-info"></i>
           </button>
           <button
-            style={myCard ? { opacity: "0" } : {}}
+            // style={myCard ? { opacity: "0" } : {}}
             type="button"
             title={`Remove from cart ${
               user.loggedIn ? "" : "(Please login first!)"

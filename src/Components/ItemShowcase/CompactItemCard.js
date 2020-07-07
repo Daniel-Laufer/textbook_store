@@ -113,7 +113,7 @@ function CompactItemCard({
             title={`Add to cart ${
               user.loggedIn ? "" : "(Please login first!)"
             }`}
-            style={myCard ? { opacity: "0" } : {}}
+            // style={myCard ? { opacity: "0" } : {}}
             disabled={
               myCard || !cart.cartItemIds || displayDelete ? true : false
             }
@@ -137,7 +137,7 @@ function CompactItemCard({
           </button>
           <button
             type="button"
-            style={myCard ? { opacity: "0" } : {}}
+            // style={myCard ? { opacity: "0" } : {}}
             title={`Remove from cart ${
               user.loggedIn ? "" : "(Please login first!)"
             } ${displayDelete ? "" : "(This item is not in your cart!)"}`}
