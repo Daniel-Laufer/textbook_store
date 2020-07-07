@@ -18,6 +18,7 @@ import AppNav from "../Navbar/Navbar";
 import HomePage from "../../Containers/HomePage";
 
 /*                   ACTIONS                                                   */
+import UserTextbookShowcase from "../UserTextbookShowcase/UserTextbookShowcase";
 
 import { getTextbooks } from "../../Redux/Actions/textbookActions";
 import { getCartItems } from "../../Redux/Actions/cartActions";
@@ -74,7 +75,7 @@ function App({
                 : "rgb(255,255,255)",
             }}
           >
-            <CartShowcase/>
+            <CartShowcase />
           </div>
         </Route>
         <Route path="/login">
@@ -85,14 +86,14 @@ function App({
                 : "rgb(255,255,255)",
             }}
           >
-            <LoginPage darkTheme={settings.settings.darkTheme}/>
+            <LoginPage darkTheme={settings.settings.darkTheme} />
           </div>
         </Route>
         <Route path="/signup">
           <SignUpPage />
         </Route>
         <Route path="/newPost">
-          <NewTextbookPage darkTheme={settings.settings.darkTheme}/>
+          <NewTextbookPage darkTheme={settings.settings.darkTheme} />
         </Route>
         <Route path="/about">
           <div>
@@ -100,6 +101,23 @@ function App({
             <p>This web app was created by Daniel Laufer.</p>
           </div>
         </Route>
+        <Route
+          path="/textbooks/user/:userId"
+          render={({match}) => {
+            return (
+              <div
+                className="App"
+                style={{
+                  backgroundColor: settings.settings.darkTheme
+                    ? "rgb(56,56,56)"
+                    : "rgb(255,255,255)",
+                }}
+              >
+                <UserTextbookShowcase userId={match.params.userId} />
+              </div>
+            );
+          }}
+        />
         <Route path="/textbooks">
           <div
             className="App"
@@ -112,6 +130,8 @@ function App({
             <ItemShowcase />
           </div>
         </Route>
+        
+
         <Route path="/">
           <HomePage />
         </Route>

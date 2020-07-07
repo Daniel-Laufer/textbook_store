@@ -1,0 +1,57 @@
+.user-textbook-showcase {
+  width: 100%;
+  max-width: 1200px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  margin: auto;
+  overflow-y: auto;
+  overflow-x: visible !important;
+  padding-left: 10px;
+  padding-top: 21px;
+}
+
+.user-showcase-jumbo h1 {
+  font-weight: bolder;
+  display: inline;
+  margin-top: 10px;
+}
+
+.jumbo-inner-container {
+  display: flex;
+  align-items: center;
+}
+
+.user-showcase-profile-pic {
+  display: inline;
+  height: 80px;
+  width: 80px;
+  object-fit: cover;
+  border-radius: 5rem;
+  margin-right: 20px;
+}
+
+.blur {
+  -webkit-filter: blur(5px);
+  -moz-filter: blur(5px);
+  -o-filter: blur(5px);
+  -ms-filter: blur(5px);
+  filter: blur(2px);
+}
+
+#empty-cart-message {
+  width: 100vw;
+  height: 100vh;
+  margin: auto;
+  margin-top: 0px;
+  display: flex;
+  align-items: center;
+  margin-top: -200px;
+  justify-content: center;
+}
+
+@media only screen and (max-width: 650px) {
+  .user-textbook-showcase {
+    justify-content: center;
+  }
+}

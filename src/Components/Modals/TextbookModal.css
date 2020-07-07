@@ -3,6 +3,27 @@
   --close-modal-button-HEIGHT: 30px;
 }
 
+.contact-modal-container > *:not(.modal-section-title){
+
+}
+
+
+.not-in-cart-contact-locked{
+  width:90%;
+  font-size:30px;
+  text-align: center;
+
+}
+
+.locked-contact-message{
+  font-size:12px !important;
+  display: block;
+  margin-top:0px;
+  font-style: italic;
+}
+
+
+
 
 .modal-title{
   font-size: 22px; 

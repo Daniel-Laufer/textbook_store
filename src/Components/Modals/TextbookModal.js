@@ -10,13 +10,20 @@ Modal.defaultStyles.overlay.backgroundColor = "rgba(89,89,89, 0.75)";
 
 const darkCardBackgroundColor = "rgb(89, 88, 88)";
 
-export default function TextbookModal({ funcs, item, darkTheme }) {
+export default function TextbookModal({ funcs, item, darkTheme, cart }) {
   const handWritingLabels = {
     0: "None.",
     50: "Only a little",
     100: "It's everwhere!",
   };
   const [qualityOfTextbooks, setQualityOfTextbooks] = useState(null);
+
+  const showContactInfo =
+    !cart || !cart.cartItemIds || !item
+      ? false
+      : cart.cartItemIds.includes(item.textbookId);
+
+  // alert(showContactInfo)
 
   useEffect(() => {
     if (item) {
@@ -218,7 +225,7 @@ export default function TextbookModal({ funcs, item, darkTheme }) {
             {item ? item.sellingLocation : ""}
           </li>
           <li
-            className="list-group-item"
+            className="list-group-item contact-modal-container"
             style={{
               backgroundColor: darkTheme
                 ? darkCardBackgroundColor
@@ -230,34 +237,47 @@ export default function TextbookModal({ funcs, item, darkTheme }) {
               <strong>Contact Information</strong>
               <br />
             </span>
-            {item.sellerPublicInfo.name ? (
-              <div>
-                <strong>Name: </strong> {item.sellerPublicInfo.name}
-              </div>
-            ) : (
-              <span role={"img"} aria-label={"hidden"}>
-                <strong>Name: </strong>🔒
+            <div style={showContactInfo ? {} : { display: "none" }}>
+              {item.sellerPublicInfo.name ? (
+                <div>
+                  <strong>Name: </strong>
+                  <span>{item.sellerPublicInfo.name}</span>
+                </div>
+              ) : (
+                <span role={"img"} aria-label={"hidden"}>
+                  <strong>Name: </strong>🔒
+                </span>
+              )}
+              {item.sellerPublicInfo.email ? (
+                <div>
+                  <strong>Email: </strong> {item.sellerPublicInfo.email}
+                </div>
+              ) : (
+                <span role={"img"} aria-label={"hidden"}>
+                  <strong>Email: </strong>🔒
+                </span>
+              )}
+              {item.sellerPublicInfo.phoneNumber ? (
+                <div>
+                  <strong>Phone Number: </strong>{" "}
+                  {item.sellerPublicInfo.phoneNumber}
+                </div>
+              ) : (
+                <span role={"img"} aria-label={"hidden"}>
+                  <strong>Phone Number: </strong> 🔒
+                </span>
+              )}
+            </div>
+            <div style={!showContactInfo ? {} : { display: "none" }} className="not-in-cart-contact-locked">
+              <span
+                role={"img"}
+                aria-label={"hidden"}
+                
+              >
+                🔒<br/>
               </span>
-            )}
-            {item.sellerPublicInfo.email ? (
-              <div>
-                <strong>Email: </strong> {item.sellerPublicInfo.email}
-              </div>
-            ) : (
-              <span role={"img"} aria-label={"hidden"}>
-                <strong>Email: </strong>🔒
-              </span>
-            )}
-            {item.sellerPublicInfo.phoneNumber ? (
-              <div>
-                <strong>Phone Number: </strong>{" "}
-                {item.sellerPublicInfo.phoneNumber}
-              </div>
-            ) : (
-              <span role={"img"} aria-label={"hidden"}>
-                <strong>Phone Number: </strong> 🔒
-              </span>
-            )}
+              <span className="locked-contact-message">Star this item to view this information!</span>
+            </div>
           </li>
           <li
             className="list-group-item"

@@ -5,14 +5,23 @@ import { connect } from "react-redux";
 import "./ItemShowcase.css";
 import "./CompactItemCard.css";
 
-import { getTextbooks } from "../../Redux/Actions/textbookActions";
+import {
+  getTextbooks,
+} from "../../Redux/Actions/textbookActions";
 import { Container } from "react-bootstrap";
 
 import TextbookModal from "../Modals/TextbookModal";
 import { addItemToCart } from "../../Redux/Actions/cartActions";
 import FilterContainer from "./Filters/FilterContainer/FilterContainer";
 
-function ItemShowcase({ textbooks, getTextbooks, cart, settings }) {
+function ItemShowcase({
+  textbooks,
+  getTextbooks,
+  cart,
+  settings,
+  user,
+  filterOutMyOwnTextbooks,
+}) {
   const [modalIsOpen, setIsOpen] = useState(false);
   const [focusedItem, setFocusedItem] = useState(null);
   const [refreshedCart, setRefreshedCart] = useState(false);
@@ -28,11 +37,7 @@ function ItemShowcase({ textbooks, getTextbooks, cart, settings }) {
     }
   }, [textbooks.refreshRequired, getTextbooks]);
 
-  // useEffect(() => {
-  //   if(refreshedCart && !cart.refreshRequired){
-  //     setRefreshedCart(false);
-  //   }
-  // }, [cart.refreshRequired]);
+
 
   function afterOpenModal() {
     // references are now sync'd and can be accessed.
@@ -51,7 +56,9 @@ function ItemShowcase({ textbooks, getTextbooks, cart, settings }) {
     }
   };
 
-  const spinnerStyles = { display: textbooks.pending ? "block" : "none" };
+  const spinnerStyles = {
+    display: textbooks.pending || user.loadProfilePending ? "block" : "none",
+  };
   return (
     <>
       <FilterContainer />
@@ -73,32 +80,36 @@ function ItemShowcase({ textbooks, getTextbooks, cart, settings }) {
             <div style={spinnerStyles} className="loader">
               <div className="loaderIcon"></div>
             </div>
-            {textbooks.textbooksToDisplay.map((item, index) => {
-              if (settings.settings.compactCards)
-                return (
-                  <CompactItemCard
-                    openModal={openModal}
-                    darkTheme={settings.settings.darkTheme}
-                    key={index}
-                    item={item}
-                    sendCartRefreshRequest={sendCartRefreshRequest}
-                  />
-                );
 
-              return (
-                <ItemCard
-                  darkTheme={settings.settings.darkTheme}
-                  openModal={openModal}
-                  key={index}
-                  item={item}
-                />
-              );
-            })}
+            {!user.loadProfilePending
+              ? textbooks.textbooksToDisplay.map((item, index) => {
+                  if (settings.settings.compactCards)
+                    return (
+                      <CompactItemCard
+                        openModal={openModal}
+                        darkTheme={settings.settings.darkTheme}
+                        key={index}
+                        item={item}
+                        sendCartRefreshRequest={sendCartRefreshRequest}
+                      />
+                    );
+
+                  return (
+                    <ItemCard
+                      darkTheme={settings.settings.darkTheme}
+                      openModal={openModal}
+                      key={index}
+                      item={item}
+                    />
+                  );
+                })
+              : null}
           </div>
           <TextbookModal
             darkTheme={settings.settings.darkTheme}
             funcs={{ modalIsOpen, openModal, afterOpenModal, closeModal }}
             item={focusedItem}
+            cart={cart}
           />
         </Container>
       </div>

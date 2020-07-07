@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { connect } from "react-redux";
 import Select from "react-select";
 import { FormControl, Form } from "react-bootstrap";
@@ -64,11 +64,9 @@ const FilterContainer = ({
         }
       }
       setCourses(courses);
-    }
-    else{
+    } else {
       setCourses(null);
     }
-
   }, [coursePrefixFilter]);
 
   useEffect(() => {
@@ -76,13 +74,15 @@ const FilterContainer = ({
   }, [search.searchTerm, search.filters, searchAndUpdateTextbooks]);
 
   useEffect(() => {
-    
     setCourses({});
 
     let coursePrefixes = [];
     for (let i = 0; i < courseData.coursePrefixes.length; i++) {
       let course = courseData.coursePrefixes[i];
-      let toAppend = {"value": course.toLowerCase(), "label": course.toUpperCase()};
+      let toAppend = {
+        value: course.toLowerCase(),
+        label: course.toUpperCase(),
+      };
       coursePrefixes.push(toAppend);
     }
     setCoursePrefixes(coursePrefixes);
@@ -97,11 +97,11 @@ const FilterContainer = ({
         setCampusFilter(item ? item.value.toUpperCase() : null);
         break;
       case "coursePrefix":
-        if(!item){
+        if (!item) {
           setCourseFilter(null);
         }
         setCoursePrefixFilter(item ? item.value.toUpperCase() : null);
-        
+
         break;
       default:
         console.log("error!");
@@ -123,7 +123,11 @@ const FilterContainer = ({
       >
         <Select
           placeholder="Department"
-          value={coursePrefixFilter ? { value: coursePrefixFilter, label:  coursePrefixFilter}: null}
+          value={
+            coursePrefixFilter
+              ? { value: coursePrefixFilter, label: coursePrefixFilter }
+              : null
+          }
           onChange={(item) => handleFilterChange(item, "coursePrefix")}
           isClearable={true}
           className="select"
@@ -132,7 +136,9 @@ const FilterContainer = ({
         <Select
           isDisabled={coursePrefixFilter ? false : true}
           placeholder="Course"
-          value={courseFilter ? { value: courseFilter, label:  courseFilter}: null}
+          value={
+            courseFilter ? { value: courseFilter, label: courseFilter } : null
+          }
           onChange={(item) => handleFilterChange(item, "course")}
           isClearable={true}
           className="select"
@@ -140,7 +146,9 @@ const FilterContainer = ({
         />
         <Select
           placeholder="Campus"
-          value={campusFilter ? { value: campusFilter, label:  campusFilter}: null}
+          value={
+            campusFilter ? { value: campusFilter, label: campusFilter } : null
+          }
           onChange={(item) => handleFilterChange(item, "campus")}
           isClearable={true}
           className="select"

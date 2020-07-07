@@ -21,9 +21,11 @@ import heic2any from "heic2any";
 
 const animatedComponents = makeAnimated();
 
-function NewTextbookPage({ textbooks, user, createNewTextbook, darkTheme}) {
+function NewTextbookPage({ textbooks, user, createNewTextbook, darkTheme }) {
   const [image, setImage] = useState(null);
   const [price, setPrice] = useState("");
+  const [convertingImage, setConvertingImage] = useState(false);
+  const [errorConvertingImage, setErrorConvertingImage] = useState(false);
   const [title, setTitle] = useState("");
   const [course, setCourse] = useState("");
 
@@ -193,27 +195,36 @@ function NewTextbookPage({ textbooks, user, createNewTextbook, darkTheme}) {
         (item) => item === "" || item === null
       )
     ) {
-      console.log("empty error")
+      console.log("empty error");
       // if (image === null || description === "" || title === "" || price === "" }} ) {
       return setSubmitError("An input field is empty!");
     } else if (isNaN(price)) {
-      console.log("price error")
+      console.log("price error");
       return setSubmitError("The price is not a number!");
     } else if (
       !supportedFileFormats.includes(
         image.name.split(".")[image.name.split(".").length - 1].toLowerCase()
       )
     ) {
-      console.log("image error")
+      console.log("image error");
       return setSubmitError("That image type is not supported!");
     } else if (!(privacySettings.Email || privacySettings["Phone Number"])) {
-      console.log("privacy")
+      console.log("privacy");
       return setSubmitError(
         "Please provide at least one piece of contact information! (email and/or phone number)!"
       );
+    
     }
-    console.log("submitting!!!!!!!")
-    console.log(image);
+    else if(errorConvertingImage){
+      return setSubmitError(
+        "There was an error converting your image to a usable file format. Please try a different image or try the saem one gain later."
+      );
+    }
+    else if(convertingImage){
+      return setSubmitError(
+        "Image is still converting to a usable file format. Please wait a couple more seconds."
+      );
+    }
     createNewTextbook(
       user,
       image,
@@ -230,230 +241,232 @@ function NewTextbookPage({ textbooks, user, createNewTextbook, darkTheme}) {
     );
   };
 
-
   const handleFileChange = (e) => {
-    // console.log(e.target.files[0])
-    //{ name: "IMG_2848.HEIC.gif", lastModified: 1593550543093, webkitRelativePath: "", size: 7315216, type: "image/gif" }
-    console.log(e.target.files[0]);
-
-    if(e.target.files[0].name.split(".")[e.target.files[0].name.split(".").length - 1].toLowerCase() === 'heic'){
+    if (
+      e.target.files[0].name
+        .split(".")
+        [e.target.files[0].name.split(".").length - 1].toLowerCase() === "heic"
+    ) {
+      setConvertingImage(true);
+      setErrorConvertingImage(false);
       new Promise((resolve, reject) => {
         heic2any({
           blob: e.target.files[0],
           toType: "image/jpeg",
-          quality: 0.4
+          quality: 0.4,
         })
           .then(function (resultBlob) {
-            const file = new File([resultBlob], "converted.jpg", {type: "image/jpeg"});
-            resolve(file)
+            const file = new File([resultBlob], "converted.jpg", {
+              type: "image/jpeg",
+            });
+            resolve(file);
           })
           .catch((err) => reject(err));
       })
-      .then((data) => {
-        console.log("done with that")
-        console.log(data)
-        setImage(data);
-        console.log("new image ", image)
-      }) 
-      .catch((err) => console.log(err));
-    }
-    else{
-      console.log("else")
+        .then((data) => {
+          setImage(data);
+          setConvertingImage(false);
+        })
+        .catch((err) => {
+          console.log(err);
+          setConvertingImage(false);
+          setErrorConvertingImage(true);
+        });
+    } else {
       setImage(e.target.files[0]);
     }
-    
-
-
-      
-
-    
   };
 
   return (
-    <div style={{
-      backgroundColor: darkTheme
-        ? "rgb(56,56,56)"
-        : "rgb(255,255,255)",
-    }}>
+    <div
+      style={{
+        backgroundColor: darkTheme ? "rgb(56,56,56)" : "rgb(255,255,255)",
+      }}
+    >
+      <Container
+        className="form-container"
+        style={{
+          color: darkTheme ? "white" : "black",
+        }}
+      >
+        <h1>New Post</h1>
+        <Form>
+          <Form.Row>
+            <Form.Group as={Col} controlId="exampleForm.ControlInput1">
+              <Form.Label>Title</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Calculus: Early Transcendentals"
+                value={title}
+                onChange={(e) => handleTextInputChange(e, "title")}
+              />
+            </Form.Group>
+            <Form.Group as={Col} controlId="formGridAddress1">
+              <Form.Label>Price</Form.Label>
+              <InputGroup className="mb-3">
+                <InputGroup.Prepend>
+                  <InputGroup.Text>$</InputGroup.Text>
+                </InputGroup.Prepend>
+                <FormControl
+                  onChange={(e) => handleTextInputChange(e, "price")}
+                  value={price}
+                  aria-label="Amount (to the nearest dollar)"
+                  placeholder="79.99"
+                />
+              </InputGroup>
+            </Form.Group>
+          </Form.Row>
 
-    
-    <Container className="form-container" style={{
-      color: darkTheme
-        ? "white"
-        : "black",
-    }}>
-      <h1>New Post</h1>
-      <Form >
-        <Form.Row>
-          <Form.Group as={Col} controlId="exampleForm.ControlInput1">
-            <Form.Label>Title</Form.Label>
+          <Form.Row>
+            <Form.Group as={Col} controlId="exampleForm.ControlInput1">
+              <Form.Label>
+                Which academic department uses this textbook? Please select its
+                corresponding course prefix:
+              </Form.Label>
+              <Select
+                placeholder="CSC"
+                onChange={(items) => handleSelectChange(items, "coursePrefix")}
+                isClearable={true}
+                className="select"
+                options={coursePrefixes}
+              />
+            </Form.Group>
+            <Form.Group as={Col} controlId="exampleForm.ControlInput1">
+              <Form.Label>
+                Which course uses this textbook? Please finish answering the
+                previous question first{" "}
+                <span role={"img"} aria-label="winky face">
+                  😉
+                </span>
+              </Form.Label>
+              <Select
+                isDisabled={coursePrefixFilter ? false : true}
+                placeholder="Course"
+                onChange={(items) => handleSelectChange(items, "course")}
+                isClearable={true}
+                className="select"
+                options={courses}
+              />
+            </Form.Group>
+          </Form.Row>
+          <Form.Group>
+            <Form.Label>Desired Exchange Location</Form.Label>
             <Form.Control
               type="text"
-              placeholder="Calculus: Early Transcendentals"
-              value={title}
-              onChange={(e) => handleTextInputChange(e, "title")}
+              placeholder="At square one mall"
+              value={sellingLocation}
+              onChange={(e) => handleTextInputChange(e, "location")}
             />
           </Form.Group>
-          <Form.Group as={Col} controlId="formGridAddress1">
-            <Form.Label>Price</Form.Label>
-            <InputGroup className="mb-3">
-              <InputGroup.Prepend>
-                <InputGroup.Text>$</InputGroup.Text>
-              </InputGroup.Prepend>
-              <FormControl
-                onChange={(e) => handleTextInputChange(e, "price")}
-                value={price}
-                aria-label="Amount (to the nearest dollar)"
-                placeholder="79.99"
+
+          <Form.Group>
+            <Form.Label>Which UofT campus is this textbook used at?</Form.Label>
+            <Select
+              placeholder="Campus"
+              isClearable={true}
+              onChange={(items) => handleSelectChange(items, "campus")}
+              options={campuses}
+            />
+          </Form.Group>
+          <div id="slider-container">
+            <Form.Group>
+              <Form.Label>How many pages are missing?</Form.Label>
+              <Slider
+                tooltip={false}
+                className="slider"
+                min={0}
+                max={100}
+                value={pagesMissing}
+                labels={pagesMissingLabels}
+                onChange={(val) => setPagesMissing(val)}
               />
-            </InputGroup>
-          </Form.Group>
-        </Form.Row>
+            </Form.Group>
+            <Form.Group>
+              <Form.Label>
+                How much of your own handwriting is in it?
+              </Form.Label>
+              <Slider
+                tooltip={false}
+                className="slider"
+                min={0}
+                max={100}
+                value={handWriting}
+                labels={handWritingLabels}
+                onChange={(val) => setHandWriting(val)}
+              />
+            </Form.Group>
+            <Form.Group>
+              <Form.Label>How many stains does it have?</Form.Label>
+              <Slider
+                tooltip={false}
+                className="slider"
+                min={0}
+                max={100}
+                value={stains}
+                labels={stainsLabels}
+                onChange={(val) => setStains(val)}
+              />
+            </Form.Group>
+          </div>
 
-        <Form.Row>
-          <Form.Group as={Col} controlId="exampleForm.ControlInput1">
+          <Form.Group>
             <Form.Label>
-              Which academic department uses this textbook? Please select its
-              corresponding course prefix:
+              Contact Information (at least one option from the following list{" "}
+              <strong> must</strong> be selected: ['Phone Number', 'Email'])
             </Form.Label>
             <Select
-              placeholder="CSC"
-              onChange={(items) => handleSelectChange(items, "coursePrefix")}
-              isClearable={true}
-              className="select"
-              options={coursePrefixes}
+              onChange={(items) => handleSelectChange(items, "privacy")}
+              closeMenuOnSelect={false}
+              components={animatedComponents}
+              options={privacyOptions}
+              defaultValue={[
+                { value: "905-501-8458", label: "Phone Number" },
+                { value: "lauferkdaniel@gmail.com", label: "Email" },
+                { name: "name", label: "Name" },
+              ]}
+              isMulti
             />
           </Form.Group>
-          <Form.Group as={Col} controlId="exampleForm.ControlInput1">
-            <Form.Label>
-              Which course uses this textbook? Please finish answering the
-              previous question first{" "}
-              <span role={"img"} aria-label="winky face">
-                😉
-              </span>
-            </Form.Label>
-            <Select
-              isDisabled={coursePrefixFilter ? false : true}
-              placeholder="Course"
-              onChange={(items) => handleSelectChange(items, "course")}
-              isClearable={true}
-              className="select"
-              options={courses}
+          <Form.Group controlId="exampleForm.ControlTextarea1">
+            <Form.Label>Additional Notes</Form.Label>
+            <Form.Control
+              value={description}
+              onChange={(e) => handleTextInputChange(e, "description")}
+              as="textarea"
+              rows="3"
             />
           </Form.Group>
-        </Form.Row>
-        <Form.Group>
-          <Form.Label>Desired Exchange Location</Form.Label>
-          <Form.Control
-            type="text"
-            placeholder="At square one mall"
-            value={sellingLocation}
-            onChange={(e) => handleTextInputChange(e, "location")}
-          />
-        </Form.Group>
-
-        <Form.Group>
-          <Form.Label>Which UofT campus is this textbook used at?</Form.Label>
-          <Select
-            placeholder="Campus"
-            isClearable={true}
-            onChange={(items) => handleSelectChange(items, "campus")}
-            options={campuses}
-          />
-        </Form.Group>
-        <div id="slider-container">
-          <Form.Group>
-            <Form.Label>How many pages are missing?</Form.Label>
-            <Slider
-              tooltip={false}
-              className="slider"
-              min={0}
-              max={100}
-              value={pagesMissing}
-              labels={pagesMissingLabels}
-              onChange={(val) => setPagesMissing(val)}
-            />
-          </Form.Group>
-          <Form.Group>
-            <Form.Label>How much of your own handwriting is in it?</Form.Label>
-            <Slider
-              tooltip={false}
-              className="slider"
-              min={0}
-              max={100}
-              value={handWriting}
-              labels={handWritingLabels}
-              onChange={(val) => setHandWriting(val)}
-            />
-          </Form.Group>
-          <Form.Group>
-            <Form.Label>How many stains does it have?</Form.Label>
-            <Slider
-              tooltip={false}
-              className="slider"
-              min={0}
-              max={100}
-              value={stains}
-              labels={stainsLabels}
-              onChange={(val) => setStains(val)}
-            />
-          </Form.Group>
-        </div>
-
-        <Form.Group>
-          <Form.Label>
-            Contact Information (at least one option from the following list{" "}
-            <strong> must</strong> be selected: ['Phone Number', 'Email'])
-          </Form.Label>
-          <Select
-            onChange={(items) => handleSelectChange(items, "privacy")}
-            closeMenuOnSelect={false}
-            components={animatedComponents}
-            options={privacyOptions}
-            defaultValue={[
-              { value: "905-501-8458", label: "Phone Number" },
-              { value: "lauferkdaniel@gmail.com", label: "Email" },
-              { name: "name", label: "Name" },
-            ]}
-            isMulti
-          />
-        </Form.Group>
-        <Form.Group controlId="exampleForm.ControlTextarea1">
-          <Form.Label>Additional Notes</Form.Label>
-          <Form.Control
-            value={description}
-            onChange={(e) => handleTextInputChange(e, "description")}
-            as="textarea"
-            rows="3"
-          />
-        </Form.Group>
-        <Form>
-          <Form.Group>
-            <Form.File
-              id="exampleFormControlFile1"
-              label="Example file input"
-              onChange={(e) => handleFileChange(e)}
-            />
-          </Form.Group>
+          <Form>
+            <Form.Group>
+              <Form.File
+                id="exampleFormControlFile1"
+                label="Example file input"
+                onChange={(e) => handleFileChange(e)}
+              />
+            </Form.Group>
+          </Form>
+          {textbooks.error || submitError ? (
+            <Alert variant="danger">
+              Error: {textbooks.error || submitError}
+            </Alert>
+          ) : !textbooks.uploadPending &&
+            textbooks.refreshRequired &&
+            user.loggedIn ? (
+            <Alert variant="success">Success!</Alert>
+          ) : null}
+          <Button
+            onClick={(e) => {
+              console.log("submit called");
+              handleSubmit(e);
+            }}
+            type="submit"
+            variant="primary"
+          >
+            Submit
+          </Button>
         </Form>
-        {textbooks.error || submitError ? (
-          <Alert variant="danger">
-            Error: {textbooks.error || submitError}
-          </Alert>
-        ) : !textbooks.uploadPending &&
-          textbooks.refreshRequired &&
-          user.loggedIn ? (
-          <Alert variant="success">Success!</Alert>
-        ) : null}
-        <Button
-          onClick={(e) => {console.log("submit called"); handleSubmit(e)}}
-          type="submit"
-          variant="primary"
-        >
-          Submit
-        </Button>
-      </Form>
-    </Container></div>
+      </Container>
+    </div>
   );
 }
 

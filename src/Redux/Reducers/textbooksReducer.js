@@ -2,6 +2,7 @@ import {
   GET_TEXTBOOKS,
   SEARCH_AND_UPDATE_TEXTBOOKS,
   CREATE_NEW_TEXTBOOK,
+  FITLER_OUT_MY_OWN_TEXTBOOKS,
 } from "../actionNames.js";
 
 export default (
@@ -60,6 +61,10 @@ export default (
               if(!item['course'].toUpperCase().startsWith(action.payload.filters[filter]))
                 pushItem = false
             }
+            else if(filter === 'course'){ // you will be able to erase this else if if all of the courses match exactly. 
+              if(!action.payload.filters[filter].startsWith(item['course'].toUpperCase()))
+                pushItem = false
+            }
             else if (item[filter] !== action.payload.filters[filter])
               pushItem = false;
           });
@@ -84,6 +89,7 @@ export default (
         error: action.payload,
         refreshRequired: false,
       };
+    
 
     default:
       return state;

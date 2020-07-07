@@ -18,7 +18,7 @@ let AppNav = ({
   cartItems,
   getCartItems,
   getSignedInProfile,
-  settings
+  settings,
 }) => {
   const [settingsMenuOpen, setSettingsMenuOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
@@ -32,11 +32,18 @@ let AppNav = ({
   }, [user.authToken, getCartItems, user.loggedIn]);
 
   useEffect(() => {
+    if (user.loggedIn && user.error) {
+      delete localStorage.authToken;
+      logout();
+      history.push("/textbooks");
+    }
+  }, [user.error, user.loggedIn]);
+
+  useEffect(() => {
     if (user.loggedIn && user.updateRequested) {
       getSignedInProfile(user.authToken);
     }
   }, [user.updateRequested, user.authToken, user.loggedIn, getSignedInProfile]);
-
 
   const [navExpanded, setNavExpanded] = useState(false);
 
@@ -45,7 +52,11 @@ let AppNav = ({
   };
 
   const spinnerStyles = { display: cartItems.pending ? "block" : "none" };
-  const spinnerStylesUser = { display: user.loadProfilePending ? "block" : "none" };
+
+  
+  const spinnerStylesUser = {
+    display: user.loadProfilePending ? "block" : "none",
+  };
 
   const cartButtonStyles = { display: user.loggedIn ? "flex" : "none" };
 
@@ -68,7 +79,7 @@ let AppNav = ({
                 id="navbar-logo"
                 src="https://firebasestorage.googleapis.com/v0/b/textbook-store-2e072.appspot.com/o/App_images_and_gifs%2FtextbookLogo.png?alt=media&token=a0a8c552-c182-422c-b519-9f2ef5a6a571"
               />
-              Textbook Exchanger
+              The Textbook Exchanger
             </Link>
           </div>
           {/* </Navbar.Brand> */}
@@ -92,7 +103,10 @@ let AppNav = ({
               {cartItems.pending ? "" : cartItems.numberOfItems}
             </div>
           </Form>
-          <div id="button-holder-div" style={!user.loggedIn ? {"width": "150px"}: {}}>
+          <div
+            id="button-holder-div"
+            style={!user.loggedIn ? { width: "150px" } : {}}
+          >
             {!user.loggedIn ? (
               <Link to="/login">
                 <Button
@@ -123,19 +137,24 @@ let AppNav = ({
               <i className="fas fa-cog"></i>
             </Button>
             {settingsMenuOpen ? (
-              <SettingsMenu darkTheme={settings.settings.darkTheme} setSettingsMenuOpen={setSettingsMenuOpen} />
+              <SettingsMenu
+                darkTheme={settings.settings.darkTheme}
+                setSettingsMenuOpen={setSettingsMenuOpen}
+              />
             ) : null}
             {userMenuOpen ? (
-              <UserMenu darkTheme={settings.settings.darkTheme} hideNav={hideNav} setUserMenuOpen={setUserMenuOpen} />
+              <UserMenu
+                darkTheme={settings.settings.darkTheme}
+                hideNav={hideNav}
+                setUserMenuOpen={setUserMenuOpen}
+              />
             ) : null}
             {/* <Button id="profilePictureButton"></Button> */}
-            {(user.publicUserInfo) ? (
+            {user.publicUserInfo ? (
               <img
-              onClick={() => setUserMenuOpen(true)}
+                onClick={() => setUserMenuOpen(true)}
                 id="nav-profile-pic"
-                src={
-                  user.publicUserInfo.profilePicture
-                }
+                src={user.publicUserInfo.profilePicture}
                 alt=""
               />
             ) : (

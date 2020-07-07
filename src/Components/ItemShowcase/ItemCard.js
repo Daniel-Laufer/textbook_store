@@ -6,6 +6,7 @@ import {
   getCartItems,
 } from "../../Redux/Actions/cartActions";
 import { connect } from "react-redux";
+import { useHistory } from "react-router-dom";
 
 function ItemCard({
   item,
@@ -15,10 +16,11 @@ function ItemCard({
   user,
   cart,
   getCartItems,
-  darkTheme
+  darkTheme,
 }) {
   const [displayDelete, setDisplayDelete] = useState(false);
-  console.log(darkTheme)
+  const [myCard, setMyCard] = useState(false);
+  const history = useHistory();
 
   useEffect(() => {
     if (cart.cartItemIds && cart.cartItemIds.includes(item.textbookId)) {
@@ -28,8 +30,14 @@ function ItemCard({
   }, [cart.cartItemIds]);
 
   useEffect(() => {
+    if (user.publicUserInfo) {
+      return setMyCard(user.publicUserInfo.userId === item.sellerId);
+    }
+  }, [user]);
+
+  useEffect(() => {
     if (cart.refreshRequested && user.loggedIn && !cart.pending) {
-      console.log("Card getCartItems")
+      console.log("Card getCartItems");
 
       getCartItems(user.authToken);
       cart.refreshRequested = false;
@@ -43,9 +51,18 @@ function ItemCard({
 
   const darkCardBackgroundColor = "rgb(89, 88, 88)";
 
+  // const cartButtonStyles = user.publicUserInfo && item && user.publicUserInfo.userId === item.sellerId ? {}: { display: "none" };
+
   if (item) {
     return (
-      <div className="card"  style={darkTheme ? {backgroundColor: darkCardBackgroundColor, color: "white"}: {}}>
+      <div
+        className="card"
+        style={
+          darkTheme
+            ? { backgroundColor: darkCardBackgroundColor, color: "white" }
+            : {}
+        }
+      >
         <div id="cartCountContainer">
           <i
             id="cartCountIcon"
@@ -61,19 +78,15 @@ function ItemCard({
             {item ? item.cartCount : 0}
           </div>
         </div>
+        <div className="delete-button-container">
+          <i className="delete-button-icon fas fa-times-circle"></i>
+        </div>
         <div
           id="imageContainer"
-          style={darkTheme ? {backgroundColor: darkCardBackgroundColor}: {}}
+          style={darkTheme ? { backgroundColor: darkCardBackgroundColor } : {}}
           style={{ backgroundImage: `url(${item.image})` }}
-        >
-          {/* <img
-          id="textbookImage"
-          className="card-img-top"
-          src={item.image}
-          alt={item.title}
-        /> */}
-        </div>
-        <div className="card-body" >
+        ></div>
+        <div className="card-body">
           <div className="card-title-container">
             <h5 className="card-title">
               {item.title.length > 35
@@ -81,8 +94,13 @@ function ItemCard({
                 : item.title}
             </h5>
           </div>
-          <hr/>
-          <div className="sellerInfoContainer">
+          <hr />
+          <div
+            className="sellerInfoContainer"
+            onClick={() => {
+              if (item) history.push(`/textbooks/user/${item.sellerId}`);
+            }}
+          >
             <img
               id="profile-picture"
               src={item.sellerPublicInfo.profilePicture}
@@ -94,23 +112,44 @@ function ItemCard({
             </div>
           </div>
           <ul className="list-group list-group-flush">
-            <li className="list-group-item" style={darkTheme ? {backgroundColor: darkCardBackgroundColor}: {}}>
+            <li
+              className="list-group-item"
+              style={
+                darkTheme ? { backgroundColor: darkCardBackgroundColor } : {}
+              }
+            >
               <span className="modal-section-title">
                 <strong>Used at: </strong>
               </span>
               {item ? item.campus.toUpperCase() : ""}
             </li>
-            <li className="list-group-item" style={darkTheme ? {backgroundColor: darkCardBackgroundColor}: {}}>
+            <li
+              className="list-group-item"
+              style={
+                darkTheme ? { backgroundColor: darkCardBackgroundColor } : {}
+              }
+            >
               <span className="modal-section-title">
                 <strong>Course: </strong>
               </span>
               {item ? item.course.toUpperCase() : ""}
             </li>
-            <li className="list-group-item" style={darkTheme ? {backgroundColor: darkCardBackgroundColor}: {}}>
+            <li
+              className="list-group-item"
+              style={
+                darkTheme ? { backgroundColor: darkCardBackgroundColor } : {}
+              }
+            >
               <span className="modal-section-title">
-                <strong>Pickup Location: </strong>
+                <strong>
+                  Pickup Location:{" "}
+                  {!myCard && displayDelete && !cart.cartItemIds
+                    ? " delete enabled"
+                    : ""}
+                </strong>
               </span>
               {item ? item.sellingLocation : ""}
+              {myCard ? "mycard" : ""}
             </li>
           </ul>
           {/* <div className="contactInfoContainer">
@@ -135,7 +174,10 @@ function ItemCard({
 
         <div id="cartButtonHolder" className="card-body">
           <button
-            disabled={user.loggedIn ? false : true}
+            style={myCard ? { opacity: "0" } : {}}
+            disabled={
+              myCard || !cart.cartItemIds || displayDelete ? true : false
+            }
             title={`Add to cart ${
               user.loggedIn ? "" : "(Please login first!)"
             }`}
@@ -158,11 +200,12 @@ function ItemCard({
             <i className="fas fa-info"></i>
           </button>
           <button
+            style={myCard ? { opacity: "0" } : {}}
             type="button"
             title={`Remove from cart ${
               user.loggedIn ? "" : "(Please login first!)"
             } ${displayDelete ? "" : "(This item is not in your cart!)"}`}
-            disabled={displayDelete ? false : true}
+            disabled={!myCard && displayDelete ? false : true}
             onClick={() => {
               handleDelete();
             }}
