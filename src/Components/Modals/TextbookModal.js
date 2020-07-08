@@ -128,8 +128,6 @@ export default function TextbookModal({ funcs, item, darkTheme, cart }) {
         100
       );
 
-      // document.getElementsByClassName("ReactModalPortal")[0].childNodes;
-      // document.getElementById("yes").addEventListener("scroll", () => console.log("ye"))
     }
   }, [funcs.modalIsOpen]);
 
@@ -174,7 +172,6 @@ export default function TextbookModal({ funcs, item, darkTheme, cart }) {
           color: darkTheme ? "white" : "black",
         }}
         onScroll={() => {
-          console.log(darkTheme);
           setScrolled(true);
         }}
       >

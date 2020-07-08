@@ -63,7 +63,6 @@ export const updateProfilePicture = (user, image) => {
         .post("/image/User_Profile_Images", formData, { headers })
         .then((res) => {
           imageURL = res.data.url;
-          console.log(imageURL)
           axios
             .put("user/profilePicture", {imageURL}, { headers })
             .then((data) =>  data)

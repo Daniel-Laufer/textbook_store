@@ -41,7 +41,7 @@ let AppNav = ({
 
   useEffect(() => {
     if (user.loggedIn && user.updateRequested) {
-      getSignedInProfile(user.authToken);
+      setTimeout(() => getSignedInProfile(user.authToken), 500)
     }
   }, [user.updateRequested, user.authToken, user.loggedIn, getSignedInProfile]);
 

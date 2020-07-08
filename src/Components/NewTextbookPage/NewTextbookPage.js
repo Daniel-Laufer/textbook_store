@@ -10,7 +10,10 @@ import {
   Col,
 } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
-import { createNewTextbook } from "../../Redux/Actions/textbookActions";
+import {
+  createNewTextbook,
+  updateTextbook,
+} from "../../Redux/Actions/textbookActions";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
 import Slider from "react-rangeslider";
@@ -18,16 +21,27 @@ import "react-rangeslider/lib/index.css";
 import "./NewTextbookPage.css";
 import courseData from "../ItemShowcase/Filters/FilterContainer/courseData";
 import heic2any from "heic2any";
+import axios from "axios";
 
 const animatedComponents = makeAnimated();
 
-function NewTextbookPage({ textbooks, user, createNewTextbook, darkTheme }) {
+function NewTextbookPage({
+  textbooks,
+  user,
+  createNewTextbook,
+  darkTheme,
+  edit,
+  updateTextbook,
+  textbookId,
+}) {
   const [image, setImage] = useState(null);
+  const [newImage, setNewImage] = useState(false); // boolean value that states whether or not we uploaded a new image
+  const [oldImageURL, setOldImageURL] = useState(null); // boolean value that states whether or not we uploaded a new image
   const [price, setPrice] = useState("");
   const [convertingImage, setConvertingImage] = useState(false);
   const [errorConvertingImage, setErrorConvertingImage] = useState(false);
   const [title, setTitle] = useState("");
-  const [course, setCourse] = useState("");
+  const [course, setCourse] = useState(null);
 
   const [courses, setCourses] = useState(null);
   const [coursePrefixFilter, setCoursePrefixFilter] = useState(null);
@@ -91,17 +105,47 @@ function NewTextbookPage({ textbooks, user, createNewTextbook, darkTheme }) {
       coursePrefixes.push(toAppend);
     }
     setCoursePrefixes(coursePrefixes);
+
+    if (!oldImageURL && edit && textbookId && coursePrefixes) {
+      axios
+        .get(`/textbooks/${textbookId}`)
+        .then((data) => {
+          for (let i = 0; i < coursePrefixes.length; i++) {
+            
+            if (
+              coursePrefixes[i].label.toLowerCase() ===
+              data.data.course.substring(0, 3).toLowerCase()
+            ) {
+              setCoursePrefixFilter(coursePrefixes[i]);
+              break;
+            }
+          }
+          setCourse({ label: data.data.course.toUpperCase(), value: data.data.course });
+          setOldImageURL(data.data.image);
+          setPrice(data.data.price);
+          setStains(data.data.textbookQuality.stains);
+          setHandWriting(data.data.textbookQuality.handWriting);
+          setPagesMissing(data.data.textbookQuality.pagesMissing);
+          setPrivacySettings(data.data.privacySettings);
+          setTitle(data.data.title);
+          setDescription(data.data.description);
+          setSellingLocation(data.data.sellingLocation);
+          setCampus({ label: data.data.campus, value: data.data.campus });
+        })
+        .catch((err) => console.log(err));
+    }
   }, []);
 
   // filter out the unecessary courses
   useEffect(() => {
-    console.log(coursePrefixFilter);
     if (coursePrefixFilter) {
       let courses = [];
       for (let i = 0; i < courseData.courses.length; i++) {
         let course = courseData.courses[i];
         let upperCaseCourse = course.toUpperCase();
-        if (upperCaseCourse.startsWith(coursePrefixFilter.toUpperCase())) {
+        if (
+          upperCaseCourse.startsWith(coursePrefixFilter.value.toUpperCase())
+        ) {
           let toAppend = {
             value: course.toLowerCase(),
             label: upperCaseCourse,
@@ -109,7 +153,6 @@ function NewTextbookPage({ textbooks, user, createNewTextbook, darkTheme }) {
           courses.push(toAppend);
         }
       }
-      console.log(courses);
       setCourses(courses);
     }
   }, [coursePrefixFilter]);
@@ -139,24 +182,26 @@ function NewTextbookPage({ textbooks, user, createNewTextbook, darkTheme }) {
         });
         return setPrivacySettings(newPrivacySettings);
       case "campus":
-        setCampus(items ? items.value : null);
+        setCampus(items ? items : null);
         break;
       case "coursePrefix":
-        setCoursePrefixFilter(items ? items.value : null);
+        setCoursePrefixFilter(items ? items : null);
         break;
       case "course":
-        setCourse(items ? items.value : null);
+        setCourse(items ? items : null);
         break;
       default:
-        console.log("error!");
+        return null;
     }
   };
 
   const history = useHistory();
 
   useEffect(() => {
-    if (textbooks.error === null && textbooks.refreshRequired)
+    if (!edit && textbooks.error === null && textbooks.refreshRequired)
       setTimeout(() => history.push("/textbooks"), 2000);
+    else if (edit && textbooks.error === null && textbooks.refreshRequired && user.publicUserInfo)
+      setTimeout(() => history.push(`/textbooks/user/${user.publicUserInfo.userId}`), 2000);
   }, [textbooks.refreshRequired, history, textbooks.error]); // added history and textbooks.err dependences here, not sure if it makes a difference!
 
   const handleTextInputChange = (e, inputType) => {
@@ -191,57 +236,79 @@ function NewTextbookPage({ textbooks, user, createNewTextbook, darkTheme }) {
     ];
     e.preventDefault();
     if (
+      !newImage && edit &&
+      [oldImageURL, title, price, course, sellingLocation, campus].some(
+        (item) => item === "" || item === null
+      )
+    ) {
+      return setSubmitError("An input field is empty!");
+    } else if (
+      newImage &&
       [image, title, price, course, sellingLocation, campus].some(
         (item) => item === "" || item === null
       )
     ) {
-      console.log("empty error");
       // if (image === null || description === "" || title === "" || price === "" }} ) {
       return setSubmitError("An input field is empty!");
     } else if (isNaN(price)) {
-      console.log("price error");
       return setSubmitError("The price is not a number!");
     } else if (
+      !edit &&
       !supportedFileFormats.includes(
         image.name.split(".")[image.name.split(".").length - 1].toLowerCase()
       )
     ) {
-      console.log("image error");
       return setSubmitError("That image type is not supported!");
     } else if (!(privacySettings.Email || privacySettings["Phone Number"])) {
-      console.log("privacy");
       return setSubmitError(
         "Please provide at least one piece of contact information! (email and/or phone number)!"
       );
-    
-    }
-    else if(errorConvertingImage){
+    } else if (newImage && errorConvertingImage) {
       return setSubmitError(
         "There was an error converting your image to a usable file format. Please try a different image or try the saem one gain later."
       );
-    }
-    else if(convertingImage){
+    } else if (newImage && convertingImage) {
       return setSubmitError(
         "Image is still converting to a usable file format. Please wait a couple more seconds."
       );
     }
-    createNewTextbook(
+
+    if (!edit)
+      return createNewTextbook(
+        user,
+        image,
+        description,
+        title,
+        price,
+        course.value,
+        campus.value,
+        sellingLocation,
+        pagesMissing,
+        handWriting,
+        stains,
+        privacySettings
+      );
+    return updateTextbook(
       user,
       image,
       description,
       title,
       price,
-      course,
-      campus,
+      course.value,
+      campus.value,
       sellingLocation,
       pagesMissing,
       handWriting,
       stains,
-      privacySettings
+      privacySettings,
+      newImage,
+      oldImageURL,
+      textbookId
     );
   };
 
   const handleFileChange = (e) => {
+    setNewImage(true);
     if (
       e.target.files[0].name
         .split(".")
@@ -268,7 +335,6 @@ function NewTextbookPage({ textbooks, user, createNewTextbook, darkTheme }) {
           setConvertingImage(false);
         })
         .catch((err) => {
-          console.log(err);
           setConvertingImage(false);
           setErrorConvertingImage(true);
         });
@@ -289,7 +355,8 @@ function NewTextbookPage({ textbooks, user, createNewTextbook, darkTheme }) {
           color: darkTheme ? "white" : "black",
         }}
       >
-        <h1>New Post</h1>
+        {edit ? <h1>Edit Post</h1> : <h1>New Post</h1>}
+
         <Form>
           <Form.Row>
             <Form.Group as={Col} controlId="exampleForm.ControlInput1">
@@ -324,6 +391,7 @@ function NewTextbookPage({ textbooks, user, createNewTextbook, darkTheme }) {
                 corresponding course prefix:
               </Form.Label>
               <Select
+                value={coursePrefixFilter}
                 placeholder="CSC"
                 onChange={(items) => handleSelectChange(items, "coursePrefix")}
                 isClearable={true}
@@ -346,6 +414,7 @@ function NewTextbookPage({ textbooks, user, createNewTextbook, darkTheme }) {
                 isClearable={true}
                 className="select"
                 options={courses}
+                value={course}
               />
             </Form.Group>
           </Form.Row>
@@ -366,6 +435,7 @@ function NewTextbookPage({ textbooks, user, createNewTextbook, darkTheme }) {
               isClearable={true}
               onChange={(items) => handleSelectChange(items, "campus")}
               options={campuses}
+              value={campus}
             />
           </Form.Group>
           <div id="slider-container">
@@ -431,6 +501,9 @@ function NewTextbookPage({ textbooks, user, createNewTextbook, darkTheme }) {
             <Form.Label>Additional Notes</Form.Label>
             <Form.Control
               value={description}
+              placeHolder={
+                "ex. I will only be able exchange the textbook on weekends..."
+              }
               onChange={(e) => handleTextInputChange(e, "description")}
               as="textarea"
               rows="3"
@@ -456,7 +529,6 @@ function NewTextbookPage({ textbooks, user, createNewTextbook, darkTheme }) {
           ) : null}
           <Button
             onClick={(e) => {
-              console.log("submit called");
               handleSubmit(e);
             }}
             type="submit"
@@ -507,6 +579,42 @@ const mapDispatchToProps = (dispatch) => {
           handWriting,
           stains,
           privacySettings
+        )
+      ),
+    updateTextbook: (
+      user,
+      image,
+      description,
+      title,
+      price,
+      course,
+      campus,
+      sellingLocation,
+      pagesMissing,
+      handWriting,
+      stains,
+      privacySettings,
+      newImage,
+      oldImageURL,
+      textbookId
+    ) =>
+      dispatch(
+        updateTextbook(
+          user,
+          image,
+          description,
+          title,
+          price,
+          course,
+          campus,
+          sellingLocation,
+          pagesMissing,
+          handWriting,
+          stains,
+          privacySettings,
+          newImage,
+          oldImageURL,
+          textbookId
         )
       ),
   };

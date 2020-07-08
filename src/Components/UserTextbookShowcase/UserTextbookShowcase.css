@@ -10,11 +10,22 @@
   padding-left: 10px;
   padding-top: 21px;
 }
-
 .user-showcase-jumbo h1 {
   font-weight: bolder;
   display: inline;
   margin-top: 10px;
+}
+
+.user-showcase-jumbo.jumbotron.jumbotron-fluid{
+  min-height: 208px;
+}
+
+
+
+.jumbo-inner-container .loaderIcon{ 
+  width:70px;
+  height: 70px;
+  margin-top:-50px;
 }
 
 .jumbo-inner-container {
@@ -53,5 +64,13 @@
 @media only screen and (max-width: 650px) {
   .user-textbook-showcase {
     justify-content: center;
+  }
+}
+
+
+
+@media only screen and (max-width: 991px) {
+  .user-textbook-showcase {
+    width: 110%;
   }
 }

@@ -74,11 +74,28 @@
 
 
 .delete-button-icon {
+  cursor: pointer;
   color: red;
   font-size: 32px;
   position: absolute;
   left: 205px;
   top: -12px;
+
+}
+.edit-button-icon {
+  display: none;
+  cursor: pointer;
+  color: white;
+  font-size: 32px;
+  position: absolute;
+  left: 109px;
+  top: 80px;
+  /* background-color:black */
+
+}
+
+.edit-button-icon-background {
+  display: none;
 
 }
 .delete-button-icon-background {
@@ -92,7 +109,16 @@
 }
 
 
+
 @media only screen and (max-width: 1199px) {
+  .edit-button-icon {
+    left: 89px;
+
+  
+  }
+  
+  
+  
   .delete-button-icon {
     left: 170px;
   
@@ -142,6 +168,9 @@
   transform: translate3d(0, 0, 0);
   backface-visibility: hidden;
   perspective: 1000px;
+}
+.card:hover .edit-button-icon {
+  display: block;
 }
 
 @keyframes shake {

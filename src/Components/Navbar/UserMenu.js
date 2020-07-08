@@ -13,14 +13,12 @@ let UserMenu = ({
   logout,
   hideNav,
   updateProfilePicture,
-  darkTheme
+  darkTheme,
 }) => {
   const [image, setImage] = useState(null);
 
   useEffect(() => {
-    document.getElementById("root").addEventListener("click", (e) => {
-      // if(e.target.)
-      console.log(e.target.className);
+    const eventHandlerFunction = (e) => {
       const ignore = [
         "user-menu-container",
         "user-menu-profile-pic-container",
@@ -33,6 +31,7 @@ let UserMenu = ({
         "change-photo-icon fas fa-camera",
         "user-menu-input",
         "user-menu-input-container",
+        "menu-login-logout-button btn btn-info",
       ];
       if (
         (e.target.className && !ignore.includes(e.target.className)) ||
@@ -40,7 +39,17 @@ let UserMenu = ({
       ) {
         setUserMenuOpen(false);
       }
-    });
+    };
+
+    document
+      .getElementById("root")
+      .addEventListener("click", eventHandlerFunction);
+
+    // CLEAN UP THE EVENT LISTNER WHEN COMPONENT UNMOUNTS
+    return () =>
+      document
+        .getElementById("root")
+        .removeEventListener("click", eventHandlerFunction);
   }, [setUserMenuOpen]);
 
   const history = useHistory();
@@ -53,9 +62,6 @@ let UserMenu = ({
   };
 
   const handleFileChange = (e) => {
-    // console.log(e.target.files[0])
-    //{ name: "IMG_2848.HEIC.gif", lastModified: 1593550543093, webkitRelativePath: "", size: 7315216, type: "image/gif" }
-    console.log(e.target.files[0]);
 
     if (
       e.target.files[0].name
@@ -77,13 +83,14 @@ let UserMenu = ({
           .catch((err) => reject(err));
       })
         .then((data) => {
+          
           setImage(data);
           updateProfilePicture(user, data);
         })
         .catch((err) => console.log(err));
     } else {
-      console.log("else");
       setImage(e.target.files[0]);
+      updateProfilePicture(user, e.target.files[0]);
     }
   };
 
@@ -126,17 +133,29 @@ let UserMenu = ({
         ) : null}
         <div className="user-menu-button-holder">
           {user.loggedIn ? (
-            <Button
-              className="menu-login-logout-button"
-              onClick={() => {
-                console.log("clicked");
-                handleLogOut();
-                hideNav();
-              }}
-              variant="primary"
-            >
-              Log out
-            </Button>
+            <>
+              <Button
+                className="menu-login-logout-button"
+                onClick={() => {
+                  handleLogOut();
+                  hideNav();
+                }}
+                variant="primary"
+              >
+                Log out
+              </Button>
+              <Button
+                className="menu-login-logout-button"
+                onClick={() => {
+                  setUserMenuOpen(false);
+                  hideNav();
+                  history.push(`/textbooks/user/${user.publicUserInfo.userId}`);
+                }}
+                variant="info"
+              >
+                My Posts
+              </Button>
+            </>
           ) : null}
         </div>
       </div>

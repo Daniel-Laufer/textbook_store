@@ -49,10 +49,9 @@ function App({
         ((now - (timeLoggedIn % 86400000)) % 3600000) / 60000
       ); // minutes
 
-      if (oldAuthToken && timeDiff < 10) {
+      if (oldAuthToken && timeDiff < 50) {
         loginWithOldtAuthToken({ token: oldAuthToken });
         if (!cartItems.pending) {
-          console.log("App getCartItems");
           getCartItems(user.authToken);
         }
       } else {
@@ -93,7 +92,7 @@ function App({
           <SignUpPage />
         </Route>
         <Route path="/newPost">
-          <NewTextbookPage darkTheme={settings.settings.darkTheme} />
+          <NewTextbookPage edit={false} darkTheme={settings.settings.darkTheme} />
         </Route>
         <Route path="/about">
           <div>
@@ -114,6 +113,23 @@ function App({
                 }}
               >
                 <UserTextbookShowcase userId={match.params.userId} />
+              </div>
+            );
+          }}
+        />
+        <Route
+          path="/textbooks/edit/:textbookId"
+          render={({match}) => {
+            return (
+              <div
+                className="App"
+                style={{
+                  backgroundColor: settings.settings.darkTheme
+                    ? "rgb(56,56,56)"
+                    : "rgb(255,255,255)",
+                }}
+              >
+                <NewTextbookPage edit={true} textbookId={match.params.textbookId} />
               </div>
             );
           }}

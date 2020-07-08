@@ -104,11 +104,9 @@ const FilterContainer = ({
 
         break;
       default:
-        console.log("error!");
+        return null;
     }
 
-    // console.log(coursePrefixes)
-    // console.log(courses)
   };
 
   return (

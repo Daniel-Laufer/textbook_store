@@ -5,6 +5,8 @@ import {
   deleteItemFromCart,
   getCartItems,
 } from "../../Redux/Actions/cartActions";
+
+import { deleteItem } from "../../Redux/Actions/textbookActions";
 import { connect } from "react-redux";
 import { useHistory } from "react-router-dom";
 
@@ -17,6 +19,10 @@ function ItemCard({
   cart,
   getCartItems,
   darkTheme,
+  adminAccess,
+  deleteItem,
+  setDeletedTextbook,
+  setLoadingTextbooks,
 }) {
   const [displayDelete, setDisplayDelete] = useState(false);
   const [myCard, setMyCard] = useState(false);
@@ -37,16 +43,21 @@ function ItemCard({
 
   useEffect(() => {
     if (cart.refreshRequested && user.loggedIn && !cart.pending) {
-      console.log("Card getCartItems");
 
       getCartItems(user.authToken);
       cart.refreshRequested = false;
     }
   }, [cart.refreshRequested]);
 
-  const handleDelete = () => {
+  const handleDeleteCart = () => {
     deleteItemFromCart(user.authToken, item.textbookId);
     item.cartCount -= 1;
+  };
+
+  const handleDelete = () => {
+    setLoadingTextbooks(true);
+    deleteItem(user.authToken, item.textbookId);
+    setDeletedTextbook(true);
   };
 
   const darkCardBackgroundColor = "rgb(89, 88, 88)";
@@ -78,10 +89,24 @@ function ItemCard({
             {item ? item.cartCount : 0}
           </div>
         </div>
-        <div className="delete-button-container">
-          <i className="delete-button-icon-background fas fa-circle"></i>
-          <i className="delete-button-icon fas fa-times-circle"></i>
-        </div>
+        {adminAccess && (
+          <>
+            <div
+              className="delete-button-container"
+              onClick={() => handleDelete()}
+            >
+              <i className="delete-button-icon-background fas fa-circle"></i>
+              <i className="delete-button-icon fas fa-times-circle"></i>
+            </div>
+            <div
+              className="edit-button-container"
+              onClick={() => history.push(`/textbooks/edit/${item.textbookId}`)}
+            >
+              <i className="edit-button-icon-background"></i>
+              <i className="edit-button-icon far fa-edit"></i>
+            </div>
+          </>
+        )}
         <div
           id="imageContainer"
           style={darkTheme ? { backgroundColor: darkCardBackgroundColor } : {}}
@@ -142,15 +167,20 @@ function ItemCard({
               }
             >
               <span className="modal-section-title">
-                <strong>
-                  Pickup Location:{" "}
-                  {!myCard && displayDelete && !cart.cartItemIds
-                    ? " delete enabled"
-                    : ""}
-                </strong>
+                <strong>Approx. Price: </strong>
+              </span>
+              {`$${item ? item.price : ""}`}
+            </li>
+            <li
+              className="list-group-item"
+              style={
+                darkTheme ? { backgroundColor: darkCardBackgroundColor } : {}
+              }
+            >
+              <span className="modal-section-title">
+                <strong>Pickup Location: </strong>
               </span>
               {item ? item.sellingLocation : ""}
-              {myCard ? "mycard" : ""}
             </li>
           </ul>
           {/* <div className="contactInfoContainer">
@@ -208,7 +238,7 @@ function ItemCard({
             } ${displayDelete ? "" : "(This item is not in your cart!)"}`}
             disabled={!myCard && displayDelete ? false : true}
             onClick={() => {
-              handleDelete();
+              handleDeleteCart();
             }}
             className="btn btn-danger"
           >
@@ -235,6 +265,7 @@ const mapDispatchToProps = (dispatch) => {
     deleteItemFromCart: (auth, textbookId) =>
       dispatch(deleteItemFromCart(auth, textbookId)),
     getCartItems: (auth) => dispatch(getCartItems(auth)),
+    deleteItem: (auth, textbookId) => dispatch(deleteItem(auth, textbookId)),
   };
 };
 

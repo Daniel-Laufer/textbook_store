@@ -5,7 +5,7 @@
   flex-wrap: wrap;
   margin: auto;
   height: 100%;
-  padding-top:91px;
+  padding-top:10px;
   
 
 }
@@ -29,4 +29,11 @@
     align-items: center;
     margin-top:-50px;
     justify-content: center;
+  }
+
+
+  @media only screen and (max-width: 991px) {
+    .CartShowcase {
+      width: 110%;
+    }
   }

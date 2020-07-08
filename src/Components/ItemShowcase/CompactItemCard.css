@@ -54,6 +54,33 @@
     font-weight: normal;
 }
 
+.compact-delete-button-container{
+    margin-left:5px;
+}
+
+.compact-delete-button-icon {
+    cursor: pointer;
+    color: red;
+    font-size: 32px;
+    position: relative;
+    left: 1px;
+    top: 1px;
+    
+  
+  }
+
+
+  
+  .compact-delete-button-icon-background {
+      display: none;
+    /* color: white;
+    font-size: 32px;
+    position: relative;
+    left: 205px;
+    top: -12px; */
+  
+  }
+
 
 
 .compact-profile-picture{
@@ -73,6 +100,7 @@
     padding-left:10px;
     padding-right:10px;
     width:120px;
+    cursor: pointer;
 }
 
 .compact-seller-userName{

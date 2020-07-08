@@ -10,8 +10,7 @@ let SettingsMenu = ({
   darkTheme,
 }) => {
   useEffect(() => {
-    document.getElementById("root").addEventListener("click", (e) => {
-      // if(e.target.)
+    const eventHandlerFunction = (e) => {
       const ignore = [
         "settings-menu-container",
         "form-check-label",
@@ -26,7 +25,12 @@ let SettingsMenu = ({
       ) {
         setSettingsMenuOpen(false);
       }
-    });
+    }
+    document.getElementById("root").addEventListener("click", eventHandlerFunction);
+
+    // CLEAN UP THE EVENT LISTNER WHEN COMPONENT UNMOUNTS
+    return(() => document.getElementById("root").removeEventListener("click", eventHandlerFunction));
+    
   }, [setSettingsMenuOpen]);
 
   const handleChecked = (type) => {

@@ -5,23 +5,14 @@ import { connect } from "react-redux";
 import "./ItemShowcase.css";
 import "./CompactItemCard.css";
 
-import {
-  getTextbooks,
-} from "../../Redux/Actions/textbookActions";
+import { getTextbooks } from "../../Redux/Actions/textbookActions";
 import { Container } from "react-bootstrap";
 
 import TextbookModal from "../Modals/TextbookModal";
 import { addItemToCart } from "../../Redux/Actions/cartActions";
 import FilterContainer from "./Filters/FilterContainer/FilterContainer";
 
-function ItemShowcase({
-  textbooks,
-  getTextbooks,
-  cart,
-  settings,
-  user,
-  filterOutMyOwnTextbooks,
-}) {
+function ItemShowcase({ textbooks, getTextbooks, cart, settings, user }) {
   const [modalIsOpen, setIsOpen] = useState(false);
   const [focusedItem, setFocusedItem] = useState(null);
   const [refreshedCart, setRefreshedCart] = useState(false);
@@ -36,8 +27,6 @@ function ItemShowcase({
       getTextbooks();
     }
   }, [textbooks.refreshRequired, getTextbooks]);
-
-
 
   function afterOpenModal() {
     // references are now sync'd and can be accessed.
@@ -57,7 +46,7 @@ function ItemShowcase({
   };
 
   const spinnerStyles = {
-    display: textbooks.pending || user.loadProfilePending ? "block" : "none",
+    display: textbooks.pending ? "block" : "none",
   };
   return (
     <>
@@ -81,29 +70,26 @@ function ItemShowcase({
               <div className="loaderIcon"></div>
             </div>
 
-            {!user.loadProfilePending
-              ? textbooks.textbooksToDisplay.map((item, index) => {
-                  if (settings.settings.compactCards)
-                    return (
-                      <CompactItemCard
-                        openModal={openModal}
-                        darkTheme={settings.settings.darkTheme}
-                        key={index}
-                        item={item}
-                        sendCartRefreshRequest={sendCartRefreshRequest}
-                      />
-                    );
+            {textbooks.textbooksToDisplay.map((item, index) => {
+              if (settings.settings.compactCards)
+                return (
+                  <CompactItemCard
+                    openModal={openModal}
+                    darkTheme={settings.settings.darkTheme}
+                    key={index}
+                    item={item}
+                  />
+                );
 
-                  return (
-                    <ItemCard
-                      darkTheme={settings.settings.darkTheme}
-                      openModal={openModal}
-                      key={index}
-                      item={item}
-                    />
-                  );
-                })
-              : null}
+              return (
+                <ItemCard
+                  darkTheme={settings.settings.darkTheme}
+                  openModal={openModal}
+                  key={index}
+                  item={item}
+                />
+              );
+            })}
           </div>
           <TextbookModal
             darkTheme={settings.settings.darkTheme}

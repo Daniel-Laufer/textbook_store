@@ -6,6 +6,7 @@ import { connect } from "react-redux";
 import { Container, Jumbotron } from "react-bootstrap";
 import TextbookModal from "../Modals/TextbookModal";
 import axios from "axios";
+import CompactItemCard from "../ItemShowcase/CompactItemCard";
 
 function UserTextbookShowcase({
   cartItems,
@@ -19,6 +20,8 @@ function UserTextbookShowcase({
   const [adminAccess, setAdminAccess] = useState(false);
   const [loadingTextbooks, setLoadingTextbooks] = useState(true);
   const [thisUsersTextbooks, setThisUsersTextbooks] = useState(null);
+  const [deletedTextbook, setDeletedTextbook] = useState(false);
+
   const [thisUserProfile, setThisUserProfile] = useState({
     userName: "",
     campus: "",
@@ -40,33 +43,39 @@ function UserTextbookShowcase({
     return null;
   }
 
-  useEffect(() => {
-    console.log(loadingTextbooks);
-    // get their textbooks
+  const getUserProfile = () => {
     axios
       .get(`/user/${userId}`)
       .then((data) => {
         setThisUserProfile(data.data);
       })
       .catch((err) => console.log(err));
+  };
 
+  const getUserTextbooks = () => {
+    if(userId)
     axios
-      .get(`/textbooks/${userId}`)
+      .get(`/textbooks/user/${userId}`)
       .then((data) => {
         setLoadingTextbooks(false);
         setThisUsersTextbooks(data.data);
       })
       .catch((err) => console.log(err));
+  };
 
-    // get their usernames (this may seem like a redundant step since we could just pull
-    // the username from one of the textbooks, however, there is a change this user could have not posted anything yet!)
+  useEffect(() => {
+    getUserProfile();
+    getUserTextbooks();
   }, []);
 
-  // const updateAdminAccess = useCallback(() => {
-  //   if(user.publicUserInfo && userId === user.publicUserInfo.userId){
-  //     setAdminAccess(true)
-  //   }
-  // }, [user.publicUserInfo])
+
+  useEffect(() => {
+    // refresh the user's textbooks since one was deleted!
+    if (deletedTextbook) {
+      getUserTextbooks();
+      setDeletedTextbook(false);
+    }
+  }, [deletedTextbook]);
 
   useEffect(() => {
     if (user.publicUserInfo && userId === user.publicUserInfo.userId)
@@ -79,24 +88,47 @@ function UserTextbookShowcase({
         backgroundColor: settings.settings.darkTheme
           ? "rgb(56,56,56)"
           : "rgb(255,255,255)",
+        color: !settings.settings.darkTheme ? "rgb(0,0,0)" : "rgb(255,255,255)",
       }}
     >
-      <Jumbotron fluid className="user-showcase-jumbo">
+      <Jumbotron
+        fluid
+        className="user-showcase-jumbo"
+        style={
+          settings.settings.darkTheme
+            ? {
+                backgroundColor: "rgb(50,50,50)",
+                color: "rgb(255,255,255)",
+              }
+            : {
+                color: "rgb(0,0,0)",
+              }
+        }
+      >
         <Container className="jumbo-inner-container">
-          <img
-            className="user-showcase-profile-pic"
-            src={
-              !thisUserProfile.profilePicture
-                ? ""
-                : thisUserProfile.profilePicture
-            }
-            alt=""
-          />
-          <h1>
-            {thisUserProfile.userName !== ""
-              ? `${thisUserProfile.userName}\'s Textbooks`
-              : ""}
-          </h1>
+          {thisUserProfile.userName === "" ||
+          !thisUserProfile.profilePicture ? (
+            <div className="loader">
+              <div className="loaderIcon"></div>
+            </div>
+          ) : (
+            <>
+              <img
+                className="user-showcase-profile-pic"
+                src={
+                  !thisUserProfile.profilePicture
+                    ? ""
+                    : thisUserProfile.profilePicture
+                }
+                alt=""
+              />
+              <h1>
+                {thisUserProfile.userName !== ""
+                  ? `${thisUserProfile.userName}\'s Textbooks`
+                  : ""}
+              </h1>
+            </>
+          )}
         </Container>
       </Jumbotron>
       {thisUsersTextbooks ? (
@@ -117,8 +149,27 @@ function UserTextbookShowcase({
               </div>
             ) : (
               thisUsersTextbooks.map((item, index) => {
+                if (settings.settings.compactCards)
+                  return (
+                    <CompactItemCard
+                      setDeletedTextbook={setDeletedTextbook}
+                      adminAccess={adminAccess}
+                      key={index}
+                      item={item}
+                      openModal={openModal}
+                      setLoadingTextbooks={setLoadingTextbooks}
+                    />
+                  );
+
                 return (
-                  <ItemCard canDelete={adminAccess} key={index} item={item} openModal={openModal} />
+                  <ItemCard
+                    setDeletedTextbook={setDeletedTextbook}
+                    adminAccess={adminAccess}
+                    key={index}
+                    item={item}
+                    openModal={openModal}
+                    setLoadingTextbooks={setLoadingTextbooks}
+                  />
                 );
               })
             )}

@@ -3,6 +3,8 @@ import {
   SEARCH_AND_UPDATE_TEXTBOOKS,
   CREATE_NEW_TEXTBOOK,
   FITLER_OUT_MY_OWN_TEXTBOOKS,
+  DELETE_ITEM,
+  UPDATE_TEXTBOOK,
 } from "../actionNames.js";
 
 export default (
@@ -32,7 +34,15 @@ export default (
     case GET_TEXTBOOKS + "_REJECTED":
       return { ...state, pending: false, error: action.payload };
 
-
+    case DELETE_ITEM + "_FULFILLED":
+      return {
+        ...state,
+        refreshRequired: true,
+      };
+    case DELETE_ITEM + "_PENDING":
+      return { ...state };
+    case DELETE_ITEM + "_REJECTED":
+      return { ...state, error: action.payload };
 
     case SEARCH_AND_UPDATE_TEXTBOOKS:
       const newItems = [];
@@ -56,16 +66,22 @@ export default (
         newItems.forEach((item) => {
           pushItem = true;
           filtersToCheck.forEach((filter) => {
-            if(filter === 'coursePrefix'){
-              // console.log(item[filter], action.payload.filters[filter])
-              if(!item['course'].toUpperCase().startsWith(action.payload.filters[filter]))
-                pushItem = false
-            }
-            else if(filter === 'course'){ // you will be able to erase this else if if all of the courses match exactly. 
-              if(!action.payload.filters[filter].startsWith(item['course'].toUpperCase()))
-                pushItem = false
-            }
-            else if (item[filter] !== action.payload.filters[filter])
+            if (filter === "coursePrefix") {
+              if (
+                !item["course"]
+                  .toUpperCase()
+                  .startsWith(action.payload.filters[filter])
+              )
+                pushItem = false;
+            } else if (filter === "course") {
+              // you will be able to erase this else if if all of the courses match exactly.
+              if (
+                !action.payload.filters[filter].startsWith(
+                  item["course"].toUpperCase()
+                )
+              )
+                pushItem = false;
+            } else if (item[filter] !== action.payload.filters[filter])
               pushItem = false;
           });
           if (pushItem) newItemsAfterFilters.push(item);
@@ -89,7 +105,22 @@ export default (
         error: action.payload,
         refreshRequired: false,
       };
-    
+
+    case UPDATE_TEXTBOOK + "_FULFILLED":
+      return {
+        ...state,
+        uploadPending: false,
+        refreshRequired: true,
+      };
+    case UPDATE_TEXTBOOK + "_PENDING":
+      return { ...state, uploadPending: true };
+    case UPDATE_TEXTBOOK + "_REJECTED":
+      return {
+        ...state,
+        uploadPending: false,
+        error: action.payload,
+        refreshRequired: false,
+      };
 
     default:
       return state;
