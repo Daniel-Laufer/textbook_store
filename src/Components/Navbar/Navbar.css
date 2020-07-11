@@ -14,7 +14,7 @@ background: linear-gradient(to right, #182848, #4b6cb7); /* W3C, IE 10+/ Edge, F
 
 
 #navbar-logo{
-  width:60px;
+  width:50px;
   margin-right:3px;
 }
 
@@ -172,6 +172,14 @@ background: linear-gradient(to right, #182848, #4b6cb7); /* W3C, IE 10+/ Edge, F
   }
   #new-post-button{
     margin-top:-2px;
+  }
+  .nav-brand{
+    margin-top:10px;
+  }
+  #navbar-logo{
+    width:40px;
+    margin-right:3px;
+    margin-bottom: 10px;
   }
 
 

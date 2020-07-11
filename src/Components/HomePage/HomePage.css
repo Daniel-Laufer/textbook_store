@@ -1,0 +1,376 @@
+:root {
+  --fade-in-duration: 3s;
+}
+
+#home-page-wrapper {
+  font-family: "Quicksand", sans-serif;
+}
+
+#page-1 {
+  height: calc(100vh - 82px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-image: url("https://firebasestorage.googleapis.com/v0/b/textbook-store-2e072.appspot.com/o/App_images_and_gifs%2Fbackground.png?alt=media&token=96ee3e42-d511-4d13-8195-259240ec6684");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+#page-1-content {
+  color: white;
+  border-radius: 5rem;
+  margin: auto;
+  width: 70%;
+  text-align: center;
+  -webkit-animation: fadein var(--fade-in-duration);
+  -moz-animation: fadein var(--fade-in-duration);
+  -ms-animation: fadein var(--fade-in-duration);
+  -o-animation: fadein var(--fade-in-duration);
+  animation: fadein var(--fade-in-duration);
+}
+
+@keyframes fadein {
+  from {
+    opacity: 0;
+    transform: translateY(-80px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0px);
+  }
+}
+
+#page-1-content > a {
+  border-radius: 5rem;
+  display: block;
+  width: 200px;
+  margin: auto;
+  margin-top: 10px;
+  color: black;
+  background-color: white;
+  border: none;
+  cursor: pointer;
+  padding: 12px;
+  padding-left: 16px;
+  padding-right: 16px;
+}
+#page-1-content > h1 {
+  font-weight: bolder;
+  font-size: 39px;
+}
+#page-1-content > * {
+  margin-top: 20px;
+}
+
+#under-title-text {
+  font-size: 20px;
+}
+
+
+/* PAGE 2 */
+
+#page-2 {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #c9d6ff; /* fallback for old browsers */
+  background: -webkit-linear-gradient(
+    to right,
+    #e2e2e2,
+    #c9d6ff
+  ); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(
+    to right,
+    #e2e2e2,
+    #c9d6ff
+  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+#page-2-content {
+  border-radius: 5rem;
+  margin: auto;
+  width: 90%;
+  text-align: center;
+}
+#page-2-content > h1{
+  position: relative;
+  top:20px;
+  font-weight: bolder;
+}
+
+#page-2-content > button {
+  border-radius: 5rem;
+  border: none;
+  cursor: pointer;
+}
+
+.campuses-container {
+  display: flex;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+  margin:auto;
+  margin-top:60px;
+  max-width: 1037px;
+  
+}
+
+.campus-image:first-of-type {
+  background-image: url("https://www.utm.utoronto.ca/asc/sites/files/asc/public/shared/images/new-north.jpg");
+}
+.campus-image:nth-of-type(2) {
+  background-image: url("https://www.utoronto.ca/sites/default/files/BackToSchool_013_0.jpg");
+}
+.campus-image:nth-of-type(3) {
+  background-image: url("https://www.utsc.utoronto.ca/aboutus/sites/utsc.utoronto.ca.aboutus/files/styles/page-content-wide/public/OurHeritage.jpg?itok=P8DofRRD");
+}
+
+.campus-label {
+  text-transform: uppercase;
+  color: black;
+  font-size: 20px;
+  font-weight: bolder;
+  background-color: white;
+  position: relative;
+  top: 200px;
+}
+
+.campuses-container-description {
+  margin: auto;
+  margin-top: 80px;
+  font-size: 25px;
+  width: 70%;
+  background-color:white;
+  border-radius: 0.4rem;
+  padding:40px;
+  max-width: 731px;
+  margin-bottom: 40px;
+  webkit-box-shadow: 3px 2px 21px -2px rgba(39, 37, 39, 0.72);
+  -moz-box-shadow: 3px 2px 21px -2px rgba(39, 37, 39, 0.72);
+  box-shadow: 3px 2px 21px -2px rgba(39, 37, 39, 0.72);
+}
+
+.campus-image {
+  background-size: cover;
+  width: 300px;
+  height: 200px;
+  margin-top: 30px;
+  webkit-box-shadow: 3px 2px 21px -2px rgba(39, 37, 39, 0.72);
+  -moz-box-shadow: 3px 2px 21px -2px rgba(39, 37, 39, 0.72);
+  box-shadow: 3px 2px 21px -2px rgba(39, 37, 39, 0.72);
+}
+
+
+
+/* PAGE 3 */
+
+
+#page-3 {
+  min-height: calc(100vh);
+  justify-content: center;
+  align-items: center;
+  background: #83a4d4;  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #b6fbff, #83a4d4);  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right, #b6fbff, #83a4d4); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  
+}
+
+#page-3 h1{
+  flex: 0 0 100%;
+  text-align: center;
+  font-weight: bolder;
+  /* background-color:rgba(255,255,255,0.7); */
+  padding-top:30px;
+}
+
+
+
+#page-3-content {
+
+  border-radius: 5rem;
+  margin: auto;
+  width: 100%;
+  text-align: center;
+}
+#page-3-content h4{
+  font-weight: bolder;
+  margin-bottom: 20px;
+  text-align: left;
+  margin-left:35px;
+  font-size:25px;
+  text-transform: uppercase;
+  font-weight: 9000;
+}
+#page-3-content li{
+  font-size:20px;
+  line-height: 40px;
+  
+}
+
+
+
+.list-container{
+  
+  display: flex;
+  margin:auto;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.list{
+  margin-top:70px;
+  width:45%;
+  padding-left: 10px;
+  padding-right: 20px;
+  min-width: 390px;
+  border-radius: 4rem;
+  padding:40px;
+  webkit-box-shadow: 3px 2px 21px -2px rgba(39, 37, 39, 0.72);
+  -moz-box-shadow: 3px 2px 21px -2px rgba(39, 37, 39, 0.72);
+  box-shadow: 3px 2px 21px -2px rgba(39, 37, 39, 0.72);
+  
+}
+
+.list:nth-of-type(1){
+  background-color:#a3e6b1;
+  margin-right:30px;
+  
+  
+  
+}
+.list:nth-of-type(2){
+  background-color: #e68585;
+  
+  
+}
+.ordered-instructions{
+  list-style-position: inside;
+  text-align: left;
+  
+  
+}
+
+
+.plus-icon-span{
+  background-color:white;
+  height: 30px;
+  line-height: 10px;
+  outline:none;
+  border:none;
+}
+
+.plus-icon-span:disabled{
+  color:black
+}
+.star-icon-span{
+  background-color:rgb(0, 123,255);
+  height: 30px;
+  line-height: 10px;
+  outline:none;
+  border:none;
+}
+
+.star-icon-span:disabled{
+  color:black
+}
+
+
+li > .btn.btn-primary:first-of-type:disabled{
+  background-color:rgb(0, 123,255);
+  font-size: 15px;
+}
+li > .btn:disabled{
+  background-color:rgb(50,75,129);
+  color:white;
+  border:1px solid rgb(0, 123,255);
+  font-size: 15px;
+
+}
+
+
+/* PAGE 4 */
+
+#page-4 {
+  height: calc(100vh - 82px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-image: url("https://firebasestorage.googleapis.com/v0/b/textbook-store-2e072.appspot.com/o/App_images_and_gifs%2Fbackground.png?alt=media&token=96ee3e42-d511-4d13-8195-259240ec6684");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+#page-4-content {
+  color: white;
+  border-radius: 5rem;
+  margin: auto;
+  width: 70%;
+  text-align: center;
+}
+
+
+#page-4-content > a {
+  border-radius: 5rem;
+  display: block;
+  width: 200px;
+  margin: auto;
+  margin-top: 10px;
+  color: white;
+  background-color: rgb(0, 123,255);
+  border: none;
+  cursor: pointer;
+  padding: 12px;
+  padding-left: 16px;
+  padding-right: 16px;
+  margin-top:20px;
+}
+#page-4-content > a:hover {
+  border-radius: 5rem;
+  display: block;
+  width: 200px;
+  margin: auto;
+  margin-top: 10px;
+  color: white;
+  background-color: rgb(0, 123,255);
+  border: none;
+  cursor: pointer;
+  padding: 12px;
+  padding-left: 16px;
+  padding-right: 16px;
+  margin-top:20px;
+  animation: shake2 1.3s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+  animation-iteration-count: infinite;
+
+}
+
+
+
+@keyframes shake2 {
+  10%,
+  90% {
+    transform: translate3d(-1px, 0, 0);
+  }
+
+  20%,
+  80% {
+    transform: translate3d(4px, 0, 0);
+  }
+
+  30%,
+  50%,
+  70% {
+    transform: translate3d(-2px, 0, 0);
+  }
+
+  40%,
+  60% {
+    transform: translate3d(6px, 0, 0);
+  }
+}
+
+
+
+
+
+

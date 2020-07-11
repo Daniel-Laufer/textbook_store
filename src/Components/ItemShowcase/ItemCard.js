@@ -178,7 +178,7 @@ function ItemCard({
               }
             >
               <span className="modal-section-title">
-                <strong>Pickup Location: </strong>
+                <strong>Desired Exchange Location: </strong>
               </span>
               {item ? item.sellingLocation : ""}
             </li>

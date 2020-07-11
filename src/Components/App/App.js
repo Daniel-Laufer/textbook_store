@@ -15,7 +15,7 @@ import LoginPage from "../LoginPage/LoginPage";
 import SignUpPage from "../SignUpPage/SignUpPage";
 import NewTextbookPage from "../NewTextbookPage/NewTextbookPage";
 import AppNav from "../Navbar/Navbar";
-import HomePage from "../../Containers/HomePage";
+import HomePage from "../HomePage/HomePage"
 
 /*                   ACTIONS                                                   */
 import UserTextbookShowcase from "../UserTextbookShowcase/UserTextbookShowcase";
