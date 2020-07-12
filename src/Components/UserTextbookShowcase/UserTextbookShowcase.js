@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState } from "react";
 import ItemCard from "../ItemShowcase/ItemCard";
 import "./UserTextbookShowcase.css";
 import { getCartItems } from "../../Redux/Actions/cartActions";
@@ -27,7 +27,6 @@ function UserTextbookShowcase({
     campus: "",
     timeCreated: "",
     userId: "",
-    userName: "",
   });
 
   function openModal(item) {
@@ -124,7 +123,7 @@ function UserTextbookShowcase({
               />
               <h1>
                 {thisUserProfile.userName !== ""
-                  ? `${thisUserProfile.userName}\'s Textbooks`
+                  ? `${thisUserProfile.userName}'s Textbooks`
                   : ""}
               </h1>
             </>
@@ -177,6 +176,7 @@ function UserTextbookShowcase({
             <TextbookModal
               funcs={{ modalIsOpen, openModal, afterOpenModal, closeModal }}
               item={focusedItem}
+              cart={cartItems}
             />
           </div>
         </Container>

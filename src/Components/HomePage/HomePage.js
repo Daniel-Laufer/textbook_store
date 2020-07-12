@@ -1,10 +1,9 @@
-import React, { useRef } from "react";
+import React from "react";
 import "./HomePage.css";
 import { Link } from "react-scroll";
 import { useHistory } from "react-router-dom";
 
 const HomePage = ({ user }) => {
-  const myRef = useRef(null);
   const history = useHistory();
 
   return (
@@ -107,7 +106,7 @@ const HomePage = ({ user }) => {
       </div>
       <div id="page-4">
         <div id="page-4-content">
-          <h1>So what are you waiting for? <span rol="img">😄</span></h1>
+          <h1>So what are you waiting for? <span role="img" aria-label={"emoji"}>😄</span></h1>
           <Link to="/signup" onClick={() => history.push("/signup")}>
             Sign me up!
           </Link>

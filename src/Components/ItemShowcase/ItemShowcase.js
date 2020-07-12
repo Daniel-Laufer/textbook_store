@@ -15,7 +15,6 @@ import FilterContainer from "./Filters/FilterContainer/FilterContainer";
 function ItemShowcase({ textbooks, getTextbooks, cart, settings, user }) {
   const [modalIsOpen, setIsOpen] = useState(false);
   const [focusedItem, setFocusedItem] = useState(null);
-  const [refreshedCart, setRefreshedCart] = useState(false);
 
   function openModal(item) {
     setFocusedItem(item);
@@ -24,6 +23,13 @@ function ItemShowcase({ textbooks, getTextbooks, cart, settings, user }) {
 
 
   
+
+  useEffect(() => {
+    if (!user.authToken) {
+      // alert("refreshed")
+      getTextbooks();
+    }
+  }, [user.authToken]);
 
   useEffect(() => {
     if (textbooks.refreshRequired) {
@@ -41,12 +47,6 @@ function ItemShowcase({ textbooks, getTextbooks, cart, settings, user }) {
     setIsOpen(false);
   }
 
-  const sendCartRefreshRequest = () => {
-    if (!refreshedCart) {
-      setRefreshedCart(true);
-      cart.refreshRequired = true;
-    }
-  };
 
   const spinnerStyles = {
     display: textbooks.pending ? "block" : "none",
@@ -99,6 +99,7 @@ function ItemShowcase({ textbooks, getTextbooks, cart, settings, user }) {
             funcs={{ modalIsOpen, openModal, afterOpenModal, closeModal }}
             item={focusedItem}
             cart={cart}
+            
           />
         </Container>
       </div>

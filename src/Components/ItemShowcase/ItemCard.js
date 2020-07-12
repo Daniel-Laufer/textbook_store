@@ -31,13 +31,19 @@ function ItemCard({
 
   useEffect(() => {
     if (
-      (cart.cartItemIds && cart.cartItemIds.includes(item.textbookId)) ||
+      ( cart.cartItemIds && cart.cartItemIds.includes(item.textbookId)) ||
       isCartItem
     ) {
       return setDisplayDelete(true);
     }
     setDisplayDelete(false);
   }, [cart.cartItemIds]);
+
+
+  useEffect(() => {
+    if(!user.loggedIn)
+      setDisplayDelete(false);
+  }, [user.loggedIn])
 
   useEffect(() => {
     if (user.publicUserInfo) {
@@ -117,8 +123,7 @@ function ItemCard({
         )}
         <div
           id="imageContainer"
-          style={darkTheme ? { backgroundColor: darkCardBackgroundColor } : {}}
-          style={{ backgroundImage: `url(${item.image})` }}
+          style={darkTheme ? { backgroundColor: darkCardBackgroundColor, backgroundImage: `url(${item.image})` } : {backgroundImage: `url(${item.image})`}}
         ></div>
         <div className="card-body">
           <div className="card-title-container">
@@ -138,7 +143,7 @@ function ItemCard({
             <img
               id="profile-picture"
               src={item.sellerPublicInfo.profilePicture}
-              alt="profile picture"
+              alt="profile"
             />
             <div className="sellerUsername">
               {item.sellerPublicInfo.userName.substring(0, 16) +
@@ -221,7 +226,7 @@ function ItemCard({
           <button
             // style={myCard ? { opacity: "0" } : {}}
             disabled={
-              myCard || !cart.cartItemIds || displayDelete ? true : false
+              !user.loggedIn || myCard || !cart.cartItemIds || displayDelete ? true : false
             }
             title={`Add to cart ${
               user.loggedIn ? "" : "(Please login first!)"
@@ -250,7 +255,7 @@ function ItemCard({
             title={`Remove from cart ${
               user.loggedIn ? "" : "(Please login first!)"
             } ${displayDelete ? "" : "(This item is not in your cart!)"}`}
-            disabled={!myCard && displayDelete ? false : true}
+            disabled={user.loggedIn && !myCard && displayDelete ? false : true}
             onClick={() => {
               handleDeleteCart();
             }}

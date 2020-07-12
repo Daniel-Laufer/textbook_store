@@ -1,8 +1,7 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import Select from "react-select";
 import { FormControl, Form } from "react-bootstrap";
-import axios from "axios";
 import courseData from "./courseData";
 
 import "./FilterContainer.css";

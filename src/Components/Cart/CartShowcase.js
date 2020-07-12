@@ -102,6 +102,8 @@ function CartShowcase({ cartItems, getCartItems, user, settings }) {
             <TextbookModal
               funcs={{ modalIsOpen, openModal, afterOpenModal, closeModal }}
               item={focusedItem}
+              isCartItem={true}
+              cart={cartItems}
             />
           </div>
         </Container>

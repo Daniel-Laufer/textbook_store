@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import "./UserMenu.css";
 import { Button } from "react-bootstrap";
-import { updateSettings } from "../../Redux/Actions/settingsActions";
 import { logout, updateProfilePicture } from "../../Redux/Actions/userActions";
-import { useHistory, Link } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import heic2any from "heic2any";
 
 let UserMenu = ({
@@ -15,7 +14,6 @@ let UserMenu = ({
   updateProfilePicture,
   darkTheme,
 }) => {
-  const [image, setImage] = useState(null);
 
   useEffect(() => {
     const eventHandlerFunction = (e) => {
@@ -57,6 +55,7 @@ let UserMenu = ({
   const handleLogOut = () => {
     setUserMenuOpen(false);
     delete localStorage.authToken;
+
     logout();
     history.push("/textbooks");
   };
@@ -84,12 +83,10 @@ let UserMenu = ({
       })
         .then((data) => {
           
-          setImage(data);
           updateProfilePicture(user, data);
         })
         .catch((err) => console.log(err));
     } else {
-      setImage(e.target.files[0]);
       updateProfilePicture(user, e.target.files[0]);
     }
   };

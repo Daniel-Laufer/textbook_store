@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
 
 /*                    CSS                                            */
@@ -15,7 +15,7 @@ import LoginPage from "../LoginPage/LoginPage";
 import SignUpPage from "../SignUpPage/SignUpPage";
 import NewTextbookPage from "../NewTextbookPage/NewTextbookPage";
 import AppNav from "../Navbar/Navbar";
-import HomePage from "../HomePage/HomePage"
+import HomePage from "../HomePage/HomePage";
 
 /*                   ACTIONS                                                   */
 import UserTextbookShowcase from "../UserTextbookShowcase/UserTextbookShowcase";
@@ -35,8 +35,6 @@ function App({
   settings,
   cartItems,
 }) {
-  const [redirectRequested, setRedirectRequested] = useState(false);
-
   useEffect(() => {
     if (user.loggedIn) {
       getCartItems(user.authToken);
@@ -92,7 +90,10 @@ function App({
           <SignUpPage />
         </Route>
         <Route path="/newPost">
-          <NewTextbookPage edit={false} darkTheme={settings.settings.darkTheme} />
+          <NewTextbookPage
+            edit={false}
+            darkTheme={settings.settings.darkTheme}
+          />
         </Route>
         <Route path="/about">
           <div>
@@ -102,7 +103,7 @@ function App({
         </Route>
         <Route
           path="/textbooks/user/:userId"
-          render={({match}) => {
+          render={({ match }) => {
             return (
               <div
                 className="App"
@@ -119,7 +120,7 @@ function App({
         />
         <Route
           path="/textbooks/edit/:textbookId"
-          render={({match}) => {
+          render={({ match }) => {
             return (
               <div
                 className="App"
@@ -129,7 +130,10 @@ function App({
                     : "rgb(255,255,255)",
                 }}
               >
-                <NewTextbookPage edit={true} textbookId={match.params.textbookId} />
+                <NewTextbookPage
+                  edit={true}
+                  textbookId={match.params.textbookId}
+                />
               </div>
             );
           }}
@@ -146,7 +150,6 @@ function App({
             <ItemShowcase />
           </div>
         </Route>
-        
 
         <Route path="/">
           <HomePage />

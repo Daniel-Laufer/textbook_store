@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Modal from "react-modal";
 import "./TextbookModal.css";
-import Slider from "react-rangeslider";
 import "react-rangeslider/lib/index.css";
 
 Modal.setAppElement("#root");
@@ -10,18 +9,21 @@ Modal.defaultStyles.overlay.backgroundColor = "rgba(89,89,89, 0.75)";
 
 const darkCardBackgroundColor = "rgb(89, 88, 88)";
 
-export default function TextbookModal({ funcs, item, darkTheme, cart }) {
-  const handWritingLabels = {
-    0: "None.",
-    50: "Only a little",
-    100: "It's everwhere!",
-  };
+export default function TextbookModal({
+  funcs,
+  item,
+  darkTheme,
+  cart,
+  isCartItem,
+}) {
   const [qualityOfTextbooks, setQualityOfTextbooks] = useState(null);
 
-  const showContactInfo =
+  let showContactInfo =
     !cart || !cart.cartItemIds || !item
       ? false
-      : cart.cartItemIds.includes(item.textbookId);
+      : cart.cartItemIds.includes(
+          isCartItem ? item.cartItemId : item.textbookId
+        );
 
   // alert(showContactInfo)
 
@@ -29,7 +31,7 @@ export default function TextbookModal({ funcs, item, darkTheme, cart }) {
     if (item) {
       assignQualityLabels();
     }
-  }, [item]);
+  }, [item, cart]);
 
   const getLevelColor = (num) => {
     if (num >= 0 && num < 25) return "green";
@@ -40,9 +42,9 @@ export default function TextbookModal({ funcs, item, darkTheme, cart }) {
   };
   const getLevelMessage = (num, type) => {
     if (num >= 0 && num < 25) {
-      return { message: "none", level: <span rol="img">😄</span> };
+      return { message: "none", level: <span role="img" aria-label={"emoji"}>😄</span> };
     } else if (num >= 25 && num < 50) {
-      const out = { level: <span rol="img">🙂</span> };
+      const out = { level: <span role="img" aria-label={"emoji"}>🙂</span> };
       switch (type) {
         case "handWriting":
           out["message"] = "on a few pages";
@@ -58,7 +60,7 @@ export default function TextbookModal({ funcs, item, darkTheme, cart }) {
           return out;
       }
     } else if (num >= 50 && num < 75) {
-      const out = { level: <span rol="img">😔</span> };
+      const out = { level: <span role="img" aria-label={"emoji"}>😔</span> };
       switch (type) {
         case "handWriting":
           out["message"] = "on several pages";
@@ -74,7 +76,7 @@ export default function TextbookModal({ funcs, item, darkTheme, cart }) {
           return out;
       }
     } else if (num >= 75 && num <= 100) {
-      const out = { level: <span rol="img">😨</span> };
+      const out = { level: <span role="img" aria-label={"emoji"}>😨</span> };
       switch (type) {
         case "handWriting":
           out["message"] = "everywhere!";
@@ -127,7 +129,6 @@ export default function TextbookModal({ funcs, item, darkTheme, cart }) {
 
         100
       );
-
     }
   }, [funcs.modalIsOpen]);
 
@@ -265,15 +266,17 @@ export default function TextbookModal({ funcs, item, darkTheme, cart }) {
                 </span>
               )}
             </div>
-            <div style={!showContactInfo ? {} : { display: "none" }} className="not-in-cart-contact-locked">
-              <span
-                role={"img"}
-                aria-label={"hidden"}
-                
-              >
-                🔒<br/>
+            <div
+              style={!showContactInfo ? {} : { display: "none" }}
+              className="not-in-cart-contact-locked"
+            >
+              <span role={"img"} aria-label={"hidden"}>
+                🔒
+                <br />
               </span>
-              <span className="locked-contact-message">Star this item to view this information!</span>
+              <span className="locked-contact-message">
+                Star this item to view this information!
+              </span>
             </div>
           </li>
           <li
