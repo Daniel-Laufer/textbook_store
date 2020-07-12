@@ -22,6 +22,9 @@ function ItemShowcase({ textbooks, getTextbooks, cart, settings, user }) {
     setIsOpen(true);
   }
 
+
+  
+
   useEffect(() => {
     if (textbooks.refreshRequired) {
       getTextbooks();

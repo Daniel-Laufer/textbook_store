@@ -1,6 +1,6 @@
 .user-textbook-showcase {
   width: 100%;
-  max-width: 1200px;
+  max-width: 1250px;
   display: flex;
   flex-wrap: wrap;
   align-items: flex-start;
@@ -18,6 +18,12 @@
 
 .user-showcase-jumbo.jumbotron.jumbotron-fluid{
   min-height: 208px;
+}
+
+
+.user-textbook-showcase button{
+  padding:0px !important;
+  width:40px;
 }
 
 

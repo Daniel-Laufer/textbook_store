@@ -22,6 +22,7 @@ function CompactItemCard({
   deleteItem,
   setDeletedTextbook,
   setLoadingTextbooks,
+  isCartItem
 }) {
   const [displayDelete, setDisplayDelete] = useState(false);
   const [myCard, setMyCard] = useState(false);
@@ -36,15 +37,20 @@ function CompactItemCard({
   }, [cart.refreshRequested]);
 
   useEffect(() => {
-    if (cart.cartItemIds && cart.cartItemIds.includes(item.textbookId)) {
+    if (isCartItem || cart.cartItemIds && cart.cartItemIds.includes(item.textbookId)) {
       return setDisplayDelete(true);
     }
     setDisplayDelete(false);
   }, [cart.cartItemIds]);
 
   const handleDeleteCart = () => {
-    deleteItemFromCart(user.authToken, item.textbookId);
-    item.cartCount -= 1;
+    if (isCartItem) {
+      deleteItemFromCart(user.authToken, item.cartItemId);
+      item.cartCount -= 1;
+    } else {
+      deleteItemFromCart(user.authToken, item.textbookId);
+      item.cartCount -= 1;
+    }
   };
 
   const handleDelete = () => {
@@ -133,7 +139,7 @@ function CompactItemCard({
         <div className="compact-price">{`$${item.price}`}</div>
         <div className="divider"> </div>
         <div className="compact-sellingLocation">
-          {`Selling Location: ${item.sellingLocation}`}
+          {`Selling Location: ${item.sellingLocation.length > 34 ? item.sellingLocation.substring(0, 34) + '...' : item.sellingLocation}`}
         </div>
 
         <div className="compact-card-button-holder">

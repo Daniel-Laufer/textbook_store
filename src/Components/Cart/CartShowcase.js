@@ -24,6 +24,10 @@ function CartShowcase({ cartItems, getCartItems, user, settings }) {
     return null;
   }
 
+  useEffect(() => {
+    getCartItems(user.authToken);
+  }, [user.publicUserInfo]);
+
   const spinnerStyles = { display: cartItems.pending ? "block" : "none" };
 
   useEffect(() => {
@@ -69,10 +73,12 @@ function CartShowcase({ cartItems, getCartItems, user, settings }) {
               </div>
             ) : (
               cartItems.allCartItems.map((item, index) => {
+                console.log(`rendered ${item.textbookId}`)
                 if (settings.settings.compactCards)
                   return (
                     <CompactItemCard
                       openModal={openModal}
+                      isCartItem={true}
                       darkTheme={settings.settings.darkTheme}
                       key={index}
                       item={item}
@@ -82,6 +88,7 @@ function CartShowcase({ cartItems, getCartItems, user, settings }) {
                 return (
                   <ItemCard
                     key={index}
+                    isCartItem={true}
                     darkTheme={settings.settings.darkTheme}
                     item={item}
                     openModal={openModal}

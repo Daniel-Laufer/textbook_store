@@ -23,13 +23,17 @@ function ItemCard({
   deleteItem,
   setDeletedTextbook,
   setLoadingTextbooks,
+  isCartItem,
 }) {
   const [displayDelete, setDisplayDelete] = useState(false);
   const [myCard, setMyCard] = useState(false);
   const history = useHistory();
 
   useEffect(() => {
-    if (cart.cartItemIds && cart.cartItemIds.includes(item.textbookId)) {
+    if (
+      (cart.cartItemIds && cart.cartItemIds.includes(item.textbookId)) ||
+      isCartItem
+    ) {
       return setDisplayDelete(true);
     }
     setDisplayDelete(false);
@@ -43,15 +47,19 @@ function ItemCard({
 
   useEffect(() => {
     if (cart.refreshRequested && user.loggedIn && !cart.pending) {
-
       getCartItems(user.authToken);
       cart.refreshRequested = false;
     }
   }, [cart.refreshRequested]);
 
   const handleDeleteCart = () => {
-    deleteItemFromCart(user.authToken, item.textbookId);
-    item.cartCount -= 1;
+    if (isCartItem) {
+      deleteItemFromCart(user.authToken, item.cartItemId);
+      item.cartCount -= 1;
+    } else {
+      deleteItemFromCart(user.authToken, item.textbookId);
+      item.cartCount -= 1;
+    }
   };
 
   const handleDelete = () => {
@@ -180,7 +188,13 @@ function ItemCard({
               <span className="modal-section-title">
                 <strong>Desired Exchange Location: </strong>
               </span>
-              {item ? item.sellingLocation : ""}
+              {item
+                ? `${
+                    item.sellingLocation.length > 25
+                      ? item.sellingLocation.substring(0, 25) + "..."
+                      : item.sellingLocation
+                  }`
+                : ""}
             </li>
           </ul>
           {/* <div className="contactInfoContainer">
