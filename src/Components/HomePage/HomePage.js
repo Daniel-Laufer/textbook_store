@@ -3,7 +3,7 @@ import "./HomePage.css";
 import { Link } from "react-scroll";
 import { useHistory } from "react-router-dom";
 
-const HomePage = ({ user }) => {
+const HomePage = () => {
   const history = useHistory();
 
   return (

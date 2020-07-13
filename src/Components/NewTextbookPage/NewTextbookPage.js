@@ -23,6 +23,9 @@ import courseData from "../ItemShowcase/Filters/FilterContainer/courseData";
 import heic2any from "heic2any";
 import axios from "axios";
 
+axios.defaults.baseURL =
+  "https://us-central1-textbook-store-2e072.cloudfunctions.net/api";
+
 const animatedComponents = makeAnimated();
 
 function NewTextbookPage({
@@ -89,7 +92,7 @@ function NewTextbookPage({
   const privacyOptions = [
     { value: true, label: "Phone Number" },
     { value: "lauferkdaniel@gmail.com", label: "Email" },
-    { name: "name", label: "Name" },
+    { value: "name", label: "Name" },
   ];
 
   useEffect(() => {
@@ -111,7 +114,6 @@ function NewTextbookPage({
         .get(`/textbooks/${textbookId}`)
         .then((data) => {
           for (let i = 0; i < coursePrefixes.length; i++) {
-            
             if (
               coursePrefixes[i].label.toLowerCase() ===
               data.data.course.substring(0, 3).toLowerCase()
@@ -120,7 +122,10 @@ function NewTextbookPage({
               break;
             }
           }
-          setCourse({ label: data.data.course.toUpperCase(), value: data.data.course });
+          setCourse({
+            label: data.data.course.toUpperCase(),
+            value: data.data.course,
+          });
           setOldImageURL(data.data.image);
           setPrice(data.data.price);
           setStains(data.data.textbookQuality.stains);
@@ -134,7 +139,7 @@ function NewTextbookPage({
         })
         .catch((err) => console.log(err));
     }
-  }, []);
+  }, [oldImageURL, edit, textbookId]);
 
   // filter out the unecessary courses
   useEffect(() => {
@@ -155,7 +160,7 @@ function NewTextbookPage({
       }
       setCourses(courses);
     }
-  }, [coursePrefixFilter]);
+  }, [coursePrefixFilter, edit, user.publicUserInfo]);
 
   const handleSelectChange = (items, type) => {
     switch (type) {
@@ -200,9 +205,23 @@ function NewTextbookPage({
   useEffect(() => {
     if (!edit && textbooks.error === null && textbooks.refreshRequired)
       setTimeout(() => history.push("/textbooks"), 2000);
-    else if (edit && textbooks.error === null && textbooks.refreshRequired && user.publicUserInfo)
-      setTimeout(() => history.push(`/textbooks/user/${user.publicUserInfo.userId}`), 2000);
-  }, [textbooks.refreshRequired, history, textbooks.error]); // added history and textbooks.err dependences here, not sure if it makes a difference!
+    else if (
+      edit &&
+      textbooks.error === null &&
+      textbooks.refreshRequired &&
+      user.publicUserInfo
+    )
+      setTimeout(
+        () => history.push(`/textbooks/user/${user.publicUserInfo.userId}`),
+        2000
+      );
+  }, [
+    textbooks.refreshRequired,
+    history,
+    textbooks.error,
+    edit,
+    user.publicUserInfo,
+  ]); // added history and textbooks.err dependences here, not sure if it makes a difference!
 
   const handleTextInputChange = (e, inputType) => {
     switch (inputType) {
@@ -236,7 +255,8 @@ function NewTextbookPage({
     ];
     e.preventDefault();
     if (
-      !newImage && edit &&
+      !newImage &&
+      edit &&
       [oldImageURL, title, price, course, sellingLocation, campus].some(
         (item) => item === "" || item === null
       )
@@ -492,7 +512,7 @@ function NewTextbookPage({
               defaultValue={[
                 { value: "905-501-8458", label: "Phone Number" },
                 { value: "lauferkdaniel@gmail.com", label: "Email" },
-                { name: "name", label: "Name" },
+                { value: "name", label: "Name" },
               ]}
               isMulti
             />
@@ -501,7 +521,7 @@ function NewTextbookPage({
             <Form.Label>Additional Notes</Form.Label>
             <Form.Control
               value={description}
-              placeHolder={
+              placeholder={
                 "ex. I will only be able exchange the textbook on weekends..."
               }
               onChange={(e) => handleTextInputChange(e, "description")}
@@ -509,15 +529,14 @@ function NewTextbookPage({
               rows="3"
             />
           </Form.Group>
-          <Form>
-            <Form.Group>
-              <Form.File
-                id="exampleFormControlFile1"
-                label="Example file input"
-                onChange={(e) => handleFileChange(e)}
-              />
-            </Form.Group>
-          </Form>
+          <Form.Group>
+            <Form.File 
+              id="exampleFormControlFile1"
+              label="Example file input"
+              onChange={(e) => handleFileChange(e)}
+            />
+          </Form.Group>
+
           {textbooks.error || submitError ? (
             <Alert variant="danger">
               Error: {textbooks.error || submitError}

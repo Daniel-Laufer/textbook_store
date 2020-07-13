@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { login, signUp } from "../../Redux/Actions/userActions";
+
 import {
   Form,
   Button,
@@ -158,6 +159,7 @@ const mapDispatchToProps = (dispatch) => {
     signUp: (email, password, name, username, phoneNumber, campus) =>
       dispatch(signUp(email, password, name, username, phoneNumber, campus)),
     login: (email, password) => dispatch(login(email, password)),
+    
   };
 };
 

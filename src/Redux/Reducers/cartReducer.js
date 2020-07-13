@@ -2,24 +2,28 @@ import {
   GET_CART_ITEMS,
   ADD_TO_CART,
   DELETE_FROM_CART,
+  RESET_CART,
 } from "../actionNames.js";
 
-export default (
-  state = {
-    allCartItems: [],
 
-    // cartItemsToDisplay: [],
-    pending: false,
-    refreshRequested: true,
-    error: null,
-    numberOfItems: 0,
-    cartItemIds: null,
-  },
+const initState = {
+  allCartItems: [],
+
+  // cartItemsToDisplay: [],
+  pending: false,
+  refreshRequested: true,
+  error: null,
+  numberOfItems: 0,
+  cartItemIds: null,
+}
+
+export default (
+  state = {...initState},
   action
 ) => {
   switch (action.type) {
     case GET_CART_ITEMS + "_FULFILLED":
-      return {
+      return { 
         ...state,
         pending: false,
         allCartItems: action.payload.cartItemData,
@@ -29,11 +33,12 @@ export default (
         // cartItemsToDisplay: action.payload,
       };
     case GET_CART_ITEMS + "_PENDING":
-      return { ...state, pending: true };
+      return { ...state, pending: true,  refreshRequested: false };
     case GET_CART_ITEMS + "_REJECTED":
       return {
         ...state,
         pending: false,
+        refreshRequested: false,
         error: action.payload,
         allCartItems: [],
       };
@@ -72,6 +77,13 @@ export default (
         error: action.payload,
       };
 
+    case RESET_CART:
+      return {
+        ...initState
+      }
+
+
+
     //     case SEARCH_AND_UPDATE_TEXTBOOKS:
     //       const newItems = [];
     //       for (let key in state.allTextbooks) {
@@ -83,6 +95,9 @@ export default (
     //           newItems.push(state.allTextbooks[key]);
     //       }
     //       return { ...state, textbooksToDisplay: [...newItems] };
+
+
+
     default:
       return state;
   }

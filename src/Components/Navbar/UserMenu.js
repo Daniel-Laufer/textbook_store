@@ -4,6 +4,7 @@ import "./UserMenu.css";
 import { Button } from "react-bootstrap";
 import { logout, updateProfilePicture } from "../../Redux/Actions/userActions";
 import { useHistory } from "react-router-dom";
+import { resetCart } from "../../Redux/Actions/cartActions";
 import heic2any from "heic2any";
 
 let UserMenu = ({
@@ -13,41 +14,45 @@ let UserMenu = ({
   hideNav,
   updateProfilePicture,
   darkTheme,
+  resetCart
 }) => {
-
   useEffect(() => {
-    const eventHandlerFunction = (e) => {
-      const ignore = [
-        "user-menu-container",
-        "user-menu-profile-pic-container",
-        "user-menu-info-container",
-        "user-menu-profile-pic",
-        "menu-login-logout-button btn btn-primary",
-        "user-menu-info-list",
-        "menu-userName",
-        "menu-campus",
-        "change-photo-icon fas fa-camera",
-        "user-menu-input",
-        "user-menu-input-container",
-        "menu-login-logout-button btn btn-info",
-      ];
-      if (
-        (e.target.className && !ignore.includes(e.target.className)) ||
-        e.target.className === ""
-      ) {
-        setUserMenuOpen(false);
-      }
-    };
+      const eventHandlerFunction = (e) => {
+        const ignore = [
+          "user-menu-container",
+          "user-menu-profile-pic-container",
+          "user-menu-info-container",
+          "user-menu-profile-pic",
+          "menu-login-logout-button btn btn-primary",
+          "user-menu-info-list",
+          "menu-userName",
+          "menu-campus",
+          "change-photo-icon fas fa-camera",
+          "user-menu-input",
+          "user-menu-input-container",
+          "menu-login-logout-button btn btn-info",
+          "nav-profile-pic"
+        ];
+        if (
+          (e.target.className && !ignore.includes(e.target.className)) ||
+          e.target.className === ""
+        ) {
+          console.log("false")
+          setUserMenuOpen(false);
+        }
+        
+      };
 
-    document
-      .getElementById("root")
-      .addEventListener("click", eventHandlerFunction);
-
-    // CLEAN UP THE EVENT LISTNER WHEN COMPONENT UNMOUNTS
-    return () =>
       document
         .getElementById("root")
-        .removeEventListener("click", eventHandlerFunction);
+        .addEventListener("click", eventHandlerFunction);
+
+      // CLEAN UP THE EVENT LISTNER WHEN COMPONENT UNMOUNTS
+      return () =>
+        document
+          .getElementById("root")
+          .removeEventListener("click", eventHandlerFunction);
+    
   }, [setUserMenuOpen]);
 
   const history = useHistory();
@@ -55,13 +60,12 @@ let UserMenu = ({
   const handleLogOut = () => {
     setUserMenuOpen(false);
     delete localStorage.authToken;
-
+    resetCart();
     logout();
     history.push("/textbooks");
   };
 
   const handleFileChange = (e) => {
-
     if (
       e.target.files[0].name
         .split(".")
@@ -82,7 +86,6 @@ let UserMenu = ({
           .catch((err) => reject(err));
       })
         .then((data) => {
-          
           updateProfilePicture(user, data);
         })
         .catch((err) => console.log(err));
@@ -171,6 +174,7 @@ const mapDispatchToProps = (dispatch) => {
     logout: () => dispatch(logout()),
     updateProfilePicture: (user, image) =>
       dispatch(updateProfilePicture(user, image)),
+      resetCart: () => dispatch(resetCart())
   };
 };
 

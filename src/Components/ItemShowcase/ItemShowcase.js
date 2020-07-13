@@ -12,7 +12,7 @@ import TextbookModal from "../Modals/TextbookModal";
 import { addItemToCart } from "../../Redux/Actions/cartActions";
 import FilterContainer from "./Filters/FilterContainer/FilterContainer";
 
-function ItemShowcase({ textbooks, getTextbooks, cart, settings, user }) {
+function ItemShowcase({ textbooks, getTextbooks, cart, settings }) {
   const [modalIsOpen, setIsOpen] = useState(false);
   const [focusedItem, setFocusedItem] = useState(null);
 
@@ -21,15 +21,13 @@ function ItemShowcase({ textbooks, getTextbooks, cart, settings, user }) {
     setIsOpen(true);
   }
 
-
   
 
-  useEffect(() => {
-    if (!user.authToken) {
-      // alert("refreshed")
-      getTextbooks();
-    }
-  }, [user.authToken]);
+
+
+
+
+  
 
   useEffect(() => {
     if (textbooks.refreshRequired) {
@@ -46,6 +44,7 @@ function ItemShowcase({ textbooks, getTextbooks, cart, settings, user }) {
   function closeModal() {
     setIsOpen(false);
   }
+
 
 
   const spinnerStyles = {
@@ -99,7 +98,6 @@ function ItemShowcase({ textbooks, getTextbooks, cart, settings, user }) {
             funcs={{ modalIsOpen, openModal, afterOpenModal, closeModal }}
             item={focusedItem}
             cart={cart}
-            
           />
         </Container>
       </div>

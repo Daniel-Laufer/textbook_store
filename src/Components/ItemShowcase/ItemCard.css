@@ -237,6 +237,26 @@
   margin-top: 100px;
   /* z-index:2; */
 }
+
+@media not all and (min-resolution:.001dpcm) { @media {
+  #cartButtonHolder {
+    display: flex;
+    justify-content: space-evenly;
+    height: 80px;
+    margin-top: 70px;
+    font-size:10px;
+    /* z-index:2; */
+  }
+
+  #cartButtonHolder button > i{
+    line-height: 3px;
+
+  }
+  
+}}
+
+
+
 #cartButtonHolder > button {
   width: 30%;
   height: 20px;

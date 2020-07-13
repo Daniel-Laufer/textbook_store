@@ -8,9 +8,10 @@ import TextbookModal from "../Modals/TextbookModal";
 import axios from "axios";
 import CompactItemCard from "../ItemShowcase/CompactItemCard";
 
+
+axios.defaults.baseURL="https://us-central1-textbook-store-2e072.cloudfunctions.net/api";
+
 function UserTextbookShowcase({
-  cartItems,
-  getCartItems,
   user,
   settings,
   userId,
@@ -42,44 +43,58 @@ function UserTextbookShowcase({
     return null;
   }
 
-  const getUserProfile = () => {
-    axios
-      .get(`/user/${userId}`)
-      .then((data) => {
-        setThisUserProfile(data.data);
-      })
-      .catch((err) => console.log(err));
-  };
-
-  const getUserTextbooks = () => {
-    if(userId)
-    axios
-      .get(`/textbooks/user/${userId}`)
-      .then((data) => {
-        setLoadingTextbooks(false);
-        setThisUsersTextbooks(data.data);
-      })
-      .catch((err) => console.log(err));
-  };
+  
 
   useEffect(() => {
+    const getUserProfile = () => {
+      axios
+        .get(`/user/${userId}`)
+        .then((data) => {
+          setThisUserProfile(data.data);
+        })
+        .catch((err) => console.log(err));
+    };
+  
+    const getUserTextbooks = () => {
+      if(userId)
+      axios
+        .get(`/textbooks/user/${userId}`)
+        .then((data) => {
+          setLoadingTextbooks(false);
+          setThisUsersTextbooks(data.data);
+        })
+        .catch((err) => console.log(err));
+    };
+
+
     getUserProfile();
     getUserTextbooks();
-  }, []);
+  }, [userId]); 
 
 
   useEffect(() => {
+  
+    const getUserTextbooks = () => {
+      if(userId)
+      axios
+        .get(`/textbooks/user/${userId}`)
+        .then((data) => {
+          setLoadingTextbooks(false);
+          setThisUsersTextbooks(data.data);
+        })
+        .catch((err) => console.log(err));
+    };
     // refresh the user's textbooks since one was deleted!
     if (deletedTextbook) {
       getUserTextbooks();
       setDeletedTextbook(false);
     }
-  }, [deletedTextbook]);
+  }, [deletedTextbook, userId]); // may have to use callback here
 
   useEffect(() => {
     if (user.publicUserInfo && userId === user.publicUserInfo.userId)
       setAdminAccess(true);
-  }, [user.publicUserInfo]);
+  }, [user.publicUserInfo, userId]);
 
   return (
     <div
@@ -176,7 +191,6 @@ function UserTextbookShowcase({
             <TextbookModal
               funcs={{ modalIsOpen, openModal, afterOpenModal, closeModal }}
               item={focusedItem}
-              cart={cartItems}
             />
           </div>
         </Container>

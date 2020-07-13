@@ -22,26 +22,35 @@ function CompactItemCard({
   deleteItem,
   setDeletedTextbook,
   setLoadingTextbooks,
-  isCartItem
+  isCartItem,
 }) {
   const [displayDelete, setDisplayDelete] = useState(false);
   const [myCard, setMyCard] = useState(false);
   const history = useHistory();
+  const [disableAllButtons, setDisableAllButtons] = useState(false);
+
+
+
+  useEffect(() => {
+    setDisableAllButtons(cart.pending);
+  }, [cart.pending])
 
   useEffect(() => {
     if (cart.refreshRequested && user.loggedIn && !cart.pending) {
-
       getCartItems(user.authToken);
       cart.refreshRequested = false;
     }
-  }, [cart.refreshRequested]);
+  }, [cart.refreshRequested, user.loggedIn, cart.pending, user.authToken, getCartItems]);
 
   useEffect(() => {
-    if (isCartItem || (cart.cartItemIds && cart.cartItemIds.includes(item.textbookId))) {
+    if (
+      isCartItem ||
+      (cart.cartItemIds && cart.cartItemIds.includes(item.textbookId))
+    ) {
       return setDisplayDelete(true);
     }
     setDisplayDelete(false);
-  }, [cart.cartItemIds]);
+  }, [cart.cartItemIds, isCartItem, item.textbookId]);
 
   const handleDeleteCart = () => {
     if (isCartItem) {
@@ -64,7 +73,7 @@ function CompactItemCard({
       return setMyCard(user.publicUserInfo.userId === item.sellerId);
     }
     setMyCard(false);
-  }, []);
+  }, [item.sellerId, user.publicUserInfo]);
 
   if (item) {
     return (
@@ -137,7 +146,11 @@ function CompactItemCard({
         <div className="compact-price">{`$${item.price}`}</div>
         <div className="divider"> </div>
         <div className="compact-sellingLocation">
-          {`Selling Location: ${item.sellingLocation.length > 34 ? item.sellingLocation.substring(0, 34) + '...' : item.sellingLocation}`}
+          {`Selling Location: ${
+            item.sellingLocation.length > 34
+              ? item.sellingLocation.substring(0, 34) + "..."
+              : item.sellingLocation
+          }`}
         </div>
 
         <div className="compact-card-button-holder">
@@ -147,7 +160,7 @@ function CompactItemCard({
             }`}
             // style={myCard ? { opacity: "0" } : {}}
             disabled={
-              myCard || !cart.cartItemIds || displayDelete ? true : false
+              disableAllButtons || myCard || !cart.cartItemIds || displayDelete ? true : false
             }
             onClick={() => {
               addItemToCart(user.authToken, item.textbookId);
@@ -173,13 +186,13 @@ function CompactItemCard({
             title={`Remove from cart ${
               user.loggedIn ? "" : "(Please login first!)"
             } ${displayDelete ? "" : "(This item is not in your cart!)"}`}
-            disabled={!myCard && displayDelete ? false : true}
+            disabled={!disableAllButtons && !myCard && displayDelete ? false : true}
             onClick={() => {
               handleDeleteCart();
             }}
             className="btn btn-danger"
           >
-            <i class="far fa-times-circle"></i>
+            <i className="far fa-times-circle"></i>
           </button>
         </div>
       </div>

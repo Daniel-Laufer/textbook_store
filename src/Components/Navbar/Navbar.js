@@ -25,11 +25,6 @@ let AppNav = ({
 
   const history = useHistory();
 
-  useEffect(() => {
-    if (user.loggedIn && !cartItems.pending) {
-      getCartItems(user.authToken);
-    }
-  }, [user.authToken, getCartItems, user.loggedIn]);
 
   useEffect(() => {
     if (user.loggedIn && user.error) {
@@ -37,13 +32,15 @@ let AppNav = ({
       logout();
       history.push("/textbooks");
     }
-  }, [user.error, user.loggedIn]);
+  }, [user.error, user.loggedIn, history, logout]);
+
+  
 
   useEffect(() => {
     if (user.loggedIn && user.updateRequested) {
-      setTimeout(() => getSignedInProfile(user.authToken), 500)
+      setTimeout(() => getSignedInProfile(user.authToken), 500);
     }
-  }, [user.updateRequested, user.authToken, user.loggedIn, getSignedInProfile]);
+  }, [user.authToken, user.loggedIn, user.updateRequested,  getSignedInProfile]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const [navExpanded, setNavExpanded] = useState(false);
 
@@ -53,7 +50,6 @@ let AppNav = ({
 
   const spinnerStyles = { display: cartItems.pending ? "block" : "none" };
 
-  
   const spinnerStylesUser = {
     display: user.loadProfilePending ? "block" : "none",
   };
@@ -142,6 +138,21 @@ let AppNav = ({
                 setSettingsMenuOpen={setSettingsMenuOpen}
               />
             ) : null}
+            {user.publicUserInfo ? (
+              <img
+                id="nav-profile-pic"
+                className="nav-profile-pic"
+                src={user.publicUserInfo.profilePicture}
+                alt=""
+                onClick={() => {
+                  setUserMenuOpen(!userMenuOpen)
+                }}
+              />
+            ) : (
+              <div style={spinnerStylesUser} className="loader">
+                <div className="profilePictureLoaderIcon"></div>
+              </div>
+            )}
             {userMenuOpen ? (
               <UserMenu
                 darkTheme={settings.settings.darkTheme}
@@ -149,19 +160,6 @@ let AppNav = ({
                 setUserMenuOpen={setUserMenuOpen}
               />
             ) : null}
-            {/* <Button id="profilePictureButton"></Button> */}
-            {user.publicUserInfo ? (
-              <img
-                onClick={() => setUserMenuOpen(true)}
-                id="nav-profile-pic"
-                src={user.publicUserInfo.profilePicture}
-                alt=""
-              />
-            ) : (
-              <div style={spinnerStylesUser} className="loader">
-                <div className="profilePictureLoaderIcon"></div>
-              </div>
-            )}
           </div>
           {/* <Button id="newTextbookPost" style={{'display' : user.loggedIn ? 'flex': 'none'}} variant="light">+</Button> */}
         </Navbar.Collapse>

@@ -19,6 +19,7 @@ const LoginPage = (props) => {
       localStorage.timeLoggedIn = (new Date()).getTime();
       setEmail("");
       setPassword("");
+
       if (props.user.error == null) setTimeout(() => history.push("/textbooks"), 800);
     }
   }, [props.user, history]);
@@ -90,7 +91,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    login: (email, password) => dispatch(login(email, password)),
+    login: (email, password) => dispatch(login(email, password))
   };
 };
 

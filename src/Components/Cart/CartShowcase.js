@@ -24,29 +24,47 @@ function CartShowcase({ cartItems, getCartItems, user, settings }) {
     return null;
   }
 
-  useEffect(() => {
-    getCartItems(user.authToken);
-  }, [user.publicUserInfo]);
+  // useEffect(() => {
+  //   if (user.loggedIn && cartItems.refreshRequested) {
+  //     getCartItems(user.authToken);
+  //   }
+  // }, [
+  //   cartItems.refreshRequested,
+  //   user.publicUserInfo,
+  //   getCartItems,
+  //   user.authToken,
+  //   user.loggedIn
+  // ]);
 
   const spinnerStyles = { display: cartItems.pending ? "block" : "none" };
 
   useEffect(() => {
-    if (cartItems.refreshRequested && user.loggedIn && !cartItems.pending) {
+    if (cartItems.refreshRequested && user.loggedIn) {
+      console.log("cart 2")
       getCartItems(user.authToken);
     }
-  }, [getCartItems, user.authToken, cartItems.refreshRequested, user.loggedIn]); // this list was empty normally
+  }, [
+    getCartItems,
+    user.authToken,
+    cartItems.refreshRequested,
+    user.loggedIn,
+  ]); // this list was empty normally
 
   return (
     <>
       <Jumbotron
         fluid
         className="user-showcase-jumbo"
-        style={settings.settings.darkTheme ? {
-          backgroundColor: "rgb(50,50,50)",
-          color: "rgb(255,255,255)",
-        }: {
-          color: "rgb(0,0,0)",
-        }}
+        style={
+          settings.settings.darkTheme
+            ? {
+                backgroundColor: "rgb(50,50,50)",
+                color: "rgb(255,255,255)",
+              }
+            : {
+                color: "rgb(0,0,0)",
+              }
+        }
       >
         <Container className="jumbo-inner-container">
           <h1>Your saved textbooks:</h1>
@@ -73,7 +91,6 @@ function CartShowcase({ cartItems, getCartItems, user, settings }) {
               </div>
             ) : (
               cartItems.allCartItems.map((item, index) => {
-                console.log(`rendered ${item.textbookId}`)
                 if (settings.settings.compactCards)
                   return (
                     <CompactItemCard
@@ -103,7 +120,6 @@ function CartShowcase({ cartItems, getCartItems, user, settings }) {
               funcs={{ modalIsOpen, openModal, afterOpenModal, closeModal }}
               item={focusedItem}
               isCartItem={true}
-              cart={cartItems}
             />
           </div>
         </Container>

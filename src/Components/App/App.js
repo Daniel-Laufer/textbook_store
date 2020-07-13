@@ -10,12 +10,12 @@ import "./App.css";
 
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import CartShowcase from "../Cart/CartShowcase";
-import ItemShowcase from "../ItemShowcase/ItemShowcase";
 import LoginPage from "../LoginPage/LoginPage";
 import SignUpPage from "../SignUpPage/SignUpPage";
 import NewTextbookPage from "../NewTextbookPage/NewTextbookPage";
 import AppNav from "../Navbar/Navbar";
 import HomePage from "../HomePage/HomePage";
+import ItemShowcase from "../ItemShowcase/ItemShowcase";
 
 /*                   ACTIONS                                                   */
 import UserTextbookShowcase from "../UserTextbookShowcase/UserTextbookShowcase";
@@ -28,28 +28,25 @@ import { login, loginWithOldtAuthToken } from "../../Redux/Actions/userActions";
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-function App({
-  getTextbooks,
-  user,
-  loginWithOldtAuthToken,
-  settings,
-  cartItems,
-}) {
+function App({ user, loginWithOldtAuthToken, settings, cartItems }) {
   useEffect(() => {
     if (user.loggedIn) {
-      getCartItems(user.authToken);
+      console.log("ye", cartItems.refreshRequested)
+      if (cartItems.refreshRequested){
+        console.log("app 1")
+        getCartItems(user.authToken);
+      }
     } else {
       const oldAuthToken = localStorage.authToken;
       const timeLoggedIn = new Date(parseInt(localStorage.timeLoggedIn));
       const now = new Date();
-
       const timeDiff = Math.round(
         ((now - (timeLoggedIn % 86400000)) % 3600000) / 60000
       ); // minutes
-
-      if (oldAuthToken && timeDiff < 50) {
+      if (oldAuthToken && timeDiff < 10) {
         loginWithOldtAuthToken({ token: oldAuthToken });
-        if (!cartItems.pending) {
+        if (!cartItems.pending && user.loggedIn) {
+          console.log("app 2")
           getCartItems(user.authToken);
         }
       } else {
@@ -57,7 +54,7 @@ function App({
         delete localStorage.timeLoggedIn;
       }
     }
-  }, [loginWithOldtAuthToken, user.authToken, user.loggedIn]);
+  }, [loginWithOldtAuthToken, user.authToken, user.loggedIn]) // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <Router>

@@ -1,6 +1,8 @@
 import {LOGIN, LOGOUT, SIGNUP, GET_SIGNED_IN_PROFILE, UPDATE_PROFILE_PICTURE} from "../actionNames";
 import axios from "axios";
 
+axios.defaults.baseURL="https://us-central1-textbook-store-2e072.cloudfunctions.net/api";
+
 
 export const login = (email, password) => {
     return{

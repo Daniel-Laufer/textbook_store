@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import Modal from "react-modal";
 import "./TextbookModal.css";
 import "react-rangeslider/lib/index.css";
@@ -9,29 +9,33 @@ Modal.defaultStyles.overlay.backgroundColor = "rgba(89,89,89, 0.75)";
 
 const darkCardBackgroundColor = "rgb(89, 88, 88)";
 
-export default function TextbookModal({
-  funcs,
-  item,
-  darkTheme,
-  cart,
-  isCartItem,
-}) {
+export default function TextbookModal({ funcs, item, darkTheme, cart, isCartItem }) {
   const [qualityOfTextbooks, setQualityOfTextbooks] = useState(null);
+  
 
-  let showContactInfo =
+  const showContactInfo =
     !cart || !cart.cartItemIds || !item
       ? false
-      : cart.cartItemIds.includes(
-          isCartItem ? item.cartItemId : item.textbookId
-        );
+      : cart.cartItemIds.includes(isCartItem ? item.cartItemId: item.textbookId);
 
-  // alert(showContactInfo)
+
+  const assignQualityLabels = useCallback(() => {
+    let qualityOfTextbooks = {};
+    let keys = Object.keys(item.textbookQuality);
+    for (const key in keys) {
+      qualityOfTextbooks[keys[key]] = {
+        color: getLevelColor(item.textbookQuality[keys[key]]),
+        data: getLevelMessage(item.textbookQuality[keys[key]], keys[key]),
+      };
+    }
+    setQualityOfTextbooks(qualityOfTextbooks);
+  }, [item]);
 
   useEffect(() => {
     if (item) {
       assignQualityLabels();
     }
-  }, [item, cart]);
+  }, [item, assignQualityLabels]);
 
   const getLevelColor = (num) => {
     if (num >= 0 && num < 25) return "green";
@@ -42,9 +46,22 @@ export default function TextbookModal({
   };
   const getLevelMessage = (num, type) => {
     if (num >= 0 && num < 25) {
-      return { message: "none", level: <span role="img" aria-label={"emoji"}>😄</span> };
+      return {
+        message: "none",
+        level: (
+          <span role="img" aria-label={"emoji"}>
+            😄
+          </span>
+        ),
+      };
     } else if (num >= 25 && num < 50) {
-      const out = { level: <span role="img" aria-label={"emoji"}>🙂</span> };
+      const out = {
+        level: (
+          <span role="img" aria-label={"emoji"}>
+            🙂
+          </span>
+        ),
+      };
       switch (type) {
         case "handWriting":
           out["message"] = "on a few pages";
@@ -60,7 +77,13 @@ export default function TextbookModal({
           return out;
       }
     } else if (num >= 50 && num < 75) {
-      const out = { level: <span role="img" aria-label={"emoji"}>😔</span> };
+      const out = {
+        level: (
+          <span role="img" aria-label={"emoji"}>
+            😔
+          </span>
+        ),
+      };
       switch (type) {
         case "handWriting":
           out["message"] = "on several pages";
@@ -76,7 +99,13 @@ export default function TextbookModal({
           return out;
       }
     } else if (num >= 75 && num <= 100) {
-      const out = { level: <span role="img" aria-label={"emoji"}>😨</span> };
+      const out = {
+        level: (
+          <span role="img" aria-label={"emoji"}>
+            😨
+          </span>
+        ),
+      };
       switch (type) {
         case "handWriting":
           out["message"] = "everywhere!";
@@ -92,18 +121,6 @@ export default function TextbookModal({
           return out;
       }
     }
-  };
-
-  const assignQualityLabels = () => {
-    let qualityOfTextbooks = {};
-    let keys = Object.keys(item.textbookQuality);
-    for (const key in keys) {
-      qualityOfTextbooks[keys[key]] = {
-        color: getLevelColor(item.textbookQuality[keys[key]]),
-        data: getLevelMessage(item.textbookQuality[keys[key]], keys[key]),
-      };
-    }
-    setQualityOfTextbooks(qualityOfTextbooks);
   };
 
   const isOverflown = ({
@@ -235,7 +252,7 @@ export default function TextbookModal({
               <strong>Contact Information</strong>
               <br />
             </span>
-            <div style={showContactInfo ? {} : { display: "none" }}>
+            <div style={isCartItem || showContactInfo ? {} : { display: "none" }}>
               {item.sellerPublicInfo.name ? (
                 <div>
                   <strong>Name: </strong>
@@ -267,7 +284,7 @@ export default function TextbookModal({
               )}
             </div>
             <div
-              style={!showContactInfo ? {} : { display: "none" }}
+              style={!isCartItem && !showContactInfo ? {} : { display: "none" }}
               className="not-in-cart-contact-locked"
             >
               <span role={"img"} aria-label={"hidden"}>

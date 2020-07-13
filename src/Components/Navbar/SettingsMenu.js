@@ -64,14 +64,14 @@ let SettingsMenu = ({
           <div key={`default-checkbox`} className="mb-3">
             <Form.Check
               checked={settings.settings.compactCards}
-              onClick={() => handleChecked("compact")}
+              onChange={() => handleChecked("compact")}
               type={"checkbox"}
               id={`default-checkbox`}
               label={`Compact Card View`}
             />
             <Form.Check
               checked={settings.settings.darkTheme}
-              onClick={() => handleChecked("dark")}
+              onChange={() => handleChecked("dark")}
               type={"checkbox"}
               id={`default-checkbox`}
               label={`Dark Theme`}
