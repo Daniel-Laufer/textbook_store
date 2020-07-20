@@ -8,7 +8,7 @@ Created using <strong>React & Firebase</strong>
 
 
 
-## Run Locally
+## Run it locally
 
 In the project directory, you can run:
 
