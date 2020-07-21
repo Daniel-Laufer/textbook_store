@@ -5,7 +5,6 @@ import textbooksReducer from "./Reducers/textbooksReducer.js"
 import searchReducer from "./Reducers/searchReducer.js";
 import cartReducer from "./Reducers/cartReducer"
 import settingsReducer from "./Reducers/settingsReducer";
-import { composeWithDevTools } from "redux-devtools-extension";
 import {createStore} from "redux";
 
 

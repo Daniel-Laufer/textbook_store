@@ -10,7 +10,11 @@ Created using <strong>React & Firebase</strong>
 
 ## Run it locally
 
-In the project directory, you can run:
+In the project directory run:
+
+### `npm-install-all`
+Installs all the necessary dependencies for the project.<br />
+<!-- <em>(NOTE: this command only needs to be entered once!)</em> -->
 
 ### `npm start`
 
