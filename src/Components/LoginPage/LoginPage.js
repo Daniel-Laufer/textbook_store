@@ -72,6 +72,7 @@ const LoginPage = (props) => {
           onClick={(e) => {
             handleSubmit(e, email, password);
           }}
+          disabled={props.user.pending}
           type="submit"
         >
           Submit

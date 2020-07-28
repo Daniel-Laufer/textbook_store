@@ -8,14 +8,10 @@ import TextbookModal from "../Modals/TextbookModal";
 import axios from "axios";
 import CompactItemCard from "../ItemShowcase/CompactItemCard";
 
+axios.defaults.baseURL =
+  "https://us-central1-textbook-store-2e072.cloudfunctions.net/api";
 
-axios.defaults.baseURL="https://us-central1-textbook-store-2e072.cloudfunctions.net/api";
-
-function UserTextbookShowcase({
-  user,
-  settings,
-  userId,
-}) {
+function UserTextbookShowcase({ user, settings, userId }) {
   const [modalIsOpen, setIsOpen] = useState(false);
   const [focusedItem, setFocusedItem] = useState(null);
   const [adminAccess, setAdminAccess] = useState(false);
@@ -43,8 +39,6 @@ function UserTextbookShowcase({
     return null;
   }
 
-  
-
   useEffect(() => {
     const getUserProfile = () => {
       axios
@@ -54,35 +48,32 @@ function UserTextbookShowcase({
         })
         .catch((err) => console.log(err));
     };
-  
-    const getUserTextbooks = () => {
-      if(userId)
-      axios
-        .get(`/textbooks/user/${userId}`)
-        .then((data) => {
-          setLoadingTextbooks(false);
-          setThisUsersTextbooks(data.data);
-        })
-        .catch((err) => console.log(err));
-    };
 
+    const getUserTextbooks = () => {
+      if (userId)
+        axios
+          .get(`/textbooks/user/${userId}`)
+          .then((data) => {
+            setLoadingTextbooks(false);
+            setThisUsersTextbooks(data.data);
+          })
+          .catch((err) => console.log(err));
+    };
 
     getUserProfile();
     getUserTextbooks();
-  }, [userId]); 
-
+  }, [userId]);
 
   useEffect(() => {
-  
     const getUserTextbooks = () => {
-      if(userId)
-      axios
-        .get(`/textbooks/user/${userId}`)
-        .then((data) => {
-          setLoadingTextbooks(false);
-          setThisUsersTextbooks(data.data);
-        })
-        .catch((err) => console.log(err));
+      if (userId)
+        axios
+          .get(`/textbooks/user/${userId}`)
+          .then((data) => {
+            setLoadingTextbooks(false);
+            setThisUsersTextbooks(data.data);
+          })
+          .catch((err) => console.log(err));
     };
     // refresh the user's textbooks since one was deleted!
     if (deletedTextbook) {
@@ -166,6 +157,7 @@ function UserTextbookShowcase({
                 if (settings.settings.compactCards)
                   return (
                     <CompactItemCard
+                      darkTheme={settings.settings.darkTheme}
                       setDeletedTextbook={setDeletedTextbook}
                       adminAccess={adminAccess}
                       key={index}
@@ -177,6 +169,7 @@ function UserTextbookShowcase({
 
                 return (
                   <ItemCard
+                    darkTheme={settings.settings.darkTheme}
                     setDeletedTextbook={setDeletedTextbook}
                     adminAccess={adminAccess}
                     key={index}
@@ -189,6 +182,7 @@ function UserTextbookShowcase({
             )}
 
             <TextbookModal
+              darkTheme={settings.settings.darkTheme}
               funcs={{ modalIsOpen, openModal, afterOpenModal, closeModal }}
               item={focusedItem}
             />

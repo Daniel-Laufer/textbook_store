@@ -42,10 +42,10 @@ const SignUpPage = ({ user, signUp }) => {
   }, [user, history]); // added history here
 
   const handleSubmit = (e) => {
+    e.preventDefault();
     if (password !== confirmPassword) {
       return setError("Passwords do not match!");
     }
-    e.preventDefault();
     signUp(email, password, name, username, phoneNumber, campus);
   };
 
@@ -139,6 +139,7 @@ const SignUpPage = ({ user, signUp }) => {
           onClick={(e) => {
             handleSubmit(e);
           }}
+          disabled={user.pending}
           type="submit"
         >
           Submit

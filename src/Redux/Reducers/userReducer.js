@@ -41,7 +41,7 @@ export default (state = initialState, action) => {
     case LOGIN + "_PENDING":
       return { ...state, pending: true };
     case LOGIN + "_REJECTED":
-      return { ...state, error: action.payload };
+      return { ...state, error: action.payload, pending: false };
 
     case SIGNUP + "_FULFILLED":
       return {
@@ -54,7 +54,7 @@ export default (state = initialState, action) => {
     case SIGNUP + "_PENDING":
       return { ...state, pending: true };
     case SIGNUP + "_REJECTED":
-      return { ...state, error: action.payload };
+      return { ...state, pending: false, error: action.payload };
 
 
     case GET_SIGNED_IN_PROFILE + "_FULFILLED":

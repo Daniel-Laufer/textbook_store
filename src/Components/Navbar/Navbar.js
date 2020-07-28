@@ -126,6 +126,7 @@ let AppNav = ({
             </Link>
             <Button
               className="settings-button"
+              style={!user.loggedIn ? {"display":  "none"}: null}
               onClick={() => {
                 setSettingsMenuOpen(!settingsMenuOpen);
               }}
