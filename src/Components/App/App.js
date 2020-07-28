@@ -31,9 +31,7 @@ import { login, loginWithOldtAuthToken } from "../../Redux/Actions/userActions";
 function App({ user, loginWithOldtAuthToken, settings, cartItems }) {
   useEffect(() => {
     if (user.loggedIn) {
-      console.log("ye", cartItems.refreshRequested)
       if (cartItems.refreshRequested){
-        console.log("app 1")
         getCartItems(user.authToken);
       }
     } else {
@@ -46,7 +44,6 @@ function App({ user, loginWithOldtAuthToken, settings, cartItems }) {
       if (oldAuthToken && timeDiff < 10) {
         loginWithOldtAuthToken({ token: oldAuthToken });
         if (!cartItems.pending && user.loggedIn) {
-          console.log("app 2")
           getCartItems(user.authToken);
         }
       } else {

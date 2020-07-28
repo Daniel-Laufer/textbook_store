@@ -17,6 +17,9 @@ import Select from "react-select";
 import "./SignUpPage.css";
 
 const SignUpPage = ({ user, signUp }) => {
+  const spinnerStyles = {
+    display: user.pending ? "block" : "none",
+  };
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -37,7 +40,7 @@ const SignUpPage = ({ user, signUp }) => {
       setName("");
       setError("");
       setUsername("");
-      if (user.error == null) setTimeout(() => history.push("/textbooks"), 800);
+      if (user.error == null) setTimeout(() => history.push("/textbooks"), 1800);
     }
   }, [user, history]); // added history here
 
@@ -114,7 +117,7 @@ const SignUpPage = ({ user, signUp }) => {
         <Form.Group controlId="formBasicPassword">
           <Form.Label>Password</Form.Label>
           <Form.Control
-            autocomplete="new-password"
+            autoComplete="new-password"
             onChange={(e) => setPassword(e.target.value)}
             type="password"
             placeholder="Password"
@@ -134,12 +137,15 @@ const SignUpPage = ({ user, signUp }) => {
           <Alert variant="success">Successfully signed up!</Alert>
         ) : null}
         {error ? <Alert variant="danger">Error: {error}</Alert> : null}
+        <div style={spinnerStyles} className="loader">
+          <div className="loaderIcon"></div>
+        </div>
         <Button
           variant="primary"
           onClick={(e) => {
             handleSubmit(e);
           }}
-          disabled={user.pending}
+          disabled={user.pending || user.loggedIn}
           type="submit"
         >
           Submit
@@ -160,7 +166,6 @@ const mapDispatchToProps = (dispatch) => {
     signUp: (email, password, name, username, phoneNumber, campus) =>
       dispatch(signUp(email, password, name, username, phoneNumber, campus)),
     login: (email, password) => dispatch(login(email, password)),
-    
   };
 };
 

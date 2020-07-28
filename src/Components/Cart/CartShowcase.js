@@ -40,7 +40,6 @@ function CartShowcase({ cartItems, getCartItems, user, settings }) {
 
   useEffect(() => {
     if (cartItems.refreshRequested && user.loggedIn) {
-      console.log("cart 2")
       getCartItems(user.authToken);
     }
   }, [

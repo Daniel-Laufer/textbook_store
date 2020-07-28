@@ -44,7 +44,7 @@ export const createNewTextbook = (user, image, description, title, price, course
         const otherData = { description, title, price, imageURL, course, campus, sellingLocation, textbookQuality: {pagesMissing, handWriting, stains}, privacySettings };
         axios
           .post("/createTextbook", { otherData }, { headers })
-          .then((data) => console.log(data))
+          .then((data) => console.log('here'))
           .catch((err) => console.log(err));
       })
       .catch((err) => {
@@ -71,7 +71,7 @@ export const updateTextbook = (user, image, description, title, price, course, c
           const otherData = { description, title, price, imageURL, course, campus, sellingLocation, textbookQuality: {pagesMissing, handWriting, stains}, privacySettings };
           axios
             .put(`/textbook/${textbookId}`, { otherData }, { headers })
-            .then((data) => console.log(data))
+            .then((data) => console.log('here'))
             .catch((err) => console.log(err));
         })
         .catch((err) => {
@@ -87,7 +87,7 @@ export const updateTextbook = (user, image, description, title, price, course, c
       type: UPDATE_TEXTBOOK,
       payload: axios
       .put(`/textbook/${textbookId}`, { otherData }, { headers })
-      .then((data) => console.log(data))
+      .then((data) => console.log('here'))
       .catch((err) => console.log(err)),
     }
   }

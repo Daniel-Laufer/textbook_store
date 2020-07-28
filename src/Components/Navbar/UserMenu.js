@@ -37,7 +37,6 @@ let UserMenu = ({
           (e.target.className && !ignore.includes(e.target.className)) ||
           e.target.className === ""
         ) {
-          console.log("false")
           setUserMenuOpen(false);
         }
         
