@@ -5,7 +5,7 @@ Access the live app <strong>[here](https://textbook-store-2e072.web.app)</strong
 <br/><br/>
 Created using <strong>React & Firebase</strong>
 <br/><br/>
-<em>Note: if the app is acting strange (ex. difficulty logging in to your account) please wait a minute or two and try again. This is likely due to Firebase's 'cold start time'.</em>
+<!--<em>Note: if the app is acting strange (ex. difficulty logging in to your account) please wait a minute or two and try again. This is likely due to Firebase's 'cold start time'.</em>-->
 
 
 
