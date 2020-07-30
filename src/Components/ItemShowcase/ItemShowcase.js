@@ -48,7 +48,7 @@ function ItemShowcase({ textbooks, getTextbooks, cart, settings }) {
 
 
   const spinnerStyles = {
-    display: textbooks.pending ? "block" : "none",
+    display: textbooks.pending ? "block" : "none", //second should be none
   };
   return (
     <>

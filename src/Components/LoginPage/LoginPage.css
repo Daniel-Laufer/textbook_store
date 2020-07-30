@@ -7,6 +7,12 @@ box-shadow: -3px 3px 29px 0px rgba(56,56,56,0.66);
 
 
 }
+@media only screen and (max-width: 338px) {
+  .alert{
+  font-size: 10px;
+}
+}
+
 
 .root-form-container{
   height:100vh;

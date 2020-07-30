@@ -25,7 +25,6 @@ let AppNav = ({
 
   const history = useHistory();
 
-
   useEffect(() => {
     if (user.loggedIn && user.error) {
       delete localStorage.authToken;
@@ -34,13 +33,11 @@ let AppNav = ({
     }
   }, [user.error, user.loggedIn, history, logout]);
 
-  
-
   useEffect(() => {
     if (user.loggedIn && user.updateRequested) {
       setTimeout(() => getSignedInProfile(user.authToken), 500);
     }
-  }, [user.authToken, user.loggedIn, user.updateRequested,  getSignedInProfile]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [user.authToken, user.loggedIn, user.updateRequested, getSignedInProfile]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const [navExpanded, setNavExpanded] = useState(false);
 
@@ -75,7 +72,7 @@ let AppNav = ({
                 id="navbar-logo"
                 src="https://firebasestorage.googleapis.com/v0/b/textbook-store-2e072.appspot.com/o/App_images_and_gifs%2FtextbookLogo.png?alt=media&token=a0a8c552-c182-422c-b519-9f2ef5a6a571"
               />
-              The Textbook Exchanger
+              <span id="text-title">The Textbook Exchanger</span>
             </Link>
           </div>
           {/* </Navbar.Brand> */}
@@ -126,7 +123,7 @@ let AppNav = ({
             </Link>
             <Button
               className="settings-button"
-              style={!user.loggedIn ? {"display":  "none"}: null}
+              style={!user.loggedIn ? { display: "none" } : null}
               onClick={() => {
                 setSettingsMenuOpen(!settingsMenuOpen);
               }}
@@ -146,7 +143,7 @@ let AppNav = ({
                 src={user.publicUserInfo.profilePicture}
                 alt=""
                 onClick={() => {
-                  setUserMenuOpen(!userMenuOpen)
+                  setUserMenuOpen(!userMenuOpen);
                 }}
               />
             ) : (

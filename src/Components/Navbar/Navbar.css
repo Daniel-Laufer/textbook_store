@@ -57,7 +57,21 @@ background: linear-gradient(to right, #182848, #4b6cb7); /* W3C, IE 10+/ Edge, F
     text-decoration: none;
     color:white;
     font-weight: bolder;
+    white-space: nowrap;
 }
+@media only screen and (max-width: 338px) {
+  #text-title{
+    display: block;
+    width: 100%;
+    font-size:16px;
+  }
+  #browse-link{
+    font-size:14px;
+  }
+}
+
+
+
 #mainNav{
     list-style-type: none;
 }

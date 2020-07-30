@@ -168,7 +168,7 @@ const ItemCard = React.memo(
                   (item.sellerPublicInfo.userName.length > 16 ? "..." : "")}
               </div>
             </div>
-            <ul className="list-group list-group-flush">
+            <ul id="more-details-ul" className="list-group list-group-flush">
               <li
                 className="list-group-item"
                 style={

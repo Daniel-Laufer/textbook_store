@@ -62,7 +62,15 @@
   @media only screen and (max-width: 650px) {
     .item-showcase {
       justify-content: center;
+      margin-left:-19px;  
     }
+
+    .loaderIcon{
+      position:absolute;
+        left: 32%;
+        top: 370px;
+
+      }
   }
 
   /* END SPINNER CSS */
