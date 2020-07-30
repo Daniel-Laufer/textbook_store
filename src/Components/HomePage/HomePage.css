@@ -30,6 +30,16 @@
   animation: fadein var(--fade-in-duration);
 }
 
+@media only screen and (max-height: 700px) {
+  #page-1-content {
+    -webkit-animation: none;
+    -moz-animation: none;
+    -ms-animation: none;
+    -o-animation: none;
+    animation: none;
+  }
+}
+
 
 
 @media only screen and (max-width: 338px) {
@@ -256,6 +266,8 @@
   line-height: 40px;
   
 }
+
+
 
 @media only screen and (max-width: 338px) {
   .list{
