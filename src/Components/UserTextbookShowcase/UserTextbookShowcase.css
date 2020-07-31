@@ -21,6 +21,9 @@
 }
 
 
+
+
+
 .user-textbook-showcase button{
   padding:0px !important;
   width:40px;
@@ -32,6 +35,14 @@
   width:70px;
   height: 70px;
   margin-top:-50px;
+}
+
+@media only screen and (max-width: 650px) {
+  .jumbo-inner-container .loaderIcon{ 
+    margin-top:-220px;
+    margin-left:50px;
+
+  }
 }
 
 .jumbo-inner-container {
