@@ -6,9 +6,40 @@
   margin: auto;
   height: 100%;
   padding-top:10px;
-  
+}
+
+.CartShowcase  .loaderIcon{
+  position:absolute;
+    left: 46%;
+    top: 500px;
+}
+
+@media only screen and (max-width: 650px) {
+  .jumbo-inner-container > h1{
+    font-size:25px;
+  }
+
+  #empty-cart-message h1{
+    font-size:20px;
+  }
+
 
 }
+
+@media only screen and (max-width: 650px) {
+
+  .CartShowcase  .loaderIcon{
+    position:absolute;
+        left: 32%;
+        top: 500px;
+  }
+
+
+
+}
+
+  
+
 
 
 .blur {

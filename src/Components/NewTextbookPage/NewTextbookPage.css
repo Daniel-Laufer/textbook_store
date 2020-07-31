@@ -17,6 +17,20 @@
 }
 
 
+@media only screen and (max-width: 582px) {
+    .form-row:nth-of-type(1){
+        flex-wrap: wrap;
+        flex-direction: column;
+    }
+    
+    .form-row:nth-of-type(2){
+        flex-wrap: wrap;
+        flex-direction: column;
+    }
+}
+
+
+
 
 
 @media only screen and (max-width: 990px) {

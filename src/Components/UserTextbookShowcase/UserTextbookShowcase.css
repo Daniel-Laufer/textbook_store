@@ -43,7 +43,17 @@
     margin-left:50px;
 
   }
+  .user-showcase-profile-pic{
+    width:50px !important;
+    height:50px !important;
+  }
+  .user-showcase-jumbo{
+    min-height: 110px !important;
+  }
+
+  
 }
+
 
 .jumbo-inner-container {
   display: flex;
