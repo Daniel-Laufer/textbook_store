@@ -6,9 +6,6 @@ An online marketplace that facilitates the process of textbooks amongst students
 <strong> [https://youtu.be/b674r0d8hjw](https://youtu.be/b674r0d8hjw) </strong>
 
 
-
-## Access the live app <strong>[here](https://textbook-store-2e072.web.app)</strong>
-
 ## Tech Stack
 
 **Front-end:** React.js
