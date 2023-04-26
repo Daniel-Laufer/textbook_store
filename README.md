@@ -10,13 +10,10 @@ An online marketplace that facilitates the process of textbooks amongst students
 
 **Front-end:** React.js
 
-**Back-end:**  Node.js, Express.js, firebase-admin-node, Firestore
+**Back-end:**  Node.js, Express.js, Firebase, Firestore
 
 **Deployment/Cloud:** Firebase
 
-
-
-*This project is not intended to be run locally as it relies on having read/write access to my Fireabse project's Firestore DB which requires having my Firebase private credentials (revealing thse credentials on GitHub is obviously a bad idea). So that is why I do not have instructions on running this app locally.*
 
 
 
